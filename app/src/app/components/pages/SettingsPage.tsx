@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { User, Building2, Puzzle, Shield, Cpu, Palette, Camera, ChevronRight } from 'lucide-react';
+import { User, Building2, Puzzle, Shield, Cpu, Palette, Camera, ChevronRight, Database, RotateCcw, Cloud, HardDrive } from 'lucide-react';
+import { toast } from 'sonner';
 import { PageShell } from '../layout/PageShell';
+import { useNexus } from '../../data/store';
+import { useAuth } from '../../auth/AuthProvider';
 
 const TABS = [
   { id: 'profile', label: 'Profile', icon: User },
   { id: 'organization', label: 'Organization', icon: Building2 },
+  { id: 'workspace', label: 'Workspace Data', icon: Database },
   { id: 'integrations', label: 'Integrations', icon: Puzzle },
   { id: 'security', label: 'Security', icon: Shield },
   { id: 'ai', label: 'AI Preferences', icon: Cpu },
@@ -422,9 +426,111 @@ function ThemeTab() {
   );
 }
 
+function WorkspaceTab() {
+  const { resetDemo, activity } = useNexus();
+  const { session, guest } = useAuth();
+  const [confirming, setConfirming] = useState(false);
+
+  const handleReset = () => {
+    if (!confirming) {
+      setConfirming(true);
+      setTimeout(() => setConfirming(false), 4000);
+      return;
+    }
+    resetDemo();
+    setConfirming(false);
+    toast.success('Workspace restored to showroom state', {
+      description: session
+        ? 'Your cloud copy will re-sync with the fresh data in a moment.'
+        : 'Local workspace reset to the original demo data.',
+    });
+  };
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div>
+        <h2 style={{ color: '#F4F4F5', fontSize: 16, fontWeight: 600, marginBottom: 4 }}>Workspace Data</h2>
+        <p style={{ color: '#A1A1AA', fontSize: 13 }}>Where your workspace lives, and how to start fresh.</p>
+      </div>
+
+      {/* Storage status */}
+      <div
+        className="rounded-xl p-4 flex items-center gap-3"
+        style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+      >
+        {session ? <Cloud size={16} style={{ color: '#4FD1C5' }} /> : <HardDrive size={16} style={{ color: '#FFB547' }} />}
+        <div className="flex-1">
+          <div style={{ color: '#F4F4F5', fontSize: 13, fontWeight: 500 }}>
+            {session ? 'Synced to cloud' : guest ? 'Guest — this device only' : 'Local mode'}
+          </div>
+          <div style={{ color: '#A1A1AA', fontSize: 12 }}>
+            {session
+              ? 'Changes save to your private workspace and follow you across devices.'
+              : 'Changes are stored in this browser. Sign in with Google to sync.'}
+          </div>
+        </div>
+      </div>
+
+      {/* Activity summary */}
+      <div>
+        <label style={{ color: '#A1A1AA', fontSize: 12, fontWeight: 500, display: 'block', marginBottom: 8 }}>
+          Applied AI actions this workspace
+        </label>
+        {activity.length === 0 ? (
+          <p style={{ color: '#A1A1AA', fontSize: 13, opacity: 0.7 }}>None yet — the workspace is in its original showroom state.</p>
+        ) : (
+          <div className="flex flex-col gap-1.5">
+            {activity.slice(0, 6).map(a => (
+              <div key={a.id} className="flex items-center gap-2" style={{ color: '#A1A1AA', fontSize: 12.5 }}>
+                <span className="rounded-full" style={{ width: 5, height: 5, background: '#4FD1C5' }} />
+                {a.label}
+                <span style={{ opacity: 0.5, fontSize: 11 }}>{a.timestamp}</span>
+              </div>
+            ))}
+            {activity.length > 6 && (
+              <span style={{ color: '#A1A1AA', fontSize: 11, opacity: 0.6 }}>+{activity.length - 6} more</span>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Reset */}
+      <div
+        className="rounded-xl p-4"
+        style={{ background: 'rgba(255,181,71,0.05)', border: '1px solid rgba(255,181,71,0.2)' }}
+      >
+        <div style={{ color: '#F4F4F5', fontSize: 13, fontWeight: 500, marginBottom: 4 }}>Reset demo data</div>
+        <p style={{ color: '#A1A1AA', fontSize: 12.5, lineHeight: 1.5, marginBottom: 14 }}>
+          Restores every project, team member, client, and notification to the original staged workspace —
+          like housekeeping resetting the show house. Use this right before a presentation for a clean run.
+        </p>
+        <motion.button
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.97 }}
+          onClick={handleReset}
+          className="flex items-center gap-2 rounded-lg px-4 py-2"
+          style={{
+            background: confirming ? '#FF6B6B' : 'rgba(255,181,71,0.1)',
+            border: `1px solid ${confirming ? '#FF6B6B' : 'rgba(255,181,71,0.35)'}`,
+            color: confirming ? '#0B0B0F' : '#FFB547',
+            fontSize: 13,
+            fontWeight: 600,
+            cursor: 'pointer',
+            transition: 'all 0.15s ease',
+          }}
+        >
+          <RotateCcw size={13} />
+          {confirming ? 'Click again to confirm reset' : 'Reset demo data'}
+        </motion.button>
+      </div>
+    </div>
+  );
+}
+
 const TAB_CONTENT: Record<string, React.ReactNode> = {
   profile: <ProfileTab />,
   organization: <OrganizationTab />,
+  workspace: <WorkspaceTab />,
   integrations: <IntegrationsTab />,
   security: <SecurityTab />,
   ai: <AITab />,
