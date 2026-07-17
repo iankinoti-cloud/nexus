@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import { motion } from 'motion/react';
+import { AlertTriangle } from 'lucide-react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import nexusEmblem from '../../imports/NEXUS-_-EMBLEM.jpeg';
+import { authErrorFromUrl } from '../lib/supabase';
 import { useAuth } from './AuthProvider';
 
 function GoogleIcon() {
@@ -16,6 +19,7 @@ function GoogleIcon() {
 
 export function LoginScreen() {
   const { signInWithGoogle, continueAsGuest } = useAuth();
+  const [authError] = useState<string | null>(authErrorFromUrl);
 
   return (
     <div
@@ -42,9 +46,21 @@ export function LoginScreen() {
         <div className="tracking-widest mb-1" style={{ color: '#F4F4F5', fontSize: 22, fontWeight: 700, letterSpacing: '0.22em' }}>
           NEXUS
         </div>
-        <p style={{ color: '#A1A1AA', fontSize: 14, marginBottom: 36 }}>
+        <p style={{ color: '#A1A1AA', fontSize: 14, marginBottom: authError ? 20 : 36 }}>
           The Operating System for Creative Enterprises.
         </p>
+
+        {authError && (
+          <div
+            className="w-full flex items-start gap-2 rounded-lg px-3 py-2.5 mb-4 text-left"
+            style={{ background: 'rgba(255,107,107,0.08)', border: '1px solid rgba(255,107,107,0.3)' }}
+          >
+            <AlertTriangle size={14} style={{ color: '#FF6B6B', flexShrink: 0, marginTop: 2 }} />
+            <span style={{ color: '#FF6B6B', fontSize: 12, lineHeight: 1.5 }}>
+              Sign-in failed: {authError}
+            </span>
+          </div>
+        )}
 
         <motion.button
           whileHover={{ scale: 1.01, background: '#FFFFFF' }}
