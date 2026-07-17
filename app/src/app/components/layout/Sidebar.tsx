@@ -2,11 +2,12 @@ import { NavLink, useLocation } from 'react-router';
 import { motion } from 'motion/react';
 import {
   LayoutDashboard, FolderKanban, Users, Building2,
-  BarChart3, Cpu, BookOpen, Bell, Settings, ChevronDown
+  BarChart3, Cpu, BookOpen, Bell, Settings, LogOut, ChevronDown
 } from 'lucide-react';
 import { ImageWithFallback } from '../figma/ImageWithFallback';
 import nexusEmblem from '../../../imports/NEXUS-_-EMBLEM.jpeg';
 import { useNexus } from '../../data/store';
+import { useAuth } from '../../auth/AuthProvider';
 
 const NAV_ITEMS = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/', end: true },
@@ -103,10 +104,34 @@ export function Sidebar() {
       </nav>
 
       {/* User */}
-      <div
-        className="px-4 py-4 flex items-center gap-3"
-        style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
-      >
+      <UserBlock />
+    </div>
+  );
+}
+
+function UserBlock() {
+  const { session, guest, displayName, avatarUrl, signOut } = useAuth();
+  const initials = displayName
+    .split(' ')
+    .map(w => w[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
+
+  return (
+    <div
+      className="px-4 py-4 flex items-center gap-3"
+      style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
+    >
+      {avatarUrl ? (
+        <img
+          src={avatarUrl}
+          alt={displayName}
+          referrerPolicy="no-referrer"
+          className="rounded-full shrink-0 object-cover"
+          style={{ width: 34, height: 34 }}
+        />
+      ) : (
         <div
           className="flex items-center justify-center rounded-full shrink-0"
           style={{
@@ -117,14 +142,29 @@ export function Sidebar() {
             color: '#0B0B0F',
           }}
         >
-          SC
+          {initials}
         </div>
-        <div className="flex-1 min-w-0">
-          <div style={{ color: '#F4F4F5', fontSize: 13, fontWeight: 500 }}>Sarah Chen</div>
-          <div style={{ color: '#A1A1AA', fontSize: 11 }}>Creative Director</div>
+      )}
+      <div className="flex-1 min-w-0">
+        <div className="truncate" style={{ color: '#F4F4F5', fontSize: 13, fontWeight: 500 }}>{displayName}</div>
+        <div style={{ color: '#A1A1AA', fontSize: 11 }}>
+          {session ? 'Workspace synced' : guest ? 'Guest · local workspace' : 'Creative Director'}
         </div>
-        <ChevronDown size={14} style={{ color: '#A1A1AA', opacity: 0.6 }} />
       </div>
+      {session || guest ? (
+        <button
+          onClick={signOut}
+          title="Sign out"
+          className="flex items-center justify-center rounded-md"
+          style={{ width: 26, height: 26, background: 'transparent', border: 'none', cursor: 'pointer', color: '#A1A1AA' }}
+          onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.color = '#FF6B6B')}
+          onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.color = '#A1A1AA')}
+        >
+          <LogOut size={14} />
+        </button>
+      ) : (
+        <ChevronDown size={14} style={{ color: '#A1A1AA', opacity: 0.6 }} />
+      )}
     </div>
   );
 }

@@ -1,6 +1,8 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { PROJECTS, EMPLOYEES, CLIENTS, NOTIFICATIONS } from './mockData';
 import { KNOWLEDGE_NOTES, type KnowledgeNote } from './knowledge';
+import { supabase } from '../lib/supabase';
+import { useAuth } from '../auth/AuthProvider';
 import type { Project, Employee, Client, Notification } from './types';
 
 export type CoreAction =
@@ -57,11 +59,46 @@ const NexusContext = createContext<NexusStore | null>(null);
 
 export function NexusProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<NexusState>(load);
+  const { session } = useAuth();
+  const userId = session?.user?.id ?? null;
+  const remoteLoaded = useRef(false);
+  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Hydrate from Supabase when a user signs in; seed their row on first login.
+  useEffect(() => {
+    remoteLoaded.current = false;
+    if (!supabase || !userId) return;
+    supabase
+      .from('workspaces')
+      .select('state')
+      .eq('user_id', userId)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (!error && data?.state) {
+          setState(s => ({ ...initialState(), ...data.state, knowledge: s.knowledge }));
+        }
+        remoteLoaded.current = true;
+      });
+  }, [userId]);
 
   useEffect(() => {
     const { knowledge: _k, ...persisted } = state;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(persisted));
-  }, [state]);
+
+    // Debounced cloud sync — only after the remote row has been read,
+    // so the seed state never clobbers a returning user's workspace.
+    if (supabase && userId && remoteLoaded.current) {
+      if (saveTimer.current) clearTimeout(saveTimer.current);
+      saveTimer.current = setTimeout(() => {
+        supabase
+          .from('workspaces')
+          .upsert({ user_id: userId, state: persisted, updated_at: new Date().toISOString() })
+          .then(({ error }) => {
+            if (error) console.warn('[nexus] cloud sync failed:', error.message);
+          });
+      }, 800);
+    }
+  }, [state, userId]);
 
   const store = useMemo<NexusStore>(() => {
     const log = (label: string): ActivityEntry => ({

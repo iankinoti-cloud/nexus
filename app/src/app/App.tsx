@@ -1,6 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { Toaster } from 'sonner';
 import { NexusProvider } from './data/store';
+import { AuthProvider, useAuth } from './auth/AuthProvider';
+import { LoginScreen } from './auth/LoginScreen';
 import { RootLayout } from './components/layout/RootLayout';
 import { DashboardPage } from './components/pages/DashboardPage';
 import { ProjectsPage } from './components/pages/ProjectsPage';
@@ -30,10 +32,26 @@ const router = createBrowserRouter([
   },
 ]);
 
-export default function App() {
+function Gate() {
+  const { cloudMode, loading, session, guest } = useAuth();
+
+  if (cloudMode && loading) {
+    return <div className="h-screen w-screen" style={{ background: '#0B0B0F' }} />;
+  }
+  if (cloudMode && !session && !guest) {
+    return <LoginScreen />;
+  }
   return (
     <NexusProvider>
       <RouterProvider router={router} />
+    </NexusProvider>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <Gate />
       <Toaster
         theme="dark"
         position="bottom-right"
@@ -45,6 +63,6 @@ export default function App() {
           },
         }}
       />
-    </NexusProvider>
+    </AuthProvider>
   );
 }
