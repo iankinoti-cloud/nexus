@@ -1,5 +1,7 @@
 # NEXUS — AI Operating System for Creative Businesses
 
+**Live:** https://nexus-topaz-omega.vercel.app · Deployment guide: [DEPLOYMENT.md](DEPLOYMENT.md)
+
 One workspace that orchestrates people, projects, clients, and decisions for creative agencies — with **Core**, a real AI intelligence engine, at the center.
 
 Built for the Moringa 48-Hour AI Hackathon.
