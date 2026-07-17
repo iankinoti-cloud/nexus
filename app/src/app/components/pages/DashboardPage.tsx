@@ -6,6 +6,7 @@ import { PageShell } from '../layout/PageShell';
 import { KPICard } from '../shared/KPICard';
 import { MiniAreaChart } from '../charts/MiniAreaChart';
 import { useNexus, type CoreAction } from '../../data/store';
+import { useAuth } from '../../auth/AuthProvider';
 import { TeamAvatarStack } from '../shared/TeamAvatarStack';
 
 const KPIs = [
@@ -45,9 +46,13 @@ const INSIGHTS: Insight[] = [
 
 export function DashboardPage() {
   const nexus = useNexus();
+  const { displayName } = useAuth();
   const [appliedInsights, setAppliedInsights] = useState<number[]>([]);
   const now = new Date();
   const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  const hour = now.getHours();
+  const greeting = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
+  const firstName = displayName.split(' ')[0];
 
   const nextActionable = INSIGHTS.findIndex(
     (ins, i) => ins.action.type !== 'none' && !appliedInsights.includes(i),
@@ -77,7 +82,7 @@ export function DashboardPage() {
       >
         <div>
           <h1 style={{ color: '#F4F4F5', fontSize: 28, fontWeight: 600, lineHeight: 1.2 }}>
-            Good Morning, Sarah.
+            {greeting}, {firstName}.
           </h1>
           <p style={{ color: '#A1A1AA', fontSize: 15, marginTop: 6 }}>
             Everything is running smoothly.

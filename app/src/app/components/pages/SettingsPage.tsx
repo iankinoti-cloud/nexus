@@ -116,6 +116,10 @@ function IntegrationItem({ name, description, connected, color }: {
 }
 
 function ProfileTab() {
+  const { session, displayName, avatarUrl } = useAuth();
+  const email = session?.user?.email ?? 'sarah@apexstudio.co';
+  const initials = displayName.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -126,12 +130,22 @@ function ProfileTab() {
       {/* Avatar */}
       <div className="flex items-center gap-5">
         <div className="relative">
-          <div
-            className="flex items-center justify-center rounded-xl"
-            style={{ width: 72, height: 72, background: 'linear-gradient(135deg, #4FD1C5, #22C55E)', fontSize: 24, fontWeight: 700, color: '#0B0B0F' }}
-          >
-            SC
-          </div>
+          {avatarUrl ? (
+            <img
+              src={avatarUrl}
+              alt={displayName}
+              referrerPolicy="no-referrer"
+              className="rounded-xl object-cover"
+              style={{ width: 72, height: 72 }}
+            />
+          ) : (
+            <div
+              className="flex items-center justify-center rounded-xl"
+              style={{ width: 72, height: 72, background: 'linear-gradient(135deg, #4FD1C5, #22C55E)', fontSize: 24, fontWeight: 700, color: '#0B0B0F' }}
+            >
+              {initials}
+            </div>
+          )}
           <button
             className="absolute -bottom-1 -right-1 flex items-center justify-center rounded-full"
             style={{ width: 24, height: 24, background: '#1E1E26', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer' }}
@@ -140,16 +154,18 @@ function ProfileTab() {
           </button>
         </div>
         <div>
-          <div style={{ color: '#F4F4F5', fontSize: 15, fontWeight: 600 }}>Sarah Chen</div>
-          <div style={{ color: '#A1A1AA', fontSize: 13 }}>Creative Director · Apex Studio</div>
+          <div style={{ color: '#F4F4F5', fontSize: 15, fontWeight: 600 }}>{displayName}</div>
+          <div style={{ color: '#A1A1AA', fontSize: 13 }}>
+            {session ? 'Workspace Owner · NEXUS' : 'Creative Director · Apex Studio'}
+          </div>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <FormField label="Full Name" value="Sarah Chen" />
-        <FormField label="Email" type="email" value="sarah@apexstudio.co" />
-        <FormField label="Role" value="Creative Director" />
-        <FormField label="Timezone" value="UTC-5 (Eastern Time)" />
+        <FormField label="Full Name" value={displayName} />
+        <FormField label="Email" type="email" value={email} />
+        <FormField label="Role" value={session ? 'Workspace Owner' : 'Creative Director'} />
+        <FormField label="Timezone" value="UTC+3 (East Africa Time)" />
       </div>
 
       <div>
