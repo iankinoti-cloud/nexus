@@ -1,0 +1,197 @@
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { PROJECTS, EMPLOYEES, CLIENTS, NOTIFICATIONS } from './mockData';
+import { KNOWLEDGE_NOTES, type KnowledgeNote } from './knowledge';
+import type { Project, Employee, Client, Notification } from './types';
+
+export type CoreAction =
+  | { type: 'reassign'; fromEmployeeId: string; toEmployeeId: string; note?: string }
+  | { type: 'contact_client'; clientId: string; draft?: string }
+  | { type: 'extend_deadline'; projectId: string; days: number; note?: string }
+  | { type: 'none' };
+
+export interface ActivityEntry {
+  id: string;
+  label: string;
+  timestamp: string;
+}
+
+interface NexusState {
+  projects: Project[];
+  employees: Employee[];
+  clients: Client[];
+  notifications: Notification[];
+  knowledge: KnowledgeNote[];
+  activity: ActivityEntry[];
+}
+
+interface NexusStore extends NexusState {
+  applyAction: (action: CoreAction) => string | null;
+  markRead: (id: string) => void;
+  markAllRead: () => void;
+  resetDemo: () => void;
+  contextSnapshot: () => object;
+}
+
+const STORAGE_KEY = 'nexus-store-v1';
+
+const initialState = (): NexusState => ({
+  projects: PROJECTS,
+  employees: EMPLOYEES,
+  clients: CLIENTS,
+  notifications: NOTIFICATIONS,
+  knowledge: KNOWLEDGE_NOTES,
+  activity: [],
+});
+
+function load(): NexusState {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return { ...initialState(), ...JSON.parse(raw) };
+  } catch { /* corrupted state falls back to seed */ }
+  return initialState();
+}
+
+const clamp = (n: number, lo = 0, hi = 100) => Math.min(hi, Math.max(lo, n));
+
+const NexusContext = createContext<NexusStore | null>(null);
+
+export function NexusProvider({ children }: { children: ReactNode }) {
+  const [state, setState] = useState<NexusState>(load);
+
+  useEffect(() => {
+    const { knowledge: _k, ...persisted } = state;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(persisted));
+  }, [state]);
+
+  const store = useMemo<NexusStore>(() => {
+    const log = (label: string): ActivityEntry => ({
+      id: `a${Date.now()}`,
+      label,
+      timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+    });
+
+    const applyAction = (action: CoreAction): string | null => {
+      switch (action.type) {
+        case 'reassign': {
+          const from = state.employees.find(e => e.id === action.fromEmployeeId);
+          const to = state.employees.find(e => e.id === action.toEmployeeId);
+          if (!from || !to) return null;
+          const label = `Rebalanced workload: ${from.name} → ${to.name}`;
+          setState(s => ({
+            ...s,
+            employees: s.employees.map(e => {
+              if (e.id === from.id) {
+                const workload = clamp(e.workload - 15);
+                return {
+                  ...e,
+                  workload,
+                  burnoutRisk: clamp(e.burnoutRisk - 20),
+                  currentProjects: Math.max(0, e.currentProjects - 1),
+                  availability: workload >= 90 ? 'at-capacity' : workload >= 70 ? 'busy' : 'available',
+                };
+              }
+              if (e.id === to.id) {
+                const workload = clamp(e.workload + 15);
+                return {
+                  ...e,
+                  workload,
+                  currentProjects: e.currentProjects + 1,
+                  availability: workload >= 90 ? 'at-capacity' : workload >= 70 ? 'busy' : 'available',
+                };
+              }
+              return e;
+            }),
+            activity: [log(label), ...s.activity],
+          }));
+          return label;
+        }
+        case 'contact_client': {
+          const c = state.clients.find(cl => cl.id === action.clientId);
+          if (!c) return null;
+          const label = `Follow-up sent to ${c.name}`;
+          setState(s => ({
+            ...s,
+            clients: s.clients.map(cl =>
+              cl.id === c.id
+                ? {
+                    ...cl,
+                    lastContact: 'Just now',
+                    healthScore: clamp(cl.healthScore + 6),
+                    status: cl.status === 'at-risk' && cl.healthScore + 6 >= 70 ? 'active' : cl.status,
+                  }
+                : cl,
+            ),
+            activity: [log(label), ...s.activity],
+          }));
+          return label;
+        }
+        case 'extend_deadline': {
+          const p = state.projects.find(pr => pr.id === action.projectId);
+          if (!p) return null;
+          const label = `Extended ${p.name} deadline by ${action.days} days`;
+          setState(s => ({
+            ...s,
+            projects: s.projects.map(pr =>
+              pr.id === p.id
+                ? {
+                    ...pr,
+                    deadline: shiftDeadline(pr.deadline, action.days),
+                    risk: pr.risk === 'high' ? 'medium' : pr.risk === 'medium' ? 'low' : pr.risk,
+                    status: pr.status === 'at-risk' ? 'active' : pr.status,
+                  }
+                : pr,
+            ),
+            activity: [log(label), ...s.activity],
+          }));
+          return label;
+        }
+        default:
+          return null;
+      }
+    };
+
+    return {
+      ...state,
+      applyAction,
+      markRead: (id: string) =>
+        setState(s => ({
+          ...s,
+          notifications: s.notifications.map(n => (n.id === id ? { ...n, read: true } : n)),
+        })),
+      markAllRead: () =>
+        setState(s => ({ ...s, notifications: s.notifications.map(n => ({ ...n, read: true })) })),
+      resetDemo: () => {
+        localStorage.removeItem(STORAGE_KEY);
+        setState(initialState());
+      },
+      contextSnapshot: () => ({
+        today: new Date().toDateString(),
+        projects: state.projects.map(({ id, name, client, progress, deadline, risk, status, budget, team }) => ({
+          id, name, client, progress, deadline, risk, status, budget, team,
+        })),
+        employees: state.employees.map(({ id, name, role, availability, workload, skills, performanceScore, burnoutRisk, currentProjects }) => ({
+          id, name, role, availability, workload, skills, performanceScore, burnoutRisk, currentProjects,
+        })),
+        clients: state.clients.map(({ id, name, industry, activeProjects, revenue, lastContact, healthScore, status }) => ({
+          id, name, industry, activeProjects, revenue, lastContact, healthScore, status,
+        })),
+        recentActions: state.activity.slice(0, 5).map(a => a.label),
+      }),
+    };
+  }, [state]);
+
+  return <NexusContext.Provider value={store}>{children}</NexusContext.Provider>;
+}
+
+function shiftDeadline(deadline: string, days: number): string {
+  const parsed = new Date(`${deadline} 2026`);
+  if (isNaN(parsed.getTime())) return deadline;
+  parsed.setDate(parsed.getDate() + days);
+  return parsed.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+export function useNexus(): NexusStore {
+  const ctx = useContext(NexusContext);
+  if (!ctx) throw new Error('useNexus must be used inside NexusProvider');
+  return ctx;
+}
