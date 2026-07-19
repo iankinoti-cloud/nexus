@@ -65,6 +65,40 @@
   --nexus-cyan-border: rgba(79, 209, 197, 0.25);
   --nexus-purple: #A78BFA;
   --nexus-blue: #60A5FA;
+
+  /* --- NEXUS surface tokens (dark, default) — drive color mode --- */
+  --bg: #0B0B0F;
+  --bg-2: #0E0E13;
+  --surface: #15151B;
+  --surface-2: #1E1E26;
+  --text: #F4F4F5;
+  --text-dim: #A1A1AA;
+  --hair: rgba(255, 255, 255, 0.06);
+  --hair-2: rgba(255, 255, 255, 0.08);
+
+  /* --- Liquid Glass --- */
+  --glass-bg: rgba(22, 22, 29, 0.5);
+  --glass-brd: rgba(255, 255, 255, 0.14);
+  --glass-sheen: rgba(255, 255, 255, 0.10);
+  --glass-rim: rgba(255, 255, 255, 0.35);
+  --glass-blur: 28px;
+}
+
+/* Light mode redefines only the tokens — every component follows automatically */
+:root[data-theme='light'] {
+  --bg: #ECECEF;
+  --bg-2: #FFFFFF;
+  --surface: #FFFFFF;
+  --surface-2: #F2F2F5;
+  --text: #1D1D1F;
+  --text-dim: #6E6E73;
+  --hair: rgba(0, 0, 0, 0.08);
+  --hair-2: rgba(0, 0, 0, 0.12);
+
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-brd: rgba(0, 0, 0, 0.08);
+  --glass-sheen: rgba(255, 255, 255, 0.65);
+  --glass-rim: rgba(255, 255, 255, 0.9);
 }
 
 .dark {

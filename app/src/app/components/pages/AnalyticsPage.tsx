@@ -20,14 +20,14 @@ function ChartCard({ title, subtitle, children, delay = 0, colSpan = 1 }: {
       transition={{ duration: 0.3, delay, ease: 'easeOut' }}
       className="rounded-xl p-6"
       style={{
-        background: '#15151B',
-        border: '1px solid rgba(255,255,255,0.06)',
+        background: 'var(--surface)',
+        border: '1px solid var(--hair)',
         gridColumn: colSpan > 1 ? `span ${colSpan}` : undefined,
       }}
     >
       <div className="mb-5">
-        <div style={{ color: '#F4F4F5', fontSize: 14, fontWeight: 600 }}>{title}</div>
-        {subtitle && <div style={{ color: '#A1A1AA', fontSize: 12, marginTop: 2 }}>{subtitle}</div>}
+        <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>{title}</div>
+        {subtitle && <div style={{ color: 'var(--text-dim)', fontSize: 12, marginTop: 2 }}>{subtitle}</div>}
       </div>
       {children}
     </motion.div>
@@ -45,8 +45,8 @@ export function AnalyticsPage() {
   return (
     <PageShell>
       <div className="mb-6">
-        <h1 style={{ color: '#F4F4F5', fontSize: 24, fontWeight: 600 }}>Analytics</h1>
-        <p style={{ color: '#A1A1AA', fontSize: 13, marginTop: 2 }}>Executive overview · July 2026</p>
+        <h1 style={{ color: 'var(--text)', fontSize: 24, fontWeight: 600 }}>Analytics</h1>
+        <p style={{ color: 'var(--text-dim)', fontSize: 13, marginTop: 2 }}>Executive overview · July 2026</p>
       </div>
 
       {/* KPI Strip */}
@@ -55,7 +55,7 @@ export function AnalyticsPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.28 }}
         className="flex items-center gap-0 rounded-xl mb-6 overflow-hidden"
-        style={{ background: '#15151B', border: '1px solid rgba(255,255,255,0.06)' }}
+        style={{ background: 'var(--surface)', border: '1px solid var(--hair)' }}
       >
         {KPI_METRICS.map((metric, i) => {
           const Icon = metric.icon;
@@ -63,7 +63,7 @@ export function AnalyticsPage() {
             <div
               key={metric.label}
               className="flex items-center gap-3 flex-1 px-5 py-4"
-              style={{ borderRight: i < 3 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}
+              style={{ borderRight: i < 3 ? '1px solid var(--hair)' : 'none' }}
             >
               <div
                 className="flex items-center justify-center rounded-lg shrink-0"
@@ -72,9 +72,9 @@ export function AnalyticsPage() {
                 <Icon size={16} style={{ color: metric.color }} />
               </div>
               <div>
-                <div style={{ color: '#A1A1AA', fontSize: 11 }}>{metric.label}</div>
+                <div style={{ color: 'var(--text-dim)', fontSize: 11 }}>{metric.label}</div>
                 <div className="flex items-center gap-2">
-                  <span style={{ color: '#F4F4F5', fontSize: 20, fontWeight: 600 }}>{metric.value}</span>
+                  <span style={{ color: 'var(--text)', fontSize: 20, fontWeight: 600 }}>{metric.value}</span>
                   <span style={{ color: metric.color, fontSize: 12 }}>{metric.change}</span>
                 </div>
               </div>
@@ -95,9 +95,9 @@ export function AnalyticsPage() {
         }}
       >
         <div>
-          <div style={{ color: '#A1A1AA', fontSize: 12, marginBottom: 4 }}>Revenue Growth Prediction · Next 90 Days</div>
+          <div style={{ color: 'var(--text-dim)', fontSize: 12, marginBottom: 4 }}>Revenue Growth Prediction · Next 90 Days</div>
           <div style={{ color: '#22C55E', fontSize: 36, fontWeight: 700, lineHeight: 1 }}>+18.5%</div>
-          <div style={{ color: '#A1A1AA', fontSize: 13, marginTop: 6 }}>
+          <div style={{ color: 'var(--text-dim)', fontSize: 13, marginTop: 6 }}>
             Forecast: $847K · Confidence: 87% · 2 pipeline deals closing in August
           </div>
         </div>
@@ -108,7 +108,7 @@ export function AnalyticsPage() {
           >
             <span style={{ color: '#22C55E', fontSize: 13, fontWeight: 500 }}>↑ On Track</span>
           </div>
-          <span style={{ color: '#A1A1AA', fontSize: 11 }}>Updated Jul 16, 2026</span>
+          <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>Updated Jul 16, 2026</span>
         </div>
       </motion.div>
 

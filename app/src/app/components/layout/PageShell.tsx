@@ -9,7 +9,7 @@ export function PageShell({ children, fullHeight }: PageShellProps) {
   return (
     <div
       className="flex-1 overflow-y-auto"
-      style={{ background: '#0B0B0F' }}
+      style={{ background: 'var(--bg)' }}
     >
       <motion.div
         initial={{ opacity: 0, y: 8 }}

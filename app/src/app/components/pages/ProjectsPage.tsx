@@ -17,8 +17,8 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
       whileHover={{ borderColor: 'rgba(var(--accent-rgb),0.22)', y: -2 }}
       className="rounded-xl p-5 flex flex-col gap-4"
       style={{
-        background: '#15151B',
-        border: '1px solid rgba(255,255,255,0.06)',
+        background: 'var(--surface)',
+        border: '1px solid var(--hair)',
         cursor: 'default',
         transition: 'border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease',
       }}
@@ -26,8 +26,8 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
         <div>
-          <div style={{ color: '#F4F4F5', fontSize: 14, fontWeight: 600, lineHeight: 1.3 }}>{project.name}</div>
-          <div style={{ color: '#A1A1AA', fontSize: 12, marginTop: 2 }}>{project.client}</div>
+          <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600, lineHeight: 1.3 }}>{project.name}</div>
+          <div style={{ color: 'var(--text-dim)', fontSize: 12, marginTop: 2 }}>{project.client}</div>
         </div>
         <RiskBadge level={project.risk} />
       </div>
@@ -35,10 +35,10 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
       {/* Progress */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <span style={{ color: '#A1A1AA', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Progress</span>
-          <span style={{ color: '#F4F4F5', fontSize: 13, fontWeight: 600 }}>{project.progress}%</span>
+          <span style={{ color: 'var(--text-dim)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Progress</span>
+          <span style={{ color: 'var(--text)', fontSize: 13, fontWeight: 600 }}>{project.progress}%</span>
         </div>
-        <div className="rounded-full overflow-hidden" style={{ height: 5, background: 'rgba(255,255,255,0.06)' }}>
+        <div className="rounded-full overflow-hidden" style={{ height: 5, background: 'var(--hair)' }}>
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${project.progress}%` }}
@@ -58,16 +58,16 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
       {/* Meta */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5">
-          <Calendar size={12} style={{ color: '#A1A1AA' }} />
-          <span style={{ color: '#A1A1AA', fontSize: 12 }}>{project.deadline}</span>
+          <Calendar size={12} style={{ color: 'var(--text-dim)' }} />
+          <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>{project.deadline}</span>
         </div>
         <TeamAvatarStack avatars={project.team} max={3} size={24} />
       </div>
 
       {/* Budget */}
       <div className="flex items-center justify-between">
-        <span style={{ color: '#A1A1AA', fontSize: 11 }}>Budget</span>
-        <span style={{ color: '#F4F4F5', fontSize: 13, fontWeight: 500 }}>{project.budget}</span>
+        <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>Budget</span>
+        <span style={{ color: 'var(--text)', fontSize: 13, fontWeight: 500 }}>{project.budget}</span>
       </div>
 
       {/* AI Chip */}
@@ -99,8 +99,8 @@ export function ProjectsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 style={{ color: '#F4F4F5', fontSize: 24, fontWeight: 600 }}>Projects</h1>
-          <p style={{ color: '#A1A1AA', fontSize: 13, marginTop: 2 }}>{PROJECTS.length} total · {PROJECTS.filter(p => p.status === 'active').length} active</p>
+          <h1 style={{ color: 'var(--text)', fontSize: 24, fontWeight: 600 }}>Projects</h1>
+          <p style={{ color: 'var(--text-dim)', fontSize: 13, marginTop: 2 }}>{PROJECTS.length} total · {PROJECTS.filter(p => p.status === 'active').length} active</p>
         </div>
         <motion.button
           whileHover={{ background: 'var(--accent-hover)' }}
@@ -125,9 +125,9 @@ export function ProjectsPage() {
       <div className="flex items-center gap-3 mb-6">
         <div
           className="flex items-center gap-2 flex-1 rounded-lg px-3 py-2.5"
-          style={{ background: '#15151B', border: '1px solid rgba(255,255,255,0.06)', maxWidth: 280 }}
+          style={{ background: 'var(--surface)', border: '1px solid var(--hair)', maxWidth: 280 }}
         >
-          <Search size={14} style={{ color: '#A1A1AA' }} />
+          <Search size={14} style={{ color: 'var(--text-dim)' }} />
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
@@ -136,7 +136,7 @@ export function ProjectsPage() {
               background: 'transparent',
               border: 'none',
               outline: 'none',
-              color: '#F4F4F5',
+              color: 'var(--text)',
               fontSize: 13,
               width: '100%',
             }}
@@ -149,8 +149,8 @@ export function ProjectsPage() {
               onClick={() => setActiveFilter(f)}
               style={{
                 background: activeFilter === f ? 'rgba(var(--accent-rgb),0.1)' : 'transparent',
-                border: `1px solid ${activeFilter === f ? 'rgba(var(--accent-rgb),0.3)' : 'rgba(255,255,255,0.06)'}`,
-                color: activeFilter === f ? 'var(--accent)' : '#A1A1AA',
+                border: `1px solid ${activeFilter === f ? 'rgba(var(--accent-rgb),0.3)' : 'var(--hair)'}`,
+                color: activeFilter === f ? 'var(--accent)' : 'var(--text-dim)',
                 fontSize: 12,
                 fontWeight: activeFilter === f ? 500 : 400,
                 borderRadius: 8,
@@ -165,10 +165,10 @@ export function ProjectsPage() {
         </div>
         <div
           className="flex items-center gap-2 rounded-lg px-3 py-2.5 ml-auto"
-          style={{ background: '#15151B', border: '1px solid rgba(255,255,255,0.06)', cursor: 'pointer' }}
+          style={{ background: 'var(--surface)', border: '1px solid var(--hair)', cursor: 'pointer' }}
         >
-          <SlidersHorizontal size={14} style={{ color: '#A1A1AA' }} />
-          <span style={{ color: '#A1A1AA', fontSize: 13 }}>Sort</span>
+          <SlidersHorizontal size={14} style={{ color: 'var(--text-dim)' }} />
+          <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>Sort</span>
         </div>
       </div>
 
@@ -178,7 +178,7 @@ export function ProjectsPage() {
           <ProjectCard key={project.id} project={project} delay={i * 0.07} />
         ))}
         {filtered.length === 0 && (
-          <div className="col-span-3 flex flex-col items-center justify-center py-20" style={{ color: '#A1A1AA' }}>
+          <div className="col-span-3 flex flex-col items-center justify-center py-20" style={{ color: 'var(--text-dim)' }}>
             <Search size={32} style={{ opacity: 0.3, marginBottom: 12 }} />
             <p style={{ fontSize: 14 }}>No projects match your search</p>
           </div>

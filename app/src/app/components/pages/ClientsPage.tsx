@@ -16,8 +16,8 @@ function ClientCard({ client, delay }: { client: Client; delay: number }) {
       whileHover={{ borderColor: 'rgba(var(--accent-rgb),0.2)', y: -2 }}
       className="rounded-xl p-5 flex flex-col gap-4"
       style={{
-        background: '#15151B',
-        border: '1px solid rgba(255,255,255,0.06)',
+        background: 'var(--surface)',
+        border: '1px solid var(--hair)',
         cursor: 'default',
         transition: 'border-color 0.2s ease',
       }}
@@ -32,13 +32,13 @@ function ClientCard({ client, delay }: { client: Client; delay: number }) {
             <span style={{ color: client.avatarColor, fontSize: 15, fontWeight: 700 }}>{client.initials}</span>
           </div>
           <div>
-            <div style={{ color: '#F4F4F5', fontSize: 14, fontWeight: 600 }}>{client.name}</div>
-            <div style={{ color: '#A1A1AA', fontSize: 12 }}>{client.industry}</div>
+            <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>{client.name}</div>
+            <div style={{ color: 'var(--text-dim)', fontSize: 12 }}>{client.industry}</div>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <HealthDot score={client.healthScore} />
-          <span style={{ color: '#A1A1AA', fontSize: 12 }}>{client.healthScore}/10</span>
+          <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>{client.healthScore}/10</span>
         </div>
       </div>
 
@@ -56,10 +56,10 @@ function ClientCard({ client, delay }: { client: Client; delay: number }) {
             style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}
           >
             <div className="flex items-center gap-1.5 mb-1">
-              <Icon size={11} style={{ color: '#A1A1AA' }} />
-              <span style={{ color: '#A1A1AA', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</span>
+              <Icon size={11} style={{ color: 'var(--text-dim)' }} />
+              <span style={{ color: 'var(--text-dim)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</span>
             </div>
-            <div style={{ color: '#F4F4F5', fontSize: 14, fontWeight: 600 }}>{value}</div>
+            <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>{value}</div>
           </div>
         ))}
       </div>
@@ -103,8 +103,8 @@ export function ClientsPage() {
     <PageShell>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 style={{ color: '#F4F4F5', fontSize: 24, fontWeight: 600 }}>Clients</h1>
-          <p style={{ color: '#A1A1AA', fontSize: 13, marginTop: 2 }}>
+          <h1 style={{ color: 'var(--text)', fontSize: 24, fontWeight: 600 }}>Clients</h1>
+          <p style={{ color: 'var(--text-dim)', fontSize: 13, marginTop: 2 }}>
             {CLIENTS.length} clients · {totalRevenue} total revenue
           </p>
         </div>
@@ -123,14 +123,14 @@ export function ClientsPage() {
       <div className="flex items-center gap-3 mb-6">
         <div
           className="flex items-center gap-2 rounded-lg px-3 py-2.5"
-          style={{ background: '#15151B', border: '1px solid rgba(255,255,255,0.06)', maxWidth: 260 }}
+          style={{ background: 'var(--surface)', border: '1px solid var(--hair)', maxWidth: 260 }}
         >
-          <Search size={14} style={{ color: '#A1A1AA' }} />
+          <Search size={14} style={{ color: 'var(--text-dim)' }} />
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search clients..."
-            style={{ background: 'transparent', border: 'none', outline: 'none', color: '#F4F4F5', fontSize: 13, width: '100%' }}
+            style={{ background: 'transparent', border: 'none', outline: 'none', color: 'var(--text)', fontSize: 13, width: '100%' }}
           />
         </div>
         <div className="flex items-center gap-1.5">
@@ -140,8 +140,8 @@ export function ClientsPage() {
               onClick={() => setActiveFilter(f)}
               style={{
                 background: activeFilter === f ? 'rgba(var(--accent-rgb),0.1)' : 'transparent',
-                border: `1px solid ${activeFilter === f ? 'rgba(var(--accent-rgb),0.3)' : 'rgba(255,255,255,0.06)'}`,
-                color: activeFilter === f ? 'var(--accent)' : '#A1A1AA',
+                border: `1px solid ${activeFilter === f ? 'rgba(var(--accent-rgb),0.3)' : 'var(--hair)'}`,
+                color: activeFilter === f ? 'var(--accent)' : 'var(--text-dim)',
                 fontSize: 12,
                 fontWeight: activeFilter === f ? 500 : 400,
                 borderRadius: 8,

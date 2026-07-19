@@ -53,24 +53,23 @@ export function Sidebar() {
         onMouseLeave={() => setHovered(false)}
         animate={{ width: open ? EXPANDED : COLLAPSED }}
         transition={{ type: 'spring', stiffness: 380, damping: 34 }}
-        className="flex flex-col rounded-2xl overflow-hidden"
+        className="glass glass-strong flex flex-col rounded-2xl overflow-hidden"
         style={{
           position: 'absolute',
           top: 0,
           left: 0,
           height: '100%',
           zIndex: 30,
-          background: 'rgba(21,21,27,0.82)',
-          backdropFilter: 'blur(24px)',
-          WebkitBackdropFilter: 'blur(24px)',
-          border: '1px solid rgba(255,255,255,0.07)',
-          boxShadow: pinned && hovered ? '0 12px 48px rgba(0,0,0,0.5)' : '0 8px 40px rgba(0,0,0,0.35)',
+          boxShadow:
+            pinned && hovered
+              ? 'inset 0 1px 0 0 var(--glass-rim), 0 16px 60px -8px rgba(0,0,0,0.6)'
+              : 'inset 0 1px 0 0 var(--glass-rim), 0 10px 40px -8px rgba(0,0,0,0.45)',
         }}
       >
         {/* Logo + collapse toggle */}
         <div
           className="flex items-center gap-3 px-4 py-5"
-          style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', minHeight: 74 }}
+          style={{ borderBottom: '1px solid var(--hair)', minHeight: 74 }}
         >
           <div className="rounded-lg overflow-hidden shrink-0" style={{ width: 34, height: 34 }}>
             <ImageWithFallback src={nexusEmblem} alt="NEXUS" className="w-full h-full object-cover" />
@@ -83,7 +82,7 @@ export function Sidebar() {
                 exit={{ opacity: 0, x: -6 }}
                 transition={{ duration: 0.15 }}
                 className="flex-1 min-w-0 tracking-widest"
-                style={{ color: '#F4F4F5', fontSize: 13, fontWeight: 700, letterSpacing: '0.18em', whiteSpace: 'nowrap' }}
+                style={{ color: 'var(--text)', fontSize: 13, fontWeight: 700, letterSpacing: '0.18em', whiteSpace: 'nowrap' }}
               >
                 NEXUS
               </motion.div>
@@ -94,9 +93,9 @@ export function Sidebar() {
               onClick={togglePin}
               title={pinned ? 'Keep sidebar open' : 'Collapse sidebar'}
               className="flex items-center justify-center rounded-md shrink-0"
-              style={{ width: 26, height: 26, background: 'transparent', border: 'none', cursor: 'pointer', color: '#A1A1AA' }}
+              style={{ width: 26, height: 26, background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-dim)' }}
               onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.color = 'var(--accent)')}
-              onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.color = '#A1A1AA')}
+              onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.color = 'var(--text-dim)')}
             >
               {pinned ? <PanelLeftOpen size={15} /> : <PanelLeftClose size={15} />}
             </button>
@@ -120,7 +119,7 @@ export function Sidebar() {
                 className="flex items-center gap-3 rounded-lg relative no-underline"
                 style={{
                   padding: '10px 12px',
-                  color: isActive ? 'var(--accent)' : '#A1A1AA',
+                  color: isActive ? 'var(--accent)' : 'var(--text-dim)',
                   background: isActive ? 'rgba(var(--accent-rgb),0.08)' : 'transparent',
                   boxShadow: isActive ? 'inset 0 0 0 1px rgba(var(--accent-rgb),0.25)' : 'none',
                   fontSize: 13.5,
@@ -129,12 +128,12 @@ export function Sidebar() {
                 }}
               >
                 <div className="relative shrink-0" style={{ width: 16, height: 16 }}>
-                  <Icon size={16} style={{ opacity: isActive ? 1 : 0.7 }} />
+                  <Icon size={16} style={{ opacity: isActive ? 1 : 0.85 }} />
                   {/* Unread dot on the icon when collapsed */}
                   {!open && item.label === 'Notifications' && unreadCount > 0 && (
                     <span
                       className="absolute rounded-full"
-                      style={{ top: -3, right: -3, width: 8, height: 8, background: 'var(--accent)', border: '2px solid #15151B' }}
+                      style={{ top: -3, right: -3, width: 8, height: 8, background: 'var(--accent)', border: '2px solid var(--surface)' }}
                     />
                   )}
                 </div>
@@ -184,7 +183,7 @@ function UserBlock({ open }: { open: boolean }) {
   return (
     <div
       className="px-4 py-4 flex items-center gap-3"
-      style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
+      style={{ borderTop: '1px solid var(--hair)' }}
     >
       {avatarUrl ? (
         <img
@@ -220,8 +219,8 @@ function UserBlock({ open }: { open: boolean }) {
             className="flex-1 min-w-0 flex items-center gap-2"
           >
             <div className="flex-1 min-w-0">
-              <div className="truncate" style={{ color: '#F4F4F5', fontSize: 13, fontWeight: 500 }}>{displayName}</div>
-              <div style={{ color: '#A1A1AA', fontSize: 11, whiteSpace: 'nowrap' }}>
+              <div className="truncate" style={{ color: 'var(--text)', fontSize: 13, fontWeight: 500 }}>{displayName}</div>
+              <div style={{ color: 'var(--text-dim)', fontSize: 11, whiteSpace: 'nowrap' }}>
                 {session ? 'Workspace synced' : guest ? 'Guest · local workspace' : 'Creative Director'}
               </div>
             </div>
@@ -230,14 +229,14 @@ function UserBlock({ open }: { open: boolean }) {
                 onClick={signOut}
                 title="Sign out"
                 className="flex items-center justify-center rounded-md shrink-0"
-                style={{ width: 26, height: 26, background: 'transparent', border: 'none', cursor: 'pointer', color: '#A1A1AA' }}
+                style={{ width: 26, height: 26, background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-dim)' }}
                 onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.color = '#FF6B6B')}
-                onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.color = '#A1A1AA')}
+                onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.color = 'var(--text-dim)')}
               >
                 <LogOut size={14} />
               </button>
             ) : (
-              <ChevronDown size={14} style={{ color: '#A1A1AA', opacity: 0.6 }} />
+              <ChevronDown size={14} style={{ color: 'var(--text-dim)', opacity: 0.6 }} />
             )}
           </motion.div>
         )}

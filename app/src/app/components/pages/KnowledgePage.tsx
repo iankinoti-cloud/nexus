@@ -30,8 +30,8 @@ function NoteCard({ note, highlighted, delay }: { note: KnowledgeNote; highlight
       transition={{ duration: 0.3, delay }}
       className="rounded-xl p-5"
       style={{
-        background: highlighted ? 'rgba(var(--accent-rgb),0.05)' : '#15151B',
-        border: `1px solid ${highlighted ? 'rgba(var(--accent-rgb),0.35)' : 'rgba(255,255,255,0.06)'}`,
+        background: highlighted ? 'rgba(var(--accent-rgb),0.05)' : 'var(--surface)',
+        border: `1px solid ${highlighted ? 'rgba(var(--accent-rgb),0.35)' : 'var(--hair)'}`,
         transition: 'border-color 0.3s ease, background 0.3s ease',
       }}
     >
@@ -43,7 +43,7 @@ function NoteCard({ note, highlighted, delay }: { note: KnowledgeNote; highlight
           <Icon size={12} style={{ color: meta.color }} />
         </div>
         <span style={{ color: meta.color, fontSize: 11, fontWeight: 600 }}>{meta.label}</span>
-        <span className="ml-auto" style={{ color: '#A1A1AA', fontSize: 11 }}>{note.date}</span>
+        <span className="ml-auto" style={{ color: 'var(--text-dim)', fontSize: 11 }}>{note.date}</span>
         {highlighted && (
           <span
             className="rounded-full px-2 py-0.5 flex items-center gap-1"
@@ -53,14 +53,14 @@ function NoteCard({ note, highlighted, delay }: { note: KnowledgeNote; highlight
           </span>
         )}
       </div>
-      <div style={{ color: '#F4F4F5', fontSize: 14, fontWeight: 500, marginBottom: 6 }}>{note.title}</div>
-      <p style={{ color: '#A1A1AA', fontSize: 12.5, lineHeight: 1.6 }}>{note.content}</p>
+      <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 500, marginBottom: 6 }}>{note.title}</div>
+      <p style={{ color: 'var(--text-dim)', fontSize: 12.5, lineHeight: 1.6 }}>{note.content}</p>
       <div className="flex flex-wrap gap-1.5 mt-3">
         {note.tags.map(tag => (
           <span
             key={tag}
             className="rounded-full px-2 py-0.5"
-            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)', color: '#A1A1AA', fontSize: 10.5 }}
+            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--hair)', color: 'var(--text-dim)', fontSize: 10.5 }}
           >
             {tag}
           </span>
@@ -111,8 +111,8 @@ export function KnowledgePage() {
             <BookOpen size={18} style={{ color: 'var(--accent)' }} />
           </div>
           <div>
-            <h1 style={{ color: '#F4F4F5', fontSize: 24, fontWeight: 600 }}>Knowledge</h1>
-            <p style={{ color: '#A1A1AA', fontSize: 13 }}>Your organization never forgets.</p>
+            <h1 style={{ color: 'var(--text)', fontSize: 24, fontWeight: 600 }}>Knowledge</h1>
+            <p style={{ color: 'var(--text-dim)', fontSize: 13 }}>Your organization never forgets.</p>
           </div>
         </div>
       </motion.div>
@@ -126,7 +126,7 @@ export function KnowledgePage() {
       >
         <div
           className="flex items-center gap-3 rounded-xl px-4 py-3"
-          style={{ background: '#15151B', border: '1px solid rgba(255,255,255,0.08)' }}
+          style={{ background: 'var(--surface)', border: '1px solid var(--hair-2)' }}
         >
           <Search size={16} style={{ color: 'var(--accent)', flexShrink: 0 }} />
           <input
@@ -136,7 +136,7 @@ export function KnowledgePage() {
             placeholder='Ask organizational memory anything — e.g. "What did we learn from the Titan rebranding?"'
             style={{
               flex: 1, background: 'transparent', border: 'none', outline: 'none',
-              color: '#F4F4F5', fontSize: 14,
+              color: 'var(--text)', fontSize: 14,
             }}
           />
           <motion.button
@@ -161,8 +161,8 @@ export function KnowledgePage() {
               key={q}
               onClick={() => handleSearch(q)}
               style={{
-                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-                color: '#A1A1AA', fontSize: 12, borderRadius: 20, padding: '5px 12px', cursor: 'pointer',
+                background: 'rgba(255,255,255,0.04)', border: '1px solid var(--hair-2)',
+                color: 'var(--text-dim)', fontSize: 12, borderRadius: 20, padding: '5px 12px', cursor: 'pointer',
               }}
             >
               {q}
@@ -189,7 +189,7 @@ export function KnowledgePage() {
                 style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', opacity: 0.7 }}
               />
             ))}
-            <span style={{ color: '#A1A1AA', fontSize: 13 }}>Searching organizational memory…</span>
+            <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>Searching organizational memory…</span>
           </motion.div>
         )}
         {result && (
@@ -210,12 +210,12 @@ export function KnowledgePage() {
                 {result.offline ? 'Offline keyword search' : 'Core · semantic answer'}
               </span>
               {result.sourceIds.length > 0 && (
-                <span style={{ color: '#A1A1AA', fontSize: 11 }}>
+                <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>
                   · {result.sourceIds.length} source{result.sourceIds.length > 1 ? 's' : ''} cited below
                 </span>
               )}
             </div>
-            <p style={{ color: '#F4F4F5', fontSize: 14, lineHeight: 1.65, whiteSpace: 'pre-wrap' }}>{result.answer}</p>
+            <p style={{ color: 'var(--text)', fontSize: 14, lineHeight: 1.65, whiteSpace: 'pre-wrap' }}>{result.answer}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -232,8 +232,8 @@ export function KnowledgePage() {
               className="rounded-lg px-3 py-1.5"
               style={{
                 background: active ? 'rgba(var(--accent-rgb),0.1)' : 'transparent',
-                border: `1px solid ${active ? 'rgba(var(--accent-rgb),0.3)' : 'rgba(255,255,255,0.08)'}`,
-                color: active ? 'var(--accent)' : '#A1A1AA',
+                border: `1px solid ${active ? 'rgba(var(--accent-rgb),0.3)' : 'var(--hair-2)'}`,
+                color: active ? 'var(--accent)' : 'var(--text-dim)',
                 fontSize: 12, fontWeight: active ? 600 : 400, cursor: 'pointer',
                 transition: 'all 0.15s ease',
               }}

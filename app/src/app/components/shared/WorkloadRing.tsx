@@ -18,7 +18,7 @@ export function WorkloadRing({ value, size = 72 }: WorkloadRingProps) {
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="rgba(255,255,255,0.06)"
+          stroke="var(--hair)"
           strokeWidth={strokeWidth}
         />
         <circle
@@ -35,7 +35,7 @@ export function WorkloadRing({ value, size = 72 }: WorkloadRingProps) {
         />
       </svg>
       <div className="absolute flex flex-col items-center">
-        <span style={{ color: '#F4F4F5', fontSize: 14, fontWeight: 600 }}>{value}%</span>
+        <span style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>{value}%</span>
       </div>
     </div>
   );

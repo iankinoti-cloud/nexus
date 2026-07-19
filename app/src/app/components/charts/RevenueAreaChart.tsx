@@ -8,12 +8,12 @@ function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   return (
     <div style={{
-      background: '#1E1E26',
-      border: '1px solid rgba(255,255,255,0.08)',
+      background: 'var(--surface-2)',
+      border: '1px solid var(--hair-2)',
       borderRadius: 10,
       padding: '10px 14px',
     }}>
-      <p style={{ color: '#A1A1AA', fontSize: 12, marginBottom: 6 }}>{label}</p>
+      <p style={{ color: 'var(--text-dim)', fontSize: 12, marginBottom: 6 }}>{label}</p>
       {payload.map((p: any) => (
         <p key={p.name} style={{ color: p.color, fontSize: 13, fontWeight: 500 }}>
           {p.name}: ${p.value}K
@@ -38,11 +38,11 @@ export function RevenueAreaChart() {
           </linearGradient>
         </defs>
         <CartesianGrid stroke="rgba(255,255,255,0.04)" vertical={false} />
-        <XAxis dataKey="month" tick={{ fill: '#A1A1AA', fontSize: 11 }} axisLine={false} tickLine={false} />
-        <YAxis tick={{ fill: '#A1A1AA', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}K`} />
+        <XAxis dataKey="month" tick={{ fill: 'var(--text-dim)', fontSize: 11 }} axisLine={false} tickLine={false} />
+        <YAxis tick={{ fill: 'var(--text-dim)', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}K`} />
         <Tooltip content={<CustomTooltip />} />
         <Legend
-          wrapperStyle={{ fontSize: 12, color: '#A1A1AA', paddingTop: 10 }}
+          wrapperStyle={{ fontSize: 12, color: 'var(--text-dim)', paddingTop: 10 }}
         />
         <Area
           key="forecast"

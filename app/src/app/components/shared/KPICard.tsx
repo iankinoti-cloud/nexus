@@ -14,7 +14,7 @@ export function KPICard({ label, value, change, changeType, icon: Icon, delay = 
   const changeColor =
     changeType === 'up' ? '#22C55E' :
     changeType === 'down' ? '#FF6B6B' :
-    '#A1A1AA';
+    'var(--text-dim)';
 
   const ChangeIcon = changeType === 'up' ? TrendingUp : changeType === 'down' ? TrendingDown : Minus;
 
@@ -26,13 +26,13 @@ export function KPICard({ label, value, change, changeType, icon: Icon, delay = 
       whileHover={{ y: -2 }}
       className="rounded-xl p-5 flex flex-col gap-4 cursor-default"
       style={{
-        background: '#15151B',
-        border: '1px solid rgba(255,255,255,0.06)',
+        background: 'var(--surface)',
+        border: '1px solid var(--hair)',
         transition: 'box-shadow 0.2s ease',
       }}
     >
       <div className="flex items-center justify-between">
-        <span style={{ color: '#A1A1AA', fontSize: 12, fontWeight: 500, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+        <span style={{ color: 'var(--text-dim)', fontSize: 12, fontWeight: 500, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
           {label}
         </span>
         <div
@@ -43,7 +43,7 @@ export function KPICard({ label, value, change, changeType, icon: Icon, delay = 
         </div>
       </div>
       <div>
-        <div style={{ color: '#F4F4F5', fontSize: 28, fontWeight: 600, lineHeight: 1.1 }}>{value}</div>
+        <div style={{ color: 'var(--text)', fontSize: 28, fontWeight: 600, lineHeight: 1.1 }}>{value}</div>
         <div className="flex items-center gap-1.5 mt-2">
           <ChangeIcon size={12} style={{ color: changeColor }} />
           <span style={{ color: changeColor, fontSize: 12 }}>{change}</span>

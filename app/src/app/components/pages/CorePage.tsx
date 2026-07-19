@@ -24,10 +24,10 @@ function UserMessage({ msg }: { msg: CoreChatMsg }) {
     >
       <div
         className="rounded-xl px-4 py-3 max-w-[520px]"
-        style={{ background: '#1E1E26', border: '1px solid rgba(255,255,255,0.08)', color: '#F4F4F5', fontSize: 14 }}
+        style={{ background: 'var(--surface-2)', border: '1px solid var(--hair-2)', color: 'var(--text)', fontSize: 14 }}
       >
         {msg.content}
-        <div style={{ color: '#A1A1AA', fontSize: 11, marginTop: 4, textAlign: 'right' }}>{msg.timestamp}</div>
+        <div style={{ color: 'var(--text-dim)', fontSize: 11, marginTop: 4, textAlign: 'right' }}>{msg.timestamp}</div>
       </div>
     </motion.div>
   );
@@ -50,7 +50,7 @@ function CoreMessage({ msg, onApply }: { msg: CoreChatMsg; onApply: (msgId: stri
             <Cpu size={12} style={{ color: 'var(--accent)' }} />
           </div>
           <span style={{ color: 'var(--accent)', fontSize: 12, fontWeight: 600 }}>Core</span>
-          <span style={{ color: '#A1A1AA', fontSize: 11 }}>{msg.timestamp}</span>
+          <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>{msg.timestamp}</span>
         </div>
         <div
           className="rounded-xl p-4"
@@ -60,7 +60,7 @@ function CoreMessage({ msg, onApply }: { msg: CoreChatMsg; onApply: (msgId: stri
             borderLeft: '3px solid var(--accent)',
           }}
         >
-          <p style={{ color: '#A1A1AA', fontSize: 14, marginBottom: msg.recommendations?.length ? 14 : 0, whiteSpace: 'pre-wrap' }}>
+          <p style={{ color: 'var(--text-dim)', fontSize: 14, marginBottom: msg.recommendations?.length ? 14 : 0, whiteSpace: 'pre-wrap' }}>
             {msg.content}
             {msg.streaming && <span className="animate-pulse" style={{ color: 'var(--accent)' }}>▍</span>}
           </p>
@@ -70,10 +70,10 @@ function CoreMessage({ msg, onApply }: { msg: CoreChatMsg; onApply: (msgId: stri
                 <div
                   key={i}
                   className="rounded-lg p-3"
-                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--hair)' }}
                 >
-                  <div style={{ color: '#F4F4F5', fontSize: 13, fontWeight: 500, marginBottom: 4 }}>{rec.title}</div>
-                  <div style={{ color: '#A1A1AA', fontSize: 12, lineHeight: 1.5, marginBottom: rec.action && rec.action.type !== 'none' ? 10 : 0 }}>
+                  <div style={{ color: 'var(--text)', fontSize: 13, fontWeight: 500, marginBottom: 4 }}>{rec.title}</div>
+                  <div style={{ color: 'var(--text-dim)', fontSize: 12, lineHeight: 1.5, marginBottom: rec.action && rec.action.type !== 'none' ? 10 : 0 }}>
                     {rec.description}
                   </div>
                   {rec.action && rec.action.type !== 'none' && (
@@ -187,14 +187,14 @@ export function CorePage() {
   };
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden" style={{ background: '#0B0B0F' }}>
+    <div className="flex-1 flex flex-col overflow-hidden" style={{ background: 'var(--bg)' }}>
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.28 }}
         className="flex items-center justify-between px-8 py-5"
-        style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', background: '#15151B' }}
+        style={{ borderBottom: '1px solid var(--hair)', background: 'var(--surface)' }}
       >
         <div className="flex items-center gap-3">
           <div
@@ -204,7 +204,7 @@ export function CorePage() {
             <Cpu size={18} style={{ color: 'var(--accent)' }} />
           </div>
           <div>
-            <div style={{ color: '#F4F4F5', fontSize: 16, fontWeight: 600 }}>Core</div>
+            <div style={{ color: 'var(--text)', fontSize: 16, fontWeight: 600 }}>Core</div>
           </div>
         </div>
         {aiStatus === false ? (
@@ -283,8 +283,8 @@ export function CorePage() {
                   onClick={() => setInput(prompt)}
                   style={{
                     background: 'rgba(255,255,255,0.04)',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    color: '#A1A1AA',
+                    border: '1px solid var(--hair-2)',
+                    color: 'var(--text-dim)',
                     fontSize: 12,
                     borderRadius: 20,
                     padding: '6px 14px',
@@ -298,8 +298,8 @@ export function CorePage() {
                   }}
                   onMouseLeave={e => {
                     (e.target as HTMLButtonElement).style.background = 'rgba(255,255,255,0.04)';
-                    (e.target as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.08)';
-                    (e.target as HTMLButtonElement).style.color = '#A1A1AA';
+                    (e.target as HTMLButtonElement).style.borderColor = 'var(--hair-2)';
+                    (e.target as HTMLButtonElement).style.color = 'var(--text-dim)';
                   }}
                 >
                   {prompt}
@@ -313,12 +313,12 @@ export function CorePage() {
       {/* Input */}
       <div
         className="px-8 pb-6"
-        style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16, background: '#0B0B0F' }}
+        style={{ borderTop: '1px solid var(--hair)', paddingTop: 16, background: 'var(--bg)' }}
       >
         <div className="max-w-[800px] mx-auto">
           <div
             className="flex items-end gap-3 rounded-xl p-3"
-            style={{ background: '#15151B', border: '1px solid rgba(255,255,255,0.08)' }}
+            style={{ background: 'var(--surface)', border: '1px solid var(--hair-2)' }}
           >
             <textarea
               value={input}
@@ -331,7 +331,7 @@ export function CorePage() {
                 background: 'transparent',
                 border: 'none',
                 outline: 'none',
-                color: '#F4F4F5',
+                color: 'var(--text)',
                 fontSize: 14,
                 resize: 'none',
                 lineHeight: 1.5,
@@ -339,7 +339,7 @@ export function CorePage() {
               }}
             />
             <div className="flex items-center gap-2 shrink-0">
-              <span style={{ color: '#A1A1AA', fontSize: 11 }}>⌘ Enter</span>
+              <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>⌘ Enter</span>
               <motion.button
                 whileHover={{ background: 'var(--accent-hover)' }}
                 whileTap={{ scale: 0.95 }}

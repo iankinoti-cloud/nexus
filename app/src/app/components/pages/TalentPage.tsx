@@ -38,8 +38,8 @@ function EmployeeCard({ emp, delay }: { emp: Employee; delay: number }) {
       whileHover={{ borderColor: 'rgba(var(--accent-rgb),0.18)', y: -2 }}
       className="rounded-xl p-5 flex flex-col gap-4"
       style={{
-        background: '#15151B',
-        border: '1px solid rgba(255,255,255,0.06)',
+        background: 'var(--surface)',
+        border: '1px solid var(--hair)',
         cursor: 'default',
         transition: 'border-color 0.2s ease',
       }}
@@ -54,8 +54,8 @@ function EmployeeCard({ emp, delay }: { emp: Employee; delay: number }) {
             <span style={{ color: emp.avatarColor, fontSize: 14, fontWeight: 700 }}>{emp.initials}</span>
           </div>
           <div>
-            <div style={{ color: '#F4F4F5', fontSize: 14, fontWeight: 600 }}>{emp.name}</div>
-            <div style={{ color: '#A1A1AA', fontSize: 12 }}>{emp.role}</div>
+            <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>{emp.name}</div>
+            <div style={{ color: 'var(--text-dim)', fontSize: 12 }}>{emp.role}</div>
           </div>
         </div>
         <AvailabilityBadge status={emp.availability} />
@@ -66,12 +66,12 @@ function EmployeeCard({ emp, delay }: { emp: Employee; delay: number }) {
         <WorkloadRing value={emp.workload} size={68} />
         <div className="flex flex-col gap-2">
           <div>
-            <div style={{ color: '#A1A1AA', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Projects</div>
-            <div style={{ color: '#F4F4F5', fontSize: 18, fontWeight: 600 }}>{emp.currentProjects}</div>
+            <div style={{ color: 'var(--text-dim)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Projects</div>
+            <div style={{ color: 'var(--text)', fontSize: 18, fontWeight: 600 }}>{emp.currentProjects}</div>
           </div>
           <div className="flex items-center gap-1">
             <Star size={12} style={{ color: '#FFB547', fill: '#FFB547' }} />
-            <span style={{ color: '#F4F4F5', fontSize: 13, fontWeight: 500 }}>{emp.performanceScore}</span>
+            <span style={{ color: 'var(--text)', fontSize: 13, fontWeight: 500 }}>{emp.performanceScore}</span>
           </div>
         </div>
       </div>
@@ -83,8 +83,8 @@ function EmployeeCard({ emp, delay }: { emp: Employee; delay: number }) {
             key={skill}
             style={{
               background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(255,255,255,0.08)',
-              color: '#A1A1AA',
+              border: '1px solid var(--hair-2)',
+              color: 'var(--text-dim)',
               fontSize: 11,
               borderRadius: 6,
               padding: '3px 8px',
@@ -99,10 +99,10 @@ function EmployeeCard({ emp, delay }: { emp: Employee; delay: number }) {
       <div className="flex flex-col gap-2.5">
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <span style={{ color: '#A1A1AA', fontSize: 11 }}>Burnout Risk</span>
+            <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>Burnout Risk</span>
             <span style={{ color: burnoutColor, fontSize: 12, fontWeight: 500 }}>{emp.burnoutRisk}%</span>
           </div>
-          <div className="rounded-full overflow-hidden" style={{ height: 4, background: 'rgba(255,255,255,0.06)' }}>
+          <div className="rounded-full overflow-hidden" style={{ height: 4, background: 'var(--hair)' }}>
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${emp.burnoutRisk}%` }}
@@ -116,7 +116,7 @@ function EmployeeCard({ emp, delay }: { emp: Employee; delay: number }) {
           className="flex items-center justify-between rounded-lg px-3 py-2"
           style={{ background: 'rgba(var(--accent-rgb),0.06)', border: '1px solid rgba(var(--accent-rgb),0.12)' }}
         >
-          <span style={{ color: '#A1A1AA', fontSize: 11 }}>AI Compatibility</span>
+          <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>AI Compatibility</span>
           <span style={{ color: 'var(--accent)', fontSize: 14, fontWeight: 600 }}>{emp.compatibilityScore}%</span>
         </div>
       </div>
@@ -130,8 +130,8 @@ export function TalentPage() {
     <PageShell>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 style={{ color: '#F4F4F5', fontSize: 24, fontWeight: 600 }}>Talent</h1>
-          <p style={{ color: '#A1A1AA', fontSize: 13, marginTop: 2 }}>
+          <h1 style={{ color: 'var(--text)', fontSize: 24, fontWeight: 600 }}>Talent</h1>
+          <p style={{ color: 'var(--text-dim)', fontSize: 13, marginTop: 2 }}>
             {EMPLOYEES.length} team members · {EMPLOYEES.filter(e => e.availability === 'available').length} available
           </p>
         </div>
@@ -149,7 +149,7 @@ export function TalentPage() {
       {/* Summary bar */}
       <div
         className="flex items-center gap-6 rounded-xl px-5 py-3.5 mb-6"
-        style={{ background: '#15151B', border: '1px solid rgba(255,255,255,0.06)' }}
+        style={{ background: 'var(--surface)', border: '1px solid var(--hair)' }}
       >
         {[
           { label: 'Avg Workload', value: `${Math.round(EMPLOYEES.reduce((a, e) => a + e.workload, 0) / EMPLOYEES.length)}%` },
@@ -158,14 +158,14 @@ export function TalentPage() {
           { label: 'Avg Performance', value: (EMPLOYEES.reduce((a, e) => a + e.performanceScore, 0) / EMPLOYEES.length).toFixed(1) },
         ].map((item, i) => (
           <div key={i} className="flex items-center gap-3">
-            {i > 0 && <div style={{ width: 1, height: 24, background: 'rgba(255,255,255,0.06)' }} />}
+            {i > 0 && <div style={{ width: 1, height: 24, background: 'var(--hair)' }} />}
             <div>
-              <div style={{ color: '#A1A1AA', fontSize: 11 }}>{item.label}</div>
-              <div style={{ color: (item as any).color || '#F4F4F5', fontSize: 18, fontWeight: 600 }}>{item.value}</div>
+              <div style={{ color: 'var(--text-dim)', fontSize: 11 }}>{item.label}</div>
+              <div style={{ color: (item as any).color || 'var(--text)', fontSize: 18, fontWeight: 600 }}>{item.value}</div>
             </div>
           </div>
         ))}
-        <div className="ml-auto flex items-center gap-1.5" style={{ color: '#A1A1AA', fontSize: 12 }}>
+        <div className="ml-auto flex items-center gap-1.5" style={{ color: 'var(--text-dim)', fontSize: 12 }}>
           <Briefcase size={13} />
           6 open projects
         </div>

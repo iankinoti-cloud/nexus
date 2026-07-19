@@ -24,7 +24,7 @@ export function LoginScreen() {
   return (
     <div
       className="h-screen w-screen flex items-center justify-center px-6"
-      style={{ background: '#0B0B0F' }}
+      style={{ background: 'var(--bg)' }}
     >
       <motion.div
         initial={{ opacity: 0, y: 16 }}
@@ -43,10 +43,10 @@ export function LoginScreen() {
           <ImageWithFallback src={nexusEmblem} alt="NEXUS" className="w-full h-full object-cover" />
         </motion.div>
 
-        <div className="tracking-widest mb-1" style={{ color: '#F4F4F5', fontSize: 22, fontWeight: 700, letterSpacing: '0.22em' }}>
+        <div className="tracking-widest mb-1" style={{ color: 'var(--text)', fontSize: 22, fontWeight: 700, letterSpacing: '0.22em' }}>
           NEXUS
         </div>
-        <p style={{ color: '#A1A1AA', fontSize: 14, marginBottom: authError ? 20 : 36 }}>
+        <p style={{ color: 'var(--text-dim)', fontSize: 14, marginBottom: authError ? 20 : 36 }}>
           The Operating System for Creative Enterprises.
         </p>
 
@@ -68,7 +68,7 @@ export function LoginScreen() {
           onClick={signInWithGoogle}
           className="w-full flex items-center justify-center gap-3 rounded-xl py-3 mb-3"
           style={{
-            background: '#F4F4F5',
+            background: 'var(--text)',
             color: '#0B0B0F',
             fontSize: 14,
             fontWeight: 600,
@@ -88,7 +88,7 @@ export function LoginScreen() {
           style={{
             background: 'transparent',
             border: '1px solid rgba(255,255,255,0.12)',
-            color: '#A1A1AA',
+            color: 'var(--text-dim)',
             fontSize: 13,
             cursor: 'pointer',
             transition: 'all 0.15s ease',
@@ -97,7 +97,7 @@ export function LoginScreen() {
           Explore as guest
         </motion.button>
 
-        <p style={{ color: '#A1A1AA', fontSize: 11, marginTop: 28, opacity: 0.6 }}>
+        <p style={{ color: 'var(--text-dim)', fontSize: 11, marginTop: 28, opacity: 0.6 }}>
           Guest sessions run locally. Sign in to sync your workspace across devices.
         </p>
       </motion.div>

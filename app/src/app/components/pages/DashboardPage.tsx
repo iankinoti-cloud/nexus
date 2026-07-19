@@ -80,19 +80,19 @@ export function DashboardPage() {
         className="mb-8 flex items-start justify-between"
       >
         <div>
-          <h1 style={{ color: '#F4F4F5', fontSize: 28, fontWeight: 600, lineHeight: 1.2 }}>
+          <h1 style={{ color: 'var(--text)', fontSize: 28, fontWeight: 600, lineHeight: 1.2 }}>
             {greeting}, {displayName}.
           </h1>
-          <p style={{ color: '#A1A1AA', fontSize: 15, marginTop: 6 }}>
+          <p style={{ color: 'var(--text-dim)', fontSize: 15, marginTop: 6 }}>
             Everything is running smoothly.
           </p>
         </div>
         <div
           className="flex items-center gap-2 rounded-lg px-4 py-2"
-          style={{ background: '#15151B', border: '1px solid rgba(255,255,255,0.06)' }}
+          style={{ background: 'var(--surface)', border: '1px solid var(--hair)' }}
         >
-          <Calendar size={14} style={{ color: '#A1A1AA' }} />
-          <span style={{ color: '#A1A1AA', fontSize: 13 }}>{dateStr}</span>
+          <Calendar size={14} style={{ color: 'var(--text-dim)' }} />
+          <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>{dateStr}</span>
         </div>
       </motion.div>
 
@@ -111,7 +111,7 @@ export function DashboardPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.32 }}
           className="rounded-xl p-6"
-          style={{ background: '#15151B', border: '1px solid rgba(255,255,255,0.06)' }}
+          style={{ background: 'var(--surface)', border: '1px solid var(--hair)' }}
         >
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-2.5">
@@ -122,8 +122,8 @@ export function DashboardPage() {
                 <Cpu size={15} style={{ color: 'var(--accent)' }} />
               </div>
               <div>
-                <div style={{ color: '#F4F4F5', fontSize: 14, fontWeight: 600 }}>Core Intelligence</div>
-                <div style={{ color: '#A1A1AA', fontSize: 11 }}>3 active recommendations</div>
+                <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>Core Intelligence</div>
+                <div style={{ color: 'var(--text-dim)', fontSize: 11 }}>3 active recommendations</div>
               </div>
             </div>
             <span
@@ -143,7 +143,7 @@ export function DashboardPage() {
                     style={{ width: 7, height: 7, background: appliedInsights.includes(i) ? '#22C55E' : ins.color, marginTop: 6 }}
                   />
                   <div className="flex-1">
-                    <div className="flex items-center gap-2" style={{ color: '#F4F4F5', fontSize: 13, fontWeight: 500, marginBottom: 3 }}>
+                    <div className="flex items-center gap-2" style={{ color: 'var(--text)', fontSize: 13, fontWeight: 500, marginBottom: 3 }}>
                       {ins.title}
                       {appliedInsights.includes(i) && (
                         <span className="flex items-center gap-1" style={{ color: '#22C55E', fontSize: 10, fontWeight: 600 }}>
@@ -151,7 +151,7 @@ export function DashboardPage() {
                         </span>
                       )}
                     </div>
-                    <div style={{ color: '#A1A1AA', fontSize: 12, lineHeight: 1.5 }}>
+                    <div style={{ color: 'var(--text-dim)', fontSize: 12, lineHeight: 1.5 }}>
                       {ins.description}
                     </div>
                   </div>
@@ -192,11 +192,11 @@ export function DashboardPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.38 }}
           className="rounded-xl p-6 flex flex-col"
-          style={{ background: '#15151B', border: '1px solid rgba(255,255,255,0.06)' }}
+          style={{ background: 'var(--surface)', border: '1px solid var(--hair)' }}
         >
           <div className="flex items-center justify-between mb-1">
-            <div style={{ color: '#F4F4F5', fontSize: 14, fontWeight: 600 }}>Revenue Trend</div>
-            <span style={{ color: '#A1A1AA', fontSize: 11 }}>Last 30 days</span>
+            <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>Revenue Trend</div>
+            <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>Last 30 days</span>
           </div>
           <div style={{ color: 'var(--accent)', fontSize: 26, fontWeight: 600, marginBottom: 4 }}>$284K</div>
           <div style={{ color: '#22C55E', fontSize: 12, marginBottom: 16 }}>↑ +12% vs last month</div>
@@ -219,10 +219,10 @@ export function DashboardPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.44 }}
         className="rounded-xl p-6"
-        style={{ background: '#15151B', border: '1px solid rgba(255,255,255,0.06)' }}
+        style={{ background: 'var(--surface)', border: '1px solid var(--hair)' }}
       >
         <div className="flex items-center justify-between mb-5">
-          <div style={{ color: '#F4F4F5', fontSize: 14, fontWeight: 600 }}>Active Projects</div>
+          <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>Active Projects</div>
           <button style={{ color: 'var(--accent)', fontSize: 12, background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}>
             View all <ArrowRight size={12} />
           </button>
@@ -234,15 +234,15 @@ export function DashboardPage() {
               <div key={project.id}>
                 <div className="flex items-center gap-4 py-3.5">
                   <div style={{ width: 200, flexShrink: 0 }}>
-                    <div style={{ color: '#F4F4F5', fontSize: 13, fontWeight: 500 }}>{project.name}</div>
-                    <div style={{ color: '#A1A1AA', fontSize: 11, marginTop: 1 }}>{project.client}</div>
+                    <div style={{ color: 'var(--text)', fontSize: 13, fontWeight: 500 }}>{project.name}</div>
+                    <div style={{ color: 'var(--text-dim)', fontSize: 11, marginTop: 1 }}>{project.client}</div>
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-1.5">
-                      <span style={{ color: '#A1A1AA', fontSize: 11 }}>Progress</span>
-                      <span style={{ color: '#F4F4F5', fontSize: 12, fontWeight: 500 }}>{project.progress}%</span>
+                      <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>Progress</span>
+                      <span style={{ color: 'var(--text)', fontSize: 12, fontWeight: 500 }}>{project.progress}%</span>
                     </div>
-                    <div className="rounded-full overflow-hidden" style={{ height: 5, background: 'rgba(255,255,255,0.06)' }}>
+                    <div className="rounded-full overflow-hidden" style={{ height: 5, background: 'var(--hair)' }}>
                       <div
                         className="h-full rounded-full"
                         style={{ width: `${project.progress}%`, background: riskColor, transition: 'width 0.8s ease' }}
@@ -250,8 +250,8 @@ export function DashboardPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0" style={{ width: 120 }}>
-                    <Clock size={11} style={{ color: '#A1A1AA' }} />
-                    <span style={{ color: '#A1A1AA', fontSize: 11 }}>{project.deadline}</span>
+                    <Clock size={11} style={{ color: 'var(--text-dim)' }} />
+                    <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>{project.deadline}</span>
                   </div>
                   <div className="shrink-0">
                     <TeamAvatarStack avatars={project.team} max={3} size={24} />

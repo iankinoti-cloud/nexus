@@ -5,8 +5,8 @@ function CustomTooltip({ active, payload }: any) {
   if (!active || !payload?.length) return null;
   return (
     <div style={{
-      background: '#1E1E26',
-      border: '1px solid rgba(255,255,255,0.08)',
+      background: 'var(--surface-2)',
+      border: '1px solid var(--hair-2)',
       borderRadius: 8,
       padding: '6px 10px',
       fontSize: 12,

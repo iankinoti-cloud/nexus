@@ -1,9 +1,9 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { Toaster } from 'sonner';
-import { initAccent } from './lib/theme';
+import { initTheme } from './lib/theme';
 import { NexusProvider } from './data/store';
 
-initAccent();
+initTheme();
 import { AuthProvider, useAuth } from './auth/AuthProvider';
 import { LoginScreen } from './auth/LoginScreen';
 import { RootLayout } from './components/layout/RootLayout';
@@ -39,7 +39,7 @@ function Gate() {
   const { cloudMode, loading, session, guest } = useAuth();
 
   if (cloudMode && loading) {
-    return <div className="h-screen w-screen" style={{ background: '#0B0B0F' }} />;
+    return <div className="h-screen w-screen" style={{ background: 'var(--bg)' }} />;
   }
   if (cloudMode && !session && !guest) {
     return <LoginScreen />;
@@ -60,9 +60,9 @@ export default function App() {
         position="bottom-right"
         toastOptions={{
           style: {
-            background: '#15151B',
+            background: 'var(--surface)',
             border: '1px solid rgba(var(--accent-rgb),0.25)',
-            color: '#F4F4F5',
+            color: 'var(--text)',
           },
         }}
       />

@@ -31,7 +31,7 @@ function NotificationRow({ notif, onRead, onAction }: { notif: Notification; onR
       className="flex items-start gap-4 px-5 py-4 rounded-xl"
       style={{
         background: notif.read ? 'transparent' : 'rgba(255,255,255,0.02)',
-        border: `1px solid ${notif.read ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.08)'}`,
+        border: `1px solid ${notif.read ? 'var(--hair)' : 'var(--hair-2)'}`,
         marginBottom: 6,
       }}
     >
@@ -46,11 +46,11 @@ function NotificationRow({ notif, onRead, onAction }: { notif: Notification; onR
       {/* Content */}
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-3">
-          <div style={{ color: '#F4F4F5', fontSize: 13, fontWeight: notif.read ? 400 : 600, lineHeight: 1.4 }}>
+          <div style={{ color: 'var(--text)', fontSize: 13, fontWeight: notif.read ? 400 : 600, lineHeight: 1.4 }}>
             {notif.title}
           </div>
           <div className="flex items-center gap-2 shrink-0">
-            <span style={{ color: '#A1A1AA', fontSize: 11, whiteSpace: 'nowrap' }}>{notif.timestamp}</span>
+            <span style={{ color: 'var(--text-dim)', fontSize: 11, whiteSpace: 'nowrap' }}>{notif.timestamp}</span>
             {!notif.read && (
               <div
                 className="rounded-full shrink-0"
@@ -59,7 +59,7 @@ function NotificationRow({ notif, onRead, onAction }: { notif: Notification; onR
             )}
           </div>
         </div>
-        <p style={{ color: '#A1A1AA', fontSize: 12, lineHeight: 1.5, marginTop: 3 }}>{notif.message}</p>
+        <p style={{ color: 'var(--text-dim)', fontSize: 12, lineHeight: 1.5, marginTop: 3 }}>{notif.message}</p>
         <div className="flex items-center gap-3 mt-2.5">
           {notif.action && (
             <button
@@ -81,7 +81,7 @@ function NotificationRow({ notif, onRead, onAction }: { notif: Notification; onR
             <button
               onClick={() => onRead(notif.id)}
               className="flex items-center gap-1"
-              style={{ color: '#A1A1AA', fontSize: 11, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+              style={{ color: 'var(--text-dim)', fontSize: 11, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
             >
               <Check size={11} /> Mark read
             </button>
@@ -128,7 +128,7 @@ export function NotificationsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <h1 style={{ color: '#F4F4F5', fontSize: 24, fontWeight: 600 }}>Notifications</h1>
+          <h1 style={{ color: 'var(--text)', fontSize: 24, fontWeight: 600 }}>Notifications</h1>
           {unreadCount > 0 && (
             <span
               className="flex items-center justify-center rounded-full"
@@ -142,10 +142,10 @@ export function NotificationsPage() {
           <button
             onClick={markAllRead}
             style={{
-              color: '#A1A1AA',
+              color: 'var(--text-dim)',
               fontSize: 13,
               background: 'none',
-              border: '1px solid rgba(255,255,255,0.08)',
+              border: '1px solid var(--hair-2)',
               borderRadius: 8,
               padding: '6px 14px',
               cursor: 'pointer',
@@ -165,8 +165,8 @@ export function NotificationsPage() {
             onClick={() => setActiveTab(tab)}
             style={{
               background: activeTab === tab ? 'rgba(var(--accent-rgb),0.1)' : 'transparent',
-              border: `1px solid ${activeTab === tab ? 'rgba(var(--accent-rgb),0.3)' : 'rgba(255,255,255,0.06)'}`,
-              color: activeTab === tab ? 'var(--accent)' : '#A1A1AA',
+              border: `1px solid ${activeTab === tab ? 'rgba(var(--accent-rgb),0.3)' : 'var(--hair)'}`,
+              color: activeTab === tab ? 'var(--accent)' : 'var(--text-dim)',
               fontSize: 12,
               fontWeight: activeTab === tab ? 500 : 400,
               borderRadius: 8,
@@ -198,7 +198,7 @@ export function NotificationsPage() {
       {/* Notification list */}
       <div>
         {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20" style={{ color: '#A1A1AA' }}>
+          <div className="flex flex-col items-center justify-center py-20" style={{ color: 'var(--text-dim)' }}>
             <CheckCircle size={36} style={{ opacity: 0.2, marginBottom: 12 }} />
             <p style={{ fontSize: 14 }}>All caught up!</p>
           </div>
@@ -255,20 +255,20 @@ function InvoiceDialog({ notif, clients, onClose }: { notif: Notification | null
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             onClick={e => e.stopPropagation()}
             className="w-full rounded-2xl overflow-hidden"
-            style={{ maxWidth: 560, background: '#15151B', border: '1px solid rgba(255,255,255,0.1)' }}
+            style={{ maxWidth: 560, background: 'var(--surface)', border: '1px solid rgba(255,255,255,0.1)' }}
           >
             {/* Header */}
             <div
               className="flex items-center justify-between px-7 py-5"
-              style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)' }}
+              style={{ borderBottom: '1px solid var(--hair)', background: 'rgba(255,255,255,0.02)' }}
             >
               <div className="flex items-center gap-3">
                 <div className="rounded-lg overflow-hidden" style={{ width: 32, height: 32 }}>
                   <ImageWithFallback src={nexusEmblem} alt="NEXUS" className="w-full h-full object-cover" />
                 </div>
                 <div>
-                  <div className="tracking-widest" style={{ color: '#F4F4F5', fontSize: 12, fontWeight: 700, letterSpacing: '0.16em' }}>NEXUS STUDIO</div>
-                  <div style={{ color: '#A1A1AA', fontSize: 11 }}>Invoice #{invoiceNo}</div>
+                  <div className="tracking-widest" style={{ color: 'var(--text)', fontSize: 12, fontWeight: 700, letterSpacing: '0.16em' }}>NEXUS STUDIO</div>
+                  <div style={{ color: 'var(--text-dim)', fontSize: 11 }}>Invoice #{invoiceNo}</div>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -288,7 +288,7 @@ function InvoiceDialog({ notif, clients, onClose }: { notif: Notification | null
                 <button
                   onClick={onClose}
                   className="flex items-center justify-center rounded-md"
-                  style={{ width: 28, height: 28, background: 'rgba(255,255,255,0.05)', border: 'none', cursor: 'pointer', color: '#A1A1AA' }}
+                  style={{ width: 28, height: 28, background: 'rgba(255,255,255,0.05)', border: 'none', cursor: 'pointer', color: 'var(--text-dim)' }}
                 >
                   <X size={14} />
                 </button>
@@ -299,18 +299,18 @@ function InvoiceDialog({ notif, clients, onClose }: { notif: Notification | null
             <div className="px-7 py-6">
               <div className="flex justify-between mb-6">
                 <div>
-                  <div style={{ color: '#A1A1AA', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', marginBottom: 6 }}>BILLED TO</div>
-                  <div style={{ color: '#F4F4F5', fontSize: 14, fontWeight: 600 }}>{client?.name}</div>
-                  <div style={{ color: '#A1A1AA', fontSize: 12 }}>{client?.industry}</div>
+                  <div style={{ color: 'var(--text-dim)', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', marginBottom: 6 }}>BILLED TO</div>
+                  <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>{client?.name}</div>
+                  <div style={{ color: 'var(--text-dim)', fontSize: 12 }}>{client?.industry}</div>
                 </div>
                 <div className="text-right">
-                  <div style={{ color: '#A1A1AA', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', marginBottom: 6 }}>PROJECT</div>
-                  <div style={{ color: '#F4F4F5', fontSize: 13 }}>{project}</div>
-                  <div style={{ color: '#A1A1AA', fontSize: 11, marginTop: 4 }}>Net 30 · {notif.timestamp}</div>
+                  <div style={{ color: 'var(--text-dim)', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', marginBottom: 6 }}>PROJECT</div>
+                  <div style={{ color: 'var(--text)', fontSize: 13 }}>{project}</div>
+                  <div style={{ color: 'var(--text-dim)', fontSize: 11, marginTop: 4 }}>Net 30 · {notif.timestamp}</div>
                 </div>
               </div>
 
-              <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
+              <div className="rounded-xl overflow-hidden" style={{ border: '1px solid var(--hair)' }}>
                 {items.map((item, i) => (
                   <div
                     key={item.label}
@@ -320,15 +320,15 @@ function InvoiceDialog({ notif, clients, onClose }: { notif: Notification | null
                       borderBottom: i < items.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
                     }}
                   >
-                    <span style={{ color: '#A1A1AA', fontSize: 13 }}>{item.label}</span>
-                    <span style={{ color: '#F4F4F5', fontSize: 13, fontWeight: 500 }}>{fmt(item.value)}</span>
+                    <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>{item.label}</span>
+                    <span style={{ color: 'var(--text)', fontSize: 13, fontWeight: 500 }}>{fmt(item.value)}</span>
                   </div>
                 ))}
               </div>
 
               <div className="flex justify-end mt-5">
                 <div className="text-right">
-                  <div style={{ color: '#A1A1AA', fontSize: 12, marginBottom: 2 }}>Total due</div>
+                  <div style={{ color: 'var(--text-dim)', fontSize: 12, marginBottom: 2 }}>Total due</div>
                   <div style={{ color: 'var(--accent)', fontSize: 26, fontWeight: 700 }}>{fmt(amount)}</div>
                 </div>
               </div>
@@ -337,7 +337,7 @@ function InvoiceDialog({ notif, clients, onClose }: { notif: Notification | null
                 className="mt-6 rounded-lg px-4 py-3"
                 style={{ background: 'rgba(var(--accent-rgb),0.05)', border: '1px solid rgba(var(--accent-rgb),0.15)' }}
               >
-                <span style={{ color: '#A1A1AA', fontSize: 12 }}>
+                <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>
                   {paid
                     ? `Payment received from ${client?.name}. Reconciled automatically by Core.`
                     : `Core will follow up automatically if unpaid after 14 days.`}
