@@ -610,6 +610,14 @@ const TAB_CONTENT: Record<string, React.ReactNode> = {
 
 export function SettingsPage() {
   const [activeTab, setActiveTab] = useState('profile');
+  const [tabHover, setTabHover] = useState<string | null>(null);
+  const highlight = tabHover ?? activeTab;
+
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`);
+  };
 
   return (
     <PageShell>
@@ -618,34 +626,59 @@ export function SettingsPage() {
         <p style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))', marginTop: 2 }}>Manage your account and workspace preferences.</p>
       </div>
 
-      <div className="flex gap-6">
-        {/* Left sidebar */}
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+        {/* Left tab rail — vertical on desktop, horizontal scroller on mobile */}
         <div
-          className="rounded-xl p-2 flex flex-col gap-0.5 shrink-0"
-          style={{ width: 200, background: 'var(--surface)', border: '1px solid var(--hair)', alignSelf: 'flex-start' }}
+          onMouseMove={onMove}
+          onMouseLeave={() => setTabHover(null)}
+          className="glass rounded-xl p-2 flex md:flex-col gap-1 shrink-0 overflow-x-auto md:overflow-visible relative w-full md:w-[200px]"
+          style={{ alignSelf: 'flex-start' }}
         >
+          {/* cursor-tracking specular */}
+          <div
+            className="pointer-events-none absolute inset-0 rounded-xl hidden md:block"
+            style={{
+              background: 'radial-gradient(180px circle at var(--mx, -200px) var(--my, -200px), rgba(255,255,255,0.10), transparent 60%)',
+              mixBlendMode: 'soft-light',
+            }}
+          />
           {TABS.map(tab => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
+            const isHi = highlight === tab.id;
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className="flex items-center gap-2.5 w-full rounded-lg px-3 py-2.5 text-left"
+                onMouseEnter={() => setTabHover(tab.id)}
+                className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-left relative shrink-0 md:w-[184px]"
                 style={{
-                  background: isActive ? 'rgba(var(--accent-rgb),0.08)' : 'transparent',
+                  background: 'transparent',
                   border: 'none',
-                  borderLeft: isActive ? '2px solid var(--accent)' : '2px solid transparent',
-                  color: isActive ? 'var(--accent)' : 'var(--text-dim)',
+                  color: isHi ? 'var(--accent)' : 'var(--text-dim)',
                   fontSize: 'calc(13px * var(--fs))',
                   fontWeight: isActive ? 500 : 400,
                   cursor: 'pointer',
-                  transition: 'all 0.15s ease',
+                  whiteSpace: 'nowrap',
+                  transition: 'color 0.18s ease',
                 }}
               >
-                <Icon size={14} style={{ opacity: isActive ? 1 : 0.7 }} />
-                {tab.label}
-                {isActive && <ChevronRight size={12} style={{ marginLeft: 'auto' }} />}
+                {isHi && (
+                  <motion.div
+                    layoutId="settingsPill"
+                    className="absolute inset-0 rounded-lg"
+                    style={{
+                      background: 'rgba(var(--accent-rgb),0.14)',
+                      border: '1px solid rgba(var(--accent-rgb),0.35)',
+                      boxShadow: 'inset 0 1px 0 0 var(--glass-rim), 0 6px 18px -6px rgba(var(--accent-rgb),0.5)',
+                      backdropFilter: 'blur(6px) saturate(160%)',
+                    }}
+                    transition={{ type: 'spring', stiffness: 420, damping: 30, mass: 0.7 }}
+                  />
+                )}
+                <Icon size={14} className="relative z-10" style={{ opacity: isHi ? 1 : 0.8 }} />
+                <span className="relative z-10">{tab.label}</span>
+                {isActive && <ChevronRight size={12} className="relative z-10 hidden md:block" style={{ marginLeft: 'auto' }} />}
               </button>
             );
           })}
@@ -657,7 +690,7 @@ export function SettingsPage() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.22 }}
-          className="flex-1 rounded-xl p-6"
+          className="flex-1 rounded-xl p-5 md:p-6"
           style={{ background: 'var(--surface)', border: '1px solid var(--hair)' }}
         >
           {TAB_CONTENT[activeTab]}
