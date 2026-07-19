@@ -25,7 +25,7 @@ interface Insight {
 
 const INSIGHTS: Insight[] = [
   {
-    color: '#4FD1C5',
+    color: 'var(--accent)',
     title: 'Resource reallocation opportunity',
     description: 'Nina Chen is past the healthy utilization band. Shifting one workstream to Sam Rivera reduces burnout risk without timeline impact.',
     action: { type: 'reassign', fromEmployeeId: 'e5', toEmployeeId: 'e3' },
@@ -52,7 +52,6 @@ export function DashboardPage() {
   const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
   const hour = now.getHours();
   const greeting = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
-  const firstName = displayName.split(' ')[0];
 
   const nextActionable = INSIGHTS.findIndex(
     (ins, i) => ins.action.type !== 'none' && !appliedInsights.includes(i),
@@ -82,7 +81,7 @@ export function DashboardPage() {
       >
         <div>
           <h1 style={{ color: '#F4F4F5', fontSize: 28, fontWeight: 600, lineHeight: 1.2 }}>
-            {greeting}, {firstName}.
+            {greeting}, {displayName}.
           </h1>
           <p style={{ color: '#A1A1AA', fontSize: 15, marginTop: 6 }}>
             Everything is running smoothly.
@@ -118,9 +117,9 @@ export function DashboardPage() {
             <div className="flex items-center gap-2.5">
               <div
                 className="flex items-center justify-center rounded-lg"
-                style={{ width: 32, height: 32, background: 'rgba(79,209,197,0.12)' }}
+                style={{ width: 32, height: 32, background: 'rgba(var(--accent-rgb),0.12)' }}
               >
-                <Cpu size={15} style={{ color: '#4FD1C5' }} />
+                <Cpu size={15} style={{ color: 'var(--accent)' }} />
               </div>
               <div>
                 <div style={{ color: '#F4F4F5', fontSize: 14, fontWeight: 600 }}>Core Intelligence</div>
@@ -129,7 +128,7 @@ export function DashboardPage() {
             </div>
             <span
               className="rounded-full px-2 py-0.5"
-              style={{ background: 'rgba(79,209,197,0.1)', color: '#4FD1C5', fontSize: 11 }}
+              style={{ background: 'rgba(var(--accent-rgb),0.1)', color: 'var(--accent)', fontSize: 11 }}
             >
               Live
             </span>
@@ -165,14 +164,14 @@ export function DashboardPage() {
           </div>
 
           <motion.button
-            whileHover={nextActionable === -1 ? {} : { background: 'rgba(79,209,197,0.12)' }}
+            whileHover={nextActionable === -1 ? {} : { background: 'rgba(var(--accent-rgb),0.12)' }}
             whileTap={nextActionable === -1 ? {} : { scale: 0.97 }}
             onClick={handleApply}
             className="mt-5 w-full flex items-center justify-center gap-2 rounded-lg py-2.5"
             style={{
-              background: nextActionable === -1 ? 'rgba(34,197,94,0.07)' : 'rgba(79,209,197,0.07)',
-              border: `1px solid ${nextActionable === -1 ? 'rgba(34,197,94,0.25)' : 'rgba(79,209,197,0.25)'}`,
-              color: nextActionable === -1 ? '#22C55E' : '#4FD1C5',
+              background: nextActionable === -1 ? 'rgba(34,197,94,0.07)' : 'rgba(var(--accent-rgb),0.07)',
+              border: `1px solid ${nextActionable === -1 ? 'rgba(34,197,94,0.25)' : 'rgba(var(--accent-rgb),0.25)'}`,
+              color: nextActionable === -1 ? '#22C55E' : 'var(--accent)',
               fontSize: 13,
               fontWeight: 500,
               cursor: nextActionable === -1 ? 'default' : 'pointer',
@@ -199,7 +198,7 @@ export function DashboardPage() {
             <div style={{ color: '#F4F4F5', fontSize: 14, fontWeight: 600 }}>Revenue Trend</div>
             <span style={{ color: '#A1A1AA', fontSize: 11 }}>Last 30 days</span>
           </div>
-          <div style={{ color: '#4FD1C5', fontSize: 26, fontWeight: 600, marginBottom: 4 }}>$284K</div>
+          <div style={{ color: 'var(--accent)', fontSize: 26, fontWeight: 600, marginBottom: 4 }}>$284K</div>
           <div style={{ color: '#22C55E', fontSize: 12, marginBottom: 16 }}>↑ +12% vs last month</div>
           <div className="flex-1">
             <MiniAreaChart />
@@ -224,7 +223,7 @@ export function DashboardPage() {
       >
         <div className="flex items-center justify-between mb-5">
           <div style={{ color: '#F4F4F5', fontSize: 14, fontWeight: 600 }}>Active Projects</div>
-          <button style={{ color: '#4FD1C5', fontSize: 12, background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}>
+          <button style={{ color: 'var(--accent)', fontSize: 12, background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}>
             View all <ArrowRight size={12} />
           </button>
         </div>

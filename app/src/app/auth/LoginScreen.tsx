@@ -38,7 +38,7 @@ export function LoginScreen() {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.1 }}
           className="rounded-2xl overflow-hidden mb-6"
-          style={{ width: 88, height: 88, boxShadow: '0 0 60px rgba(79,209,197,0.15)' }}
+          style={{ width: 88, height: 88, boxShadow: '0 0 60px rgba(var(--accent-rgb),0.15)' }}
         >
           <ImageWithFallback src={nexusEmblem} alt="NEXUS" className="w-full h-full object-cover" />
         </motion.div>
@@ -81,7 +81,7 @@ export function LoginScreen() {
         </motion.button>
 
         <motion.button
-          whileHover={{ borderColor: 'rgba(79,209,197,0.4)', color: '#4FD1C5' }}
+          whileHover={{ borderColor: 'rgba(var(--accent-rgb),0.4)', color: 'var(--accent)' }}
           whileTap={{ scale: 0.98 }}
           onClick={continueAsGuest}
           className="w-full rounded-xl py-3"

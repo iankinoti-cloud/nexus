@@ -13,7 +13,7 @@ function ClientCard({ client, delay }: { client: Client; delay: number }) {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.28, delay, ease: 'easeOut' }}
-      whileHover={{ borderColor: 'rgba(79,209,197,0.2)', y: -2 }}
+      whileHover={{ borderColor: 'rgba(var(--accent-rgb),0.2)', y: -2 }}
       className="rounded-xl p-5 flex flex-col gap-4"
       style={{
         background: '#15151B',
@@ -109,10 +109,10 @@ export function ClientsPage() {
           </p>
         </div>
         <motion.button
-          whileHover={{ background: '#3dbdb2' }}
+          whileHover={{ background: 'var(--accent-hover)' }}
           whileTap={{ scale: 0.97 }}
           className="flex items-center gap-2 rounded-lg px-4 py-2.5"
-          style={{ background: '#4FD1C5', color: '#0B0B0F', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer' }}
+          style={{ background: 'var(--accent)', color: '#0B0B0F', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer' }}
         >
           <Plus size={15} />
           Add Client
@@ -139,9 +139,9 @@ export function ClientsPage() {
               key={f}
               onClick={() => setActiveFilter(f)}
               style={{
-                background: activeFilter === f ? 'rgba(79,209,197,0.1)' : 'transparent',
-                border: `1px solid ${activeFilter === f ? 'rgba(79,209,197,0.3)' : 'rgba(255,255,255,0.06)'}`,
-                color: activeFilter === f ? '#4FD1C5' : '#A1A1AA',
+                background: activeFilter === f ? 'rgba(var(--accent-rgb),0.1)' : 'transparent',
+                border: `1px solid ${activeFilter === f ? 'rgba(var(--accent-rgb),0.3)' : 'rgba(255,255,255,0.06)'}`,
+                color: activeFilter === f ? 'var(--accent)' : '#A1A1AA',
                 fontSize: 12,
                 fontWeight: activeFilter === f ? 500 : 400,
                 borderRadius: 8,

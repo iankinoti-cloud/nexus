@@ -45,24 +45,24 @@ function CoreMessage({ msg, onApply }: { msg: CoreChatMsg; onApply: (msgId: stri
         <div className="flex items-center gap-2 mb-2">
           <div
             className="flex items-center justify-center rounded-lg"
-            style={{ width: 24, height: 24, background: 'rgba(79,209,197,0.15)' }}
+            style={{ width: 24, height: 24, background: 'rgba(var(--accent-rgb),0.15)' }}
           >
-            <Cpu size={12} style={{ color: '#4FD1C5' }} />
+            <Cpu size={12} style={{ color: 'var(--accent)' }} />
           </div>
-          <span style={{ color: '#4FD1C5', fontSize: 12, fontWeight: 600 }}>Core</span>
+          <span style={{ color: 'var(--accent)', fontSize: 12, fontWeight: 600 }}>Core</span>
           <span style={{ color: '#A1A1AA', fontSize: 11 }}>{msg.timestamp}</span>
         </div>
         <div
           className="rounded-xl p-4"
           style={{
-            background: 'rgba(79,209,197,0.04)',
-            border: '1px solid rgba(79,209,197,0.15)',
-            borderLeft: '3px solid #4FD1C5',
+            background: 'rgba(var(--accent-rgb),0.04)',
+            border: '1px solid rgba(var(--accent-rgb),0.15)',
+            borderLeft: '3px solid var(--accent)',
           }}
         >
           <p style={{ color: '#A1A1AA', fontSize: 14, marginBottom: msg.recommendations?.length ? 14 : 0, whiteSpace: 'pre-wrap' }}>
             {msg.content}
-            {msg.streaming && <span className="animate-pulse" style={{ color: '#4FD1C5' }}>▍</span>}
+            {msg.streaming && <span className="animate-pulse" style={{ color: 'var(--accent)' }}>▍</span>}
           </p>
           {!!msg.recommendations?.length && (
             <div className="flex flex-col gap-2">
@@ -78,14 +78,14 @@ function CoreMessage({ msg, onApply }: { msg: CoreChatMsg; onApply: (msgId: stri
                   </div>
                   {rec.action && rec.action.type !== 'none' && (
                     <motion.button
-                      whileHover={rec.applied ? {} : { background: 'rgba(79,209,197,0.12)' }}
+                      whileHover={rec.applied ? {} : { background: 'rgba(var(--accent-rgb),0.12)' }}
                       whileTap={rec.applied ? {} : { scale: 0.97 }}
                       onClick={() => !rec.applied && onApply(msg.id, i)}
                       className="rounded-lg py-1.5 px-3 flex items-center gap-2"
                       style={{
-                        background: rec.applied ? 'rgba(34,197,94,0.08)' : 'rgba(79,209,197,0.07)',
-                        border: `1px solid ${rec.applied ? 'rgba(34,197,94,0.25)' : 'rgba(79,209,197,0.2)'}`,
-                        color: rec.applied ? '#22C55E' : '#4FD1C5',
+                        background: rec.applied ? 'rgba(34,197,94,0.08)' : 'rgba(var(--accent-rgb),0.07)',
+                        border: `1px solid ${rec.applied ? 'rgba(34,197,94,0.25)' : 'rgba(var(--accent-rgb),0.2)'}`,
+                        color: rec.applied ? '#22C55E' : 'var(--accent)',
                         fontSize: 12,
                         fontWeight: 500,
                         cursor: rec.applied ? 'default' : 'pointer',
@@ -199,13 +199,12 @@ export function CorePage() {
         <div className="flex items-center gap-3">
           <div
             className="flex items-center justify-center rounded-xl"
-            style={{ width: 38, height: 38, background: 'rgba(79,209,197,0.12)' }}
+            style={{ width: 38, height: 38, background: 'rgba(var(--accent-rgb),0.12)' }}
           >
-            <Cpu size={18} style={{ color: '#4FD1C5' }} />
+            <Cpu size={18} style={{ color: 'var(--accent)' }} />
           </div>
           <div>
             <div style={{ color: '#F4F4F5', fontSize: 16, fontWeight: 600 }}>Core</div>
-            <div style={{ color: '#4FD1C5', fontSize: 12 }}>AI Intelligence Engine · {aiStatus === false ? 'Local mode' : 'Active'}</div>
           </div>
         </div>
         {aiStatus === false ? (
@@ -243,13 +242,13 @@ export function CorePage() {
             >
               <div
                 className="flex items-center justify-center rounded-lg"
-                style={{ width: 24, height: 24, background: 'rgba(79,209,197,0.15)' }}
+                style={{ width: 24, height: 24, background: 'rgba(var(--accent-rgb),0.15)' }}
               >
-                <Cpu size={12} style={{ color: '#4FD1C5' }} />
+                <Cpu size={12} style={{ color: 'var(--accent)' }} />
               </div>
               <div
                 className="rounded-xl px-4 py-3"
-                style={{ background: 'rgba(79,209,197,0.04)', border: '1px solid rgba(79,209,197,0.15)', borderLeft: '3px solid #4FD1C5' }}
+                style={{ background: 'rgba(var(--accent-rgb),0.04)', border: '1px solid rgba(var(--accent-rgb),0.15)', borderLeft: '3px solid var(--accent)' }}
               >
                 <div className="flex items-center gap-1.5">
                   {[0, 0.2, 0.4].map(delay => (
@@ -257,7 +256,7 @@ export function CorePage() {
                       key={delay}
                       animate={{ y: [0, -4, 0] }}
                       transition={{ duration: 0.6, repeat: Infinity, delay }}
-                      style={{ width: 6, height: 6, borderRadius: '50%', background: '#4FD1C5', opacity: 0.7 }}
+                      style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', opacity: 0.7 }}
                     />
                   ))}
                 </div>
@@ -293,9 +292,9 @@ export function CorePage() {
                     transition: 'all 0.15s ease',
                   }}
                   onMouseEnter={e => {
-                    (e.target as HTMLButtonElement).style.background = 'rgba(79,209,197,0.08)';
-                    (e.target as HTMLButtonElement).style.borderColor = 'rgba(79,209,197,0.2)';
-                    (e.target as HTMLButtonElement).style.color = '#4FD1C5';
+                    (e.target as HTMLButtonElement).style.background = 'rgba(var(--accent-rgb),0.08)';
+                    (e.target as HTMLButtonElement).style.borderColor = 'rgba(var(--accent-rgb),0.2)';
+                    (e.target as HTMLButtonElement).style.color = 'var(--accent)';
                   }}
                   onMouseLeave={e => {
                     (e.target as HTMLButtonElement).style.background = 'rgba(255,255,255,0.04)';
@@ -342,7 +341,7 @@ export function CorePage() {
             <div className="flex items-center gap-2 shrink-0">
               <span style={{ color: '#A1A1AA', fontSize: 11 }}>⌘ Enter</span>
               <motion.button
-                whileHover={{ background: '#3dbdb2' }}
+                whileHover={{ background: 'var(--accent-hover)' }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleSend}
                 disabled={!input.trim() || isTyping}
@@ -350,13 +349,13 @@ export function CorePage() {
                 style={{
                   width: 36,
                   height: 36,
-                  background: input.trim() ? '#4FD1C5' : 'rgba(79,209,197,0.15)',
+                  background: input.trim() ? 'var(--accent)' : 'rgba(var(--accent-rgb),0.15)',
                   border: 'none',
                   cursor: input.trim() ? 'pointer' : 'default',
                   transition: 'background 0.15s ease',
                 }}
               >
-                <Send size={15} style={{ color: input.trim() ? '#0B0B0F' : '#4FD1C5', opacity: input.trim() ? 1 : 0.4 }} />
+                <Send size={15} style={{ color: input.trim() ? '#0B0B0F' : 'var(--accent)', opacity: input.trim() ? 1 : 0.4 }} />
               </motion.button>
             </div>
           </div>

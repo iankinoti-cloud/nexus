@@ -4,6 +4,7 @@ import { User, Building2, Puzzle, Shield, Cpu, Palette, Camera, ChevronRight, Da
 import { toast } from 'sonner';
 import { PageShell } from '../layout/PageShell';
 import { useNexus } from '../../data/store';
+import { ACCENTS, applyAccent, currentAccent, type Accent } from '../../lib/theme';
 import { useAuth } from '../../auth/AuthProvider';
 
 const TABS = [
@@ -56,7 +57,7 @@ function Toggle({ label, description, defaultOn = false }: { label: string; desc
         style={{
           width: 44,
           height: 24,
-          background: on ? '#4FD1C5' : 'rgba(255,255,255,0.1)',
+          background: on ? 'var(--accent)' : 'rgba(255,255,255,0.1)',
           border: 'none',
           cursor: 'pointer',
           transition: 'background 0.2s ease',
@@ -98,9 +99,9 @@ function IntegrationItem({ name, description, connected, color }: {
       <button
         onClick={() => setIsConnected(!isConnected)}
         style={{
-          background: isConnected ? 'rgba(34,197,94,0.1)' : 'rgba(79,209,197,0.1)',
-          border: `1px solid ${isConnected ? 'rgba(34,197,94,0.3)' : 'rgba(79,209,197,0.3)'}`,
-          color: isConnected ? '#22C55E' : '#4FD1C5',
+          background: isConnected ? 'rgba(34,197,94,0.1)' : 'rgba(var(--accent-rgb),0.1)',
+          border: `1px solid ${isConnected ? 'rgba(34,197,94,0.3)' : 'rgba(var(--accent-rgb),0.3)'}`,
+          color: isConnected ? '#22C55E' : 'var(--accent)',
           fontSize: 12,
           fontWeight: 500,
           borderRadius: 8,
@@ -141,7 +142,7 @@ function ProfileTab() {
           ) : (
             <div
               className="flex items-center justify-center rounded-xl"
-              style={{ width: 72, height: 72, background: 'linear-gradient(135deg, #4FD1C5, #22C55E)', fontSize: 24, fontWeight: 700, color: '#0B0B0F' }}
+              style={{ width: 72, height: 72, background: 'linear-gradient(135deg, var(--accent), #22C55E)', fontSize: 24, fontWeight: 700, color: '#0B0B0F' }}
             >
               {initials}
             </div>
@@ -174,10 +175,10 @@ function ProfileTab() {
 
       <div>
         <motion.button
-          whileHover={{ background: '#3dbdb2' }}
+          whileHover={{ background: 'var(--accent-hover)' }}
           whileTap={{ scale: 0.97 }}
           style={{
-            background: '#4FD1C5',
+            background: 'var(--accent)',
             color: '#0B0B0F',
             fontSize: 13,
             fontWeight: 600,
@@ -214,9 +215,9 @@ function OrganizationTab() {
             <button
               key={m}
               style={{
-                background: m === 'January' ? 'rgba(79,209,197,0.1)' : 'rgba(255,255,255,0.04)',
-                border: `1px solid ${m === 'January' ? 'rgba(79,209,197,0.3)' : 'rgba(255,255,255,0.08)'}`,
-                color: m === 'January' ? '#4FD1C5' : '#A1A1AA',
+                background: m === 'January' ? 'rgba(var(--accent-rgb),0.1)' : 'rgba(255,255,255,0.04)',
+                border: `1px solid ${m === 'January' ? 'rgba(var(--accent-rgb),0.3)' : 'rgba(255,255,255,0.08)'}`,
+                color: m === 'January' ? 'var(--accent)' : '#A1A1AA',
                 fontSize: 12,
                 borderRadius: 8,
                 padding: '8px 16px',
@@ -229,9 +230,9 @@ function OrganizationTab() {
         </div>
       </div>
       <motion.button
-        whileHover={{ background: '#3dbdb2' }}
+        whileHover={{ background: 'var(--accent-hover)' }}
         whileTap={{ scale: 0.97 }}
-        style={{ background: '#4FD1C5', color: '#0B0B0F', fontSize: 13, fontWeight: 600, borderRadius: 8, padding: '10px 24px', border: 'none', cursor: 'pointer', alignSelf: 'flex-start' }}
+        style={{ background: 'var(--accent)', color: '#0B0B0F', fontSize: 13, fontWeight: 600, borderRadius: 8, padding: '10px 24px', border: 'none', cursor: 'pointer', alignSelf: 'flex-start' }}
       >
         Save Changes
       </motion.button>
@@ -248,7 +249,7 @@ function IntegrationsTab() {
       </div>
       <div className="flex flex-col gap-3">
         <IntegrationItem name="Slack" description="Team notifications and alerts" connected={true} color="#A78BFA" />
-        <IntegrationItem name="Figma" description="Design file sync and handoff" connected={true} color="#4FD1C5" />
+        <IntegrationItem name="Figma" description="Design file sync and handoff" connected={true} color="var(--accent)" />
         <IntegrationItem name="Stripe" description="Revenue and invoice data" connected={true} color="#22C55E" />
         <IntegrationItem name="Notion" description="Project documentation" connected={false} color="#F4F4F5" />
         <IntegrationItem name="Google" description="Calendar and Drive sync" connected={false} color="#FFB547" />
@@ -279,9 +280,9 @@ function SecurityTab() {
         <Toggle label="Login Notifications" description="Get notified of new logins to your account" defaultOn={true} />
       </div>
       <motion.button
-        whileHover={{ background: '#3dbdb2' }}
+        whileHover={{ background: 'var(--accent-hover)' }}
         whileTap={{ scale: 0.97 }}
-        style={{ background: '#4FD1C5', color: '#0B0B0F', fontSize: 13, fontWeight: 600, borderRadius: 8, padding: '10px 24px', border: 'none', cursor: 'pointer', alignSelf: 'flex-start' }}
+        style={{ background: 'var(--accent)', color: '#0B0B0F', fontSize: 13, fontWeight: 600, borderRadius: 8, padding: '10px 24px', border: 'none', cursor: 'pointer', alignSelf: 'flex-start' }}
       >
         Update Password
       </motion.button>
@@ -323,7 +324,7 @@ function AITab() {
             max={95}
             value={confidence}
             onChange={e => setConfidence(Number(e.target.value))}
-            style={{ flex: 1, accentColor: '#4FD1C5', cursor: 'pointer' }}
+            style={{ flex: 1, accentColor: 'var(--accent)', cursor: 'pointer' }}
           />
           <span style={{ color: '#A1A1AA', fontSize: 12 }}>95%</span>
         </div>
@@ -335,9 +336,9 @@ function AITab() {
             <button
               key={style}
               style={{
-                background: i === 1 ? 'rgba(79,209,197,0.1)' : 'rgba(255,255,255,0.04)',
-                border: `1px solid ${i === 1 ? 'rgba(79,209,197,0.3)' : 'rgba(255,255,255,0.08)'}`,
-                color: i === 1 ? '#4FD1C5' : '#A1A1AA',
+                background: i === 1 ? 'rgba(var(--accent-rgb),0.1)' : 'rgba(255,255,255,0.04)',
+                border: `1px solid ${i === 1 ? 'rgba(var(--accent-rgb),0.3)' : 'rgba(255,255,255,0.08)'}`,
+                color: i === 1 ? 'var(--accent)' : '#A1A1AA',
                 fontSize: 13,
                 borderRadius: 8,
                 padding: '8px 18px',
@@ -354,14 +355,16 @@ function AITab() {
 }
 
 function ThemeTab() {
-  const ACCENT_COLORS = [
-    { color: '#4FD1C5', name: 'Cyan' },
-    { color: '#A78BFA', name: 'Purple' },
-    { color: '#22C55E', name: 'Emerald' },
-    { color: '#FFB547', name: 'Gold' },
-    { color: '#60A5FA', name: 'Blue' },
-    { color: '#F472B6', name: 'Pink' },
-  ];
+  const [accent, setAccent] = useState(currentAccent().name);
+
+  const pick = (a: Accent) => {
+    applyAccent(a);
+    setAccent(a.name);
+    toast.success(`Accent switched to ${a.name}`, { description: 'The whole workspace just re-skinned itself.' });
+  };
+
+  const comingSoon = (what: string) =>
+    toast.message(`${what} is on the roadmap`, { description: "Dark is NEXUS's native habitat — more modes ship after launch." });
 
   return (
     <div className="flex flex-col gap-6">
@@ -373,24 +376,20 @@ function ThemeTab() {
         <label style={{ color: '#A1A1AA', fontSize: 12, fontWeight: 500, display: 'block', marginBottom: 10 }}>Color Mode</label>
         <div className="flex gap-3">
           {[
-            { label: 'Dark', active: true, bg: '#15151B', border: '#4FD1C5' },
+            { label: 'Dark', active: true, bg: '#15151B', border: 'var(--accent)' },
             { label: 'Light', active: false, bg: '#F0F0F5', border: 'rgba(255,255,255,0.08)' },
             { label: 'System', active: false, bg: 'linear-gradient(135deg, #15151B 50%, #F0F0F5 50%)', border: 'rgba(255,255,255,0.08)' },
           ].map(mode => (
             <div
               key={mode.label}
+              onClick={() => !mode.active && comingSoon(`${mode.label} mode`)}
               className="flex flex-col items-center gap-2 cursor-pointer"
             >
               <div
                 className="rounded-xl"
-                style={{
-                  width: 80,
-                  height: 52,
-                  background: mode.bg,
-                  border: `2px solid ${mode.border}`,
-                }}
+                style={{ width: 80, height: 52, background: mode.bg, border: `2px solid ${mode.border}` }}
               />
-              <span style={{ color: mode.active ? '#4FD1C5' : '#A1A1AA', fontSize: 12 }}>{mode.label}</span>
+              <span style={{ color: mode.active ? 'var(--accent)' : '#A1A1AA', fontSize: 12 }}>{mode.label}</span>
             </div>
           ))}
         </div>
@@ -398,24 +397,37 @@ function ThemeTab() {
       <div>
         <label style={{ color: '#A1A1AA', fontSize: 12, fontWeight: 500, display: 'block', marginBottom: 10 }}>Accent Color</label>
         <div className="flex items-center gap-3">
-          {ACCENT_COLORS.map((ac, i) => (
-            <div key={ac.color} className="flex flex-col items-center gap-1.5">
-              <div
-                className="rounded-full flex items-center justify-center"
-                style={{
-                  width: 36,
-                  height: 36,
-                  background: ac.color,
-                  border: i === 0 ? '3px solid #F4F4F5' : '3px solid transparent',
-                  cursor: 'pointer',
-                }}
+          {ACCENTS.map(ac => {
+            const selected = accent === ac.name;
+            return (
+              <motion.div
+                key={ac.name}
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.94 }}
+                onClick={() => pick(ac)}
+                className="flex flex-col items-center gap-1.5"
+                style={{ cursor: 'pointer' }}
               >
-                {i === 0 && <span style={{ color: '#0B0B0F', fontSize: 14, fontWeight: 700 }}>✓</span>}
-              </div>
-              <span style={{ color: '#A1A1AA', fontSize: 10 }}>{ac.name}</span>
-            </div>
-          ))}
+                <div
+                  className="rounded-full flex items-center justify-center"
+                  style={{
+                    width: 36,
+                    height: 36,
+                    background: ac.hex,
+                    border: selected ? '3px solid #F4F4F5' : '3px solid transparent',
+                    transition: 'border 0.15s ease',
+                  }}
+                >
+                  {selected && <span style={{ color: '#0B0B0F', fontSize: 14, fontWeight: 700 }}>{'✓'}</span>}
+                </div>
+                <span style={{ color: selected ? 'var(--accent)' : '#A1A1AA', fontSize: 10 }}>{ac.name}</span>
+              </motion.div>
+            );
+          })}
         </div>
+        <p style={{ color: '#A1A1AA', fontSize: 11, marginTop: 10, opacity: 0.7 }}>
+          Applies instantly across the entire workspace and persists on this device.
+        </p>
       </div>
       <div>
         <label style={{ color: '#A1A1AA', fontSize: 12, fontWeight: 500, display: 'block', marginBottom: 8 }}>Font Size</label>
@@ -423,10 +435,11 @@ function ThemeTab() {
           {['Small', 'Default', 'Large'].map((size, i) => (
             <button
               key={size}
+              onClick={() => i !== 1 && comingSoon(`${size} text`)}
               style={{
-                background: i === 1 ? 'rgba(79,209,197,0.1)' : 'rgba(255,255,255,0.04)',
-                border: `1px solid ${i === 1 ? 'rgba(79,209,197,0.3)' : 'rgba(255,255,255,0.08)'}`,
-                color: i === 1 ? '#4FD1C5' : '#A1A1AA',
+                background: i === 1 ? 'rgba(var(--accent-rgb),0.1)' : 'rgba(255,255,255,0.04)',
+                border: `1px solid ${i === 1 ? 'rgba(var(--accent-rgb),0.3)' : 'rgba(255,255,255,0.08)'}`,
+                color: i === 1 ? 'var(--accent)' : '#A1A1AA',
                 fontSize: 13,
                 borderRadius: 8,
                 padding: '8px 18px',
@@ -469,12 +482,11 @@ function WorkspaceTab() {
         <p style={{ color: '#A1A1AA', fontSize: 13 }}>Where your workspace lives, and how to start fresh.</p>
       </div>
 
-      {/* Storage status */}
       <div
         className="rounded-xl p-4 flex items-center gap-3"
         style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
       >
-        {session ? <Cloud size={16} style={{ color: '#4FD1C5' }} /> : <HardDrive size={16} style={{ color: '#FFB547' }} />}
+        {session ? <Cloud size={16} style={{ color: 'var(--accent)' }} /> : <HardDrive size={16} style={{ color: '#FFB547' }} />}
         <div className="flex-1">
           <div style={{ color: '#F4F4F5', fontSize: 13, fontWeight: 500 }}>
             {session ? 'Synced to cloud' : guest ? 'Guest — this device only' : 'Local mode'}
@@ -487,7 +499,6 @@ function WorkspaceTab() {
         </div>
       </div>
 
-      {/* Activity summary */}
       <div>
         <label style={{ color: '#A1A1AA', fontSize: 12, fontWeight: 500, display: 'block', marginBottom: 8 }}>
           Applied AI actions this workspace
@@ -498,7 +509,7 @@ function WorkspaceTab() {
           <div className="flex flex-col gap-1.5">
             {activity.slice(0, 6).map(a => (
               <div key={a.id} className="flex items-center gap-2" style={{ color: '#A1A1AA', fontSize: 12.5 }}>
-                <span className="rounded-full" style={{ width: 5, height: 5, background: '#4FD1C5' }} />
+                <span className="rounded-full" style={{ width: 5, height: 5, background: 'var(--accent)' }} />
                 {a.label}
                 <span style={{ opacity: 0.5, fontSize: 11 }}>{a.timestamp}</span>
               </div>
@@ -510,7 +521,6 @@ function WorkspaceTab() {
         )}
       </div>
 
-      {/* Reset */}
       <div
         className="rounded-xl p-4"
         style={{ background: 'rgba(255,181,71,0.05)', border: '1px solid rgba(255,181,71,0.2)' }}
@@ -578,10 +588,10 @@ export function SettingsPage() {
                 onClick={() => setActiveTab(tab.id)}
                 className="flex items-center gap-2.5 w-full rounded-lg px-3 py-2.5 text-left"
                 style={{
-                  background: isActive ? 'rgba(79,209,197,0.08)' : 'transparent',
+                  background: isActive ? 'rgba(var(--accent-rgb),0.08)' : 'transparent',
                   border: 'none',
-                  borderLeft: isActive ? '2px solid #4FD1C5' : '2px solid transparent',
-                  color: isActive ? '#4FD1C5' : '#A1A1AA',
+                  borderLeft: isActive ? '2px solid var(--accent)' : '2px solid transparent',
+                  color: isActive ? 'var(--accent)' : '#A1A1AA',
                   fontSize: 13,
                   fontWeight: isActive ? 500 : 400,
                   cursor: 'pointer',

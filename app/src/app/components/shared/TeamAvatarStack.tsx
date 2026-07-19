@@ -1,4 +1,4 @@
-const COLORS = ['#4FD1C5', '#A78BFA', '#22C55E', '#FFB547', '#60A5FA', '#F472B6'];
+const COLORS = ['var(--accent)', '#A78BFA', '#22C55E', '#FFB547', '#60A5FA', '#F472B6'];
 
 interface TeamAvatarStackProps {
   avatars: string[];

@@ -1,14 +1,17 @@
 import { useState } from 'react';
-import { motion } from 'motion/react';
+import { useNavigate } from 'react-router';
+import { motion, AnimatePresence } from 'motion/react';
 import {
-  CheckCircle, Clock, MessageSquare, DollarSign, AlertTriangle, Check
+  CheckCircle, Clock, MessageSquare, DollarSign, AlertTriangle, Check, X
 } from 'lucide-react';
 import { PageShell } from '../layout/PageShell';
+import { ImageWithFallback } from '../figma/ImageWithFallback';
+import nexusEmblem from '../../../imports/NEXUS-_-EMBLEM.jpeg';
 import { useNexus } from '../../data/store';
-import type { Notification } from '../../data/types';
+import type { Notification, Client } from '../../data/types';
 
 const CATEGORY_CONFIG = {
-  project: { icon: CheckCircle, color: '#4FD1C5', bg: 'rgba(79,209,197,0.12)', label: 'Projects' },
+  project: { icon: CheckCircle, color: 'var(--accent)', bg: 'rgba(var(--accent-rgb),0.12)', label: 'Projects' },
   deadline: { icon: Clock, color: '#FFB547', bg: 'rgba(255,181,71,0.12)', label: 'Deadlines' },
   client: { icon: MessageSquare, color: '#A78BFA', bg: 'rgba(167,139,250,0.12)', label: 'Clients' },
   invoice: { icon: DollarSign, color: '#22C55E', bg: 'rgba(34,197,94,0.12)', label: 'Invoices' },
@@ -17,7 +20,7 @@ const CATEGORY_CONFIG = {
 
 const TABS = ['All', 'Projects', 'Deadlines', 'Clients', 'Invoices', 'Risks'];
 
-function NotificationRow({ notif, onRead }: { notif: Notification; onRead: (id: string) => void }) {
+function NotificationRow({ notif, onRead, onAction }: { notif: Notification; onRead: (id: string) => void; onAction: (n: Notification) => void }) {
   const config = CATEGORY_CONFIG[notif.category];
   const Icon = config.icon;
 
@@ -51,7 +54,7 @@ function NotificationRow({ notif, onRead }: { notif: Notification; onRead: (id: 
             {!notif.read && (
               <div
                 className="rounded-full shrink-0"
-                style={{ width: 7, height: 7, background: '#4FD1C5' }}
+                style={{ width: 7, height: 7, background: 'var(--accent)' }}
               />
             )}
           </div>
@@ -60,8 +63,9 @@ function NotificationRow({ notif, onRead }: { notif: Notification; onRead: (id: 
         <div className="flex items-center gap-3 mt-2.5">
           {notif.action && (
             <button
+              onClick={() => onAction(notif)}
               style={{
-                color: '#4FD1C5',
+                color: 'var(--accent)',
                 fontSize: 12,
                 fontWeight: 500,
                 background: 'none',
@@ -89,8 +93,27 @@ function NotificationRow({ notif, onRead }: { notif: Notification; onRead: (id: 
 }
 
 export function NotificationsPage() {
-  const { notifications, markRead, markAllRead } = useNexus();
+  const { notifications, clients, markRead, markAllRead } = useNexus();
   const [activeTab, setActiveTab] = useState('All');
+  const [invoiceNotif, setInvoiceNotif] = useState<Notification | null>(null);
+  const navigate = useNavigate();
+
+  const handleAction = (notif: Notification) => {
+    markRead(notif.id);
+    switch (notif.category) {
+      case 'invoice':
+        setInvoiceNotif(notif);
+        break;
+      case 'client':
+        navigate('/clients');
+        break;
+      case 'risk':
+        navigate('/core');
+        break;
+      default:
+        navigate('/projects');
+    }
+  };
 
   const filtered = notifications.filter(n => {
     if (activeTab === 'All') return true;
@@ -109,7 +132,7 @@ export function NotificationsPage() {
           {unreadCount > 0 && (
             <span
               className="flex items-center justify-center rounded-full"
-              style={{ width: 22, height: 22, background: '#4FD1C5', color: '#0B0B0F', fontSize: 11, fontWeight: 700 }}
+              style={{ width: 22, height: 22, background: 'var(--accent)', color: '#0B0B0F', fontSize: 11, fontWeight: 700 }}
             >
               {unreadCount}
             </span>
@@ -141,9 +164,9 @@ export function NotificationsPage() {
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{
-              background: activeTab === tab ? 'rgba(79,209,197,0.1)' : 'transparent',
-              border: `1px solid ${activeTab === tab ? 'rgba(79,209,197,0.3)' : 'rgba(255,255,255,0.06)'}`,
-              color: activeTab === tab ? '#4FD1C5' : '#A1A1AA',
+              background: activeTab === tab ? 'rgba(var(--accent-rgb),0.1)' : 'transparent',
+              border: `1px solid ${activeTab === tab ? 'rgba(var(--accent-rgb),0.3)' : 'rgba(255,255,255,0.06)'}`,
+              color: activeTab === tab ? 'var(--accent)' : '#A1A1AA',
               fontSize: 12,
               fontWeight: activeTab === tab ? 500 : 400,
               borderRadius: 8,
@@ -157,7 +180,7 @@ export function NotificationsPage() {
               <span
                 style={{
                   marginLeft: 6,
-                  background: '#4FD1C5',
+                  background: 'var(--accent)',
                   color: '#0B0B0F',
                   fontSize: 10,
                   fontWeight: 700,
@@ -187,11 +210,143 @@ export function NotificationsPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
             >
-              <NotificationRow notif={notif} onRead={markRead} />
+              <NotificationRow notif={notif} onRead={markRead} onAction={handleAction} />
             </motion.div>
           ))
         )}
       </div>
+
+      <InvoiceDialog notif={invoiceNotif} clients={clients} onClose={() => setInvoiceNotif(null)} />
     </PageShell>
+  );
+}
+
+function InvoiceDialog({ notif, clients, onClose }: { notif: Notification | null; clients: Client[]; onClose: () => void }) {
+  const invoiceNo = notif?.title.match(/#(\d+)/)?.[1] ?? '0000';
+  const amountStr = notif?.title.match(/\$([\d,]+)/)?.[1] ?? '0';
+  const amount = parseInt(amountStr.replace(/,/g, ''), 10);
+  const paid = /paid/i.test(notif?.title ?? '');
+  const client = clients.find(c => notif?.message.includes(c.name)) ?? clients[0];
+  const project = notif?.message.match(/for (.+?)(?: sent| successfully|\.)/)?.[1] ?? 'Creative services';
+
+  const fmt = (n: number) => `$${n.toLocaleString('en-US')}`;
+  const items = [
+    { label: 'Creative direction & design', value: Math.round(amount * 0.55) },
+    { label: 'Production & implementation', value: Math.round(amount * 0.3) },
+    { label: 'Project management', value: 0 },
+  ];
+  items[2].value = amount - items[0].value - items[1].value;
+
+  return (
+    <AnimatePresence>
+      {notif && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+          className="fixed inset-0 z-50 flex items-center justify-center px-6"
+          style={{ background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(6px)' }}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 24, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 12, scale: 0.97 }}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            onClick={e => e.stopPropagation()}
+            className="w-full rounded-2xl overflow-hidden"
+            style={{ maxWidth: 560, background: '#15151B', border: '1px solid rgba(255,255,255,0.1)' }}
+          >
+            {/* Header */}
+            <div
+              className="flex items-center justify-between px-7 py-5"
+              style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)' }}
+            >
+              <div className="flex items-center gap-3">
+                <div className="rounded-lg overflow-hidden" style={{ width: 32, height: 32 }}>
+                  <ImageWithFallback src={nexusEmblem} alt="NEXUS" className="w-full h-full object-cover" />
+                </div>
+                <div>
+                  <div className="tracking-widest" style={{ color: '#F4F4F5', fontSize: 12, fontWeight: 700, letterSpacing: '0.16em' }}>NEXUS STUDIO</div>
+                  <div style={{ color: '#A1A1AA', fontSize: 11 }}>Invoice #{invoiceNo}</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <span
+                  className="rounded-md px-2.5 py-1"
+                  style={{
+                    background: paid ? 'rgba(34,197,94,0.1)' : 'rgba(255,181,71,0.1)',
+                    border: `1px solid ${paid ? 'rgba(34,197,94,0.35)' : 'rgba(255,181,71,0.35)'}`,
+                    color: paid ? '#22C55E' : '#FFB547',
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: '0.08em',
+                  }}
+                >
+                  {paid ? 'PAID' : 'AWAITING PAYMENT'}
+                </span>
+                <button
+                  onClick={onClose}
+                  className="flex items-center justify-center rounded-md"
+                  style={{ width: 28, height: 28, background: 'rgba(255,255,255,0.05)', border: 'none', cursor: 'pointer', color: '#A1A1AA' }}
+                >
+                  <X size={14} />
+                </button>
+              </div>
+            </div>
+
+            {/* Body */}
+            <div className="px-7 py-6">
+              <div className="flex justify-between mb-6">
+                <div>
+                  <div style={{ color: '#A1A1AA', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', marginBottom: 6 }}>BILLED TO</div>
+                  <div style={{ color: '#F4F4F5', fontSize: 14, fontWeight: 600 }}>{client?.name}</div>
+                  <div style={{ color: '#A1A1AA', fontSize: 12 }}>{client?.industry}</div>
+                </div>
+                <div className="text-right">
+                  <div style={{ color: '#A1A1AA', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', marginBottom: 6 }}>PROJECT</div>
+                  <div style={{ color: '#F4F4F5', fontSize: 13 }}>{project}</div>
+                  <div style={{ color: '#A1A1AA', fontSize: 11, marginTop: 4 }}>Net 30 · {notif.timestamp}</div>
+                </div>
+              </div>
+
+              <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
+                {items.map((item, i) => (
+                  <div
+                    key={item.label}
+                    className="flex items-center justify-between px-4 py-3"
+                    style={{
+                      background: i % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent',
+                      borderBottom: i < items.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                    }}
+                  >
+                    <span style={{ color: '#A1A1AA', fontSize: 13 }}>{item.label}</span>
+                    <span style={{ color: '#F4F4F5', fontSize: 13, fontWeight: 500 }}>{fmt(item.value)}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex justify-end mt-5">
+                <div className="text-right">
+                  <div style={{ color: '#A1A1AA', fontSize: 12, marginBottom: 2 }}>Total due</div>
+                  <div style={{ color: 'var(--accent)', fontSize: 26, fontWeight: 700 }}>{fmt(amount)}</div>
+                </div>
+              </div>
+
+              <div
+                className="mt-6 rounded-lg px-4 py-3"
+                style={{ background: 'rgba(var(--accent-rgb),0.05)', border: '1px solid rgba(var(--accent-rgb),0.15)' }}
+              >
+                <span style={{ color: '#A1A1AA', fontSize: 12 }}>
+                  {paid
+                    ? `Payment received from ${client?.name}. Reconciled automatically by Core.`
+                    : `Core will follow up automatically if unpaid after 14 days.`}
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

@@ -37,9 +37,9 @@ export function KPICard({ label, value, change, changeType, icon: Icon, delay = 
         </span>
         <div
           className="flex items-center justify-center rounded-lg"
-          style={{ width: 34, height: 34, background: 'rgba(79,209,197,0.1)' }}
+          style={{ width: 34, height: 34, background: 'rgba(var(--accent-rgb),0.1)' }}
         >
-          <Icon size={16} style={{ color: '#4FD1C5' }} />
+          <Icon size={16} style={{ color: 'var(--accent)' }} />
         </div>
       </div>
       <div>

@@ -1,6 +1,9 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { Toaster } from 'sonner';
+import { initAccent } from './lib/theme';
 import { NexusProvider } from './data/store';
+
+initAccent();
 import { AuthProvider, useAuth } from './auth/AuthProvider';
 import { LoginScreen } from './auth/LoginScreen';
 import { RootLayout } from './components/layout/RootLayout';
@@ -58,7 +61,7 @@ export default function App() {
         toastOptions={{
           style: {
             background: '#15151B',
-            border: '1px solid rgba(79,209,197,0.25)',
+            border: '1px solid rgba(var(--accent-rgb),0.25)',
             color: '#F4F4F5',
           },
         }}

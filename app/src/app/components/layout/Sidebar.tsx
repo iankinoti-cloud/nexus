@@ -28,11 +28,14 @@ export function Sidebar() {
 
   return (
     <div
-      className="flex flex-col h-screen shrink-0"
+      className="flex flex-col h-full shrink-0 rounded-2xl overflow-hidden"
       style={{
         width: '240px',
-        background: '#15151B',
-        borderRight: '1px solid rgba(255,255,255,0.06)',
+        background: 'rgba(21,21,27,0.72)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
+        border: '1px solid rgba(255,255,255,0.07)',
+        boxShadow: '0 8px 40px rgba(0,0,0,0.35)',
       }}
     >
       {/* Logo */}
@@ -47,9 +50,6 @@ export function Sidebar() {
         <div>
           <div className="tracking-widest" style={{ color: '#F4F4F5', fontSize: 13, fontWeight: 700, letterSpacing: '0.18em' }}>
             NEXUS
-          </div>
-          <div style={{ color: '#A1A1AA', fontSize: 10, fontWeight: 400, letterSpacing: '0.05em' }}>
-            AI Operating System
           </div>
         </div>
       </div>
@@ -73,9 +73,9 @@ export function Sidebar() {
                 end={item.end}
                 className="flex items-center gap-3 px-3 py-2.5 rounded-lg relative transition-colors duration-150 no-underline"
                 style={{
-                  color: isActive ? '#4FD1C5' : '#A1A1AA',
-                  background: isActive ? 'rgba(79,209,197,0.08)' : 'transparent',
-                  borderLeft: isActive ? '2px solid #4FD1C5' : '2px solid transparent',
+                  color: isActive ? 'var(--accent)' : '#A1A1AA',
+                  background: isActive ? 'rgba(var(--accent-rgb),0.08)' : 'transparent',
+                  boxShadow: isActive ? 'inset 0 0 0 1px rgba(var(--accent-rgb),0.25)' : 'none',
                   fontSize: 13.5,
                   fontWeight: isActive ? 500 : 400,
                 }}
@@ -88,7 +88,7 @@ export function Sidebar() {
                     style={{
                       width: 18,
                       height: 18,
-                      background: '#4FD1C5',
+                      background: 'var(--accent)',
                       color: '#0B0B0F',
                       fontSize: 10,
                       fontWeight: 700,
@@ -136,7 +136,7 @@ function UserBlock() {
           className="flex items-center justify-center rounded-full shrink-0"
           style={{
             width: 34, height: 34,
-            background: 'linear-gradient(135deg, #4FD1C5 0%, #22C55E 100%)',
+            background: 'linear-gradient(135deg, var(--accent) 0%, #22C55E 100%)',
             fontSize: 12,
             fontWeight: 700,
             color: '#0B0B0F',

@@ -14,7 +14,7 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.28, delay, ease: 'easeOut' }}
-      whileHover={{ borderColor: 'rgba(79,209,197,0.22)', y: -2 }}
+      whileHover={{ borderColor: 'rgba(var(--accent-rgb),0.22)', y: -2 }}
       className="rounded-xl p-5 flex flex-col gap-4"
       style={{
         background: '#15151B',
@@ -48,7 +48,7 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
               background: project.progress >= 80
                 ? '#22C55E'
                 : project.progress >= 50
-                ? '#4FD1C5'
+                ? 'var(--accent)'
                 : '#FFB547',
             }}
           />
@@ -103,11 +103,11 @@ export function ProjectsPage() {
           <p style={{ color: '#A1A1AA', fontSize: 13, marginTop: 2 }}>{PROJECTS.length} total · {PROJECTS.filter(p => p.status === 'active').length} active</p>
         </div>
         <motion.button
-          whileHover={{ background: '#3dbdb2' }}
+          whileHover={{ background: 'var(--accent-hover)' }}
           whileTap={{ scale: 0.97 }}
           className="flex items-center gap-2 rounded-lg px-4 py-2.5"
           style={{
-            background: '#4FD1C5',
+            background: 'var(--accent)',
             color: '#0B0B0F',
             fontSize: 13,
             fontWeight: 600,
@@ -148,9 +148,9 @@ export function ProjectsPage() {
               key={f}
               onClick={() => setActiveFilter(f)}
               style={{
-                background: activeFilter === f ? 'rgba(79,209,197,0.1)' : 'transparent',
-                border: `1px solid ${activeFilter === f ? 'rgba(79,209,197,0.3)' : 'rgba(255,255,255,0.06)'}`,
-                color: activeFilter === f ? '#4FD1C5' : '#A1A1AA',
+                background: activeFilter === f ? 'rgba(var(--accent-rgb),0.1)' : 'transparent',
+                border: `1px solid ${activeFilter === f ? 'rgba(var(--accent-rgb),0.3)' : 'rgba(255,255,255,0.06)'}`,
+                color: activeFilter === f ? 'var(--accent)' : '#A1A1AA',
                 fontSize: 12,
                 fontWeight: activeFilter === f ? 500 : 400,
                 borderRadius: 8,

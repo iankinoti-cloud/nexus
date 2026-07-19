@@ -7,7 +7,7 @@ import { askKnowledge, type KnowledgeResult } from '../../lib/ai';
 import type { KnowledgeNote } from '../../data/knowledge';
 
 const CATEGORY_META: Record<KnowledgeNote['category'], { label: string; color: string; icon: typeof FileText }> = {
-  'project-learnings': { label: 'Project Learnings', color: '#4FD1C5', icon: Lightbulb },
+  'project-learnings': { label: 'Project Learnings', color: 'var(--accent)', icon: Lightbulb },
   'client-preferences': { label: 'Client Preferences', color: '#FFB547', icon: Users2 },
   process: { label: 'Process', color: '#22C55E', icon: RefreshCw },
   retrospective: { label: 'Retrospective', color: '#A78BFA', icon: FileText },
@@ -30,8 +30,8 @@ function NoteCard({ note, highlighted, delay }: { note: KnowledgeNote; highlight
       transition={{ duration: 0.3, delay }}
       className="rounded-xl p-5"
       style={{
-        background: highlighted ? 'rgba(79,209,197,0.05)' : '#15151B',
-        border: `1px solid ${highlighted ? 'rgba(79,209,197,0.35)' : 'rgba(255,255,255,0.06)'}`,
+        background: highlighted ? 'rgba(var(--accent-rgb),0.05)' : '#15151B',
+        border: `1px solid ${highlighted ? 'rgba(var(--accent-rgb),0.35)' : 'rgba(255,255,255,0.06)'}`,
         transition: 'border-color 0.3s ease, background 0.3s ease',
       }}
     >
@@ -47,7 +47,7 @@ function NoteCard({ note, highlighted, delay }: { note: KnowledgeNote; highlight
         {highlighted && (
           <span
             className="rounded-full px-2 py-0.5 flex items-center gap-1"
-            style={{ background: 'rgba(79,209,197,0.12)', color: '#4FD1C5', fontSize: 10, fontWeight: 600 }}
+            style={{ background: 'rgba(var(--accent-rgb),0.12)', color: 'var(--accent)', fontSize: 10, fontWeight: 600 }}
           >
             <Sparkles size={9} /> SOURCE
           </span>
@@ -106,9 +106,9 @@ export function KnowledgePage() {
         <div className="flex items-center gap-3 mb-1">
           <div
             className="flex items-center justify-center rounded-xl"
-            style={{ width: 38, height: 38, background: 'rgba(79,209,197,0.12)' }}
+            style={{ width: 38, height: 38, background: 'rgba(var(--accent-rgb),0.12)' }}
           >
-            <BookOpen size={18} style={{ color: '#4FD1C5' }} />
+            <BookOpen size={18} style={{ color: 'var(--accent)' }} />
           </div>
           <div>
             <h1 style={{ color: '#F4F4F5', fontSize: 24, fontWeight: 600 }}>Knowledge</h1>
@@ -128,7 +128,7 @@ export function KnowledgePage() {
           className="flex items-center gap-3 rounded-xl px-4 py-3"
           style={{ background: '#15151B', border: '1px solid rgba(255,255,255,0.08)' }}
         >
-          <Search size={16} style={{ color: '#4FD1C5', flexShrink: 0 }} />
+          <Search size={16} style={{ color: 'var(--accent)', flexShrink: 0 }} />
           <input
             value={query}
             onChange={e => setQuery(e.target.value)}
@@ -140,13 +140,13 @@ export function KnowledgePage() {
             }}
           />
           <motion.button
-            whileHover={{ background: '#3dbdb2' }}
+            whileHover={{ background: 'var(--accent-hover)' }}
             whileTap={{ scale: 0.96 }}
             onClick={() => handleSearch()}
             className="rounded-lg px-4 py-1.5"
             style={{
-              background: query.trim() ? '#4FD1C5' : 'rgba(79,209,197,0.15)',
-              color: query.trim() ? '#0B0B0F' : '#4FD1C5',
+              background: query.trim() ? 'var(--accent)' : 'rgba(var(--accent-rgb),0.15)',
+              color: query.trim() ? '#0B0B0F' : 'var(--accent)',
               fontSize: 13, fontWeight: 600, border: 'none',
               cursor: query.trim() ? 'pointer' : 'default',
               transition: 'background 0.15s ease',
@@ -179,14 +179,14 @@ export function KnowledgePage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             className="rounded-xl p-5 mb-6 flex items-center gap-3"
-            style={{ background: 'rgba(79,209,197,0.04)', border: '1px solid rgba(79,209,197,0.15)' }}
+            style={{ background: 'rgba(var(--accent-rgb),0.04)', border: '1px solid rgba(var(--accent-rgb),0.15)' }}
           >
             {[0, 0.2, 0.4].map(delay => (
               <motion.div
                 key={delay}
                 animate={{ y: [0, -4, 0] }}
                 transition={{ duration: 0.6, repeat: Infinity, delay }}
-                style={{ width: 6, height: 6, borderRadius: '50%', background: '#4FD1C5', opacity: 0.7 }}
+                style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', opacity: 0.7 }}
               />
             ))}
             <span style={{ color: '#A1A1AA', fontSize: 13 }}>Searching organizational memory…</span>
@@ -199,14 +199,14 @@ export function KnowledgePage() {
             exit={{ opacity: 0 }}
             className="rounded-xl p-5 mb-6"
             style={{
-              background: 'rgba(79,209,197,0.04)',
-              border: '1px solid rgba(79,209,197,0.2)',
-              borderLeft: '3px solid #4FD1C5',
+              background: 'rgba(var(--accent-rgb),0.04)',
+              border: '1px solid rgba(var(--accent-rgb),0.2)',
+              borderLeft: '3px solid var(--accent)',
             }}
           >
             <div className="flex items-center gap-2 mb-2">
-              {result.offline ? <WifiOff size={13} style={{ color: '#FFB547' }} /> : <Sparkles size={13} style={{ color: '#4FD1C5' }} />}
-              <span style={{ color: result.offline ? '#FFB547' : '#4FD1C5', fontSize: 12, fontWeight: 600 }}>
+              {result.offline ? <WifiOff size={13} style={{ color: '#FFB547' }} /> : <Sparkles size={13} style={{ color: 'var(--accent)' }} />}
+              <span style={{ color: result.offline ? '#FFB547' : 'var(--accent)', fontSize: 12, fontWeight: 600 }}>
                 {result.offline ? 'Offline keyword search' : 'Core · semantic answer'}
               </span>
               {result.sourceIds.length > 0 && (
@@ -231,9 +231,9 @@ export function KnowledgePage() {
               onClick={() => setFilter(cat)}
               className="rounded-lg px-3 py-1.5"
               style={{
-                background: active ? 'rgba(79,209,197,0.1)' : 'transparent',
-                border: `1px solid ${active ? 'rgba(79,209,197,0.3)' : 'rgba(255,255,255,0.08)'}`,
-                color: active ? '#4FD1C5' : '#A1A1AA',
+                background: active ? 'rgba(var(--accent-rgb),0.1)' : 'transparent',
+                border: `1px solid ${active ? 'rgba(var(--accent-rgb),0.3)' : 'rgba(255,255,255,0.08)'}`,
+                color: active ? 'var(--accent)' : '#A1A1AA',
                 fontSize: 12, fontWeight: active ? 600 : 400, cursor: 'pointer',
                 transition: 'all 0.15s ease',
               }}

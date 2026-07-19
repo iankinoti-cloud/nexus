@@ -36,7 +36,7 @@ function ChartCard({ title, subtitle, children, delay = 0, colSpan = 1 }: {
 
 const KPI_METRICS = [
   { icon: TrendingUp, label: 'Total Revenue YTD', value: '$1.39M', change: '+24%', color: '#22C55E' },
-  { icon: Target, label: 'Completion Rate', value: '91%', change: '+7%', color: '#4FD1C5' },
+  { icon: Target, label: 'Completion Rate', value: '91%', change: '+7%', color: 'var(--accent)' },
   { icon: Users, label: 'Team Utilization', value: '66%', change: '-3%', color: '#FFB547' },
   { icon: Star, label: 'Avg Satisfaction', value: '4.8', change: '+0.6', color: '#A78BFA' },
 ];
@@ -90,7 +90,7 @@ export function AnalyticsPage() {
         transition={{ duration: 0.3, delay: 0.1 }}
         className="rounded-xl p-5 mb-6 flex items-center justify-between"
         style={{
-          background: 'linear-gradient(135deg, rgba(34,197,94,0.1) 0%, rgba(79,209,197,0.06) 100%)',
+          background: 'linear-gradient(135deg, rgba(34,197,94,0.1) 0%, rgba(var(--accent-rgb),0.06) 100%)',
           border: '1px solid rgba(34,197,94,0.2)',
         }}
       >

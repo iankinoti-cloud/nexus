@@ -3,6 +3,11 @@
 :root {
   --font-size: 16px;
 
+  /* NEXUS accent (switchable in Settings → Theme) */
+  --accent: #4FD1C5;
+  --accent-rgb: 79,209,197;
+  --accent-hover: #3dbdb2;
+
   /* NEXUS Core Palette */
   --background: #0B0B0F;
   --foreground: #F4F4F5;
