@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import { makeClient, hasKey, chatParams, knowledgeParams, MODEL } from './core-logic.mjs';
+import { makeClient, hasKey, chatParams, knowledgeParams, guard, MODEL } from './core-logic.mjs';
 
 const PORT = process.env.PORT || 8787;
 const client = hasKey() ? makeClient() : null;
@@ -16,6 +16,8 @@ app.get('/api/health', (_req, res) => {
 
 app.post('/api/chat', async (req, res) => {
   if (!client) return res.status(503).json({ error: 'no_api_key' });
+  const blocked = guard({ origin: req.headers.origin, referer: req.headers.referer, body: req.body });
+  if (blocked) return res.status(blocked.status).json({ error: blocked.error });
   const { messages = [], context = {} } = req.body || {};
 
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
@@ -36,6 +38,8 @@ app.post('/api/chat', async (req, res) => {
 
 app.post('/api/knowledge', async (req, res) => {
   if (!client) return res.status(503).json({ error: 'no_api_key' });
+  const blocked = guard({ origin: req.headers.origin, referer: req.headers.referer, body: req.body });
+  if (blocked) return res.status(blocked.status).json({ error: blocked.error });
   const { query, notes = [] } = req.body || {};
 
   try {

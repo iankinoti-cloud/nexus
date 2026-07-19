@@ -1,10 +1,18 @@
-import { makeClient, hasKey, chatParams } from '../server/core-logic.mjs';
+import { makeClient, hasKey, chatParams, guard } from '../server/core-logic.mjs';
 
 export async function POST(request) {
   if (!hasKey()) {
     return Response.json({ error: 'no_api_key' }, { status: 503 });
   }
-  const { messages = [], context = {} } = await request.json();
+  const body = await request.json();
+  const blocked = guard({
+    origin: request.headers.get('origin'),
+    referer: request.headers.get('referer'),
+    body,
+  });
+  if (blocked) return Response.json({ error: blocked.error }, { status: blocked.status });
+
+  const { messages = [], context = {} } = body;
   const client = makeClient();
 
   const stream = new ReadableStream({
