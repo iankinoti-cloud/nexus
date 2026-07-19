@@ -97,7 +97,7 @@ export function ProjectsPage() {
   return (
     <PageShell>
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div>
           <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600 }}>Projects</h1>
           <p style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))', marginTop: 2 }}>{PROJECTS.length} total · {PROJECTS.filter(p => p.status === 'active').length} active</p>
@@ -121,13 +121,13 @@ export function ProjectsPage() {
         </motion.button>
       </div>
 
-      {/* Filter bar */}
-      <div className="flex items-center gap-3 mb-6">
+      {/* Filter bar — stacks on mobile; pills scroll horizontally so none are clipped */}
+      <div className="flex flex-col md:flex-row md:items-center gap-3 mb-6">
         <div
-          className="flex items-center gap-2 flex-1 rounded-lg px-3 py-2.5"
-          style={{ background: 'var(--surface)', border: '1px solid var(--hair)', maxWidth: 280 }}
+          className="flex items-center gap-2 rounded-lg px-3 py-2.5 w-full md:w-[280px] shrink-0"
+          style={{ background: 'var(--surface)', border: '1px solid var(--hair)' }}
         >
-          <Search size={14} style={{ color: 'var(--text-dim)' }} />
+          <Search size={14} style={{ color: 'var(--text-dim)', flexShrink: 0 }} />
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
@@ -142,33 +142,36 @@ export function ProjectsPage() {
             }}
           />
         </div>
-        <div className="flex items-center gap-1.5">
-          {FILTERS.map(f => (
-            <button
-              key={f}
-              onClick={() => setActiveFilter(f)}
-              style={{
-                background: activeFilter === f ? 'rgba(var(--accent-rgb),0.1)' : 'transparent',
-                border: `1px solid ${activeFilter === f ? 'rgba(var(--accent-rgb),0.3)' : 'var(--hair)'}`,
-                color: activeFilter === f ? 'var(--accent)' : 'var(--text-dim)',
-                fontSize: 'calc(12px * var(--fs))',
-                fontWeight: activeFilter === f ? 500 : 400,
-                borderRadius: 8,
-                padding: '6px 14px',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
-              }}
-            >
-              {f}
-            </button>
-          ))}
-        </div>
-        <div
-          className="flex items-center gap-2 rounded-lg px-3 py-2.5 ml-auto"
-          style={{ background: 'var(--surface)', border: '1px solid var(--hair)', cursor: 'pointer' }}
-        >
-          <SlidersHorizontal size={14} style={{ color: 'var(--text-dim)' }} />
-          <span style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))' }}>Sort</span>
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar md:flex-wrap">
+            {FILTERS.map(f => (
+              <button
+                key={f}
+                onClick={() => setActiveFilter(f)}
+                className="shrink-0"
+                style={{
+                  background: activeFilter === f ? 'rgba(var(--accent-rgb),0.1)' : 'transparent',
+                  border: `1px solid ${activeFilter === f ? 'rgba(var(--accent-rgb),0.3)' : 'var(--hair)'}`,
+                  color: activeFilter === f ? 'var(--accent)' : 'var(--text-dim)',
+                  fontSize: 'calc(12px * var(--fs))',
+                  fontWeight: activeFilter === f ? 500 : 400,
+                  borderRadius: 8,
+                  padding: '6px 14px',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+          <div
+            className="flex items-center gap-2 rounded-lg px-3 py-2.5 shrink-0 md:ml-auto"
+            style={{ background: 'var(--surface)', border: '1px solid var(--hair)', cursor: 'pointer' }}
+          >
+            <SlidersHorizontal size={14} style={{ color: 'var(--text-dim)' }} />
+            <span style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))' }}>Sort</span>
+          </div>
         </div>
       </div>
 
@@ -178,7 +181,7 @@ export function ProjectsPage() {
           <ProjectCard key={project.id} project={project} delay={i * 0.07} />
         ))}
         {filtered.length === 0 && (
-          <div className="col-span-3 flex flex-col items-center justify-center py-20" style={{ color: 'var(--text-dim)' }}>
+          <div className="col-span-full flex flex-col items-center justify-center py-20" style={{ color: 'var(--text-dim)' }}>
             <Search size={32} style={{ opacity: 0.3, marginBottom: 12 }} />
             <p style={{ fontSize: 'calc(14px * var(--fs))' }}>No projects match your search</p>
           </div>

@@ -60,6 +60,10 @@
     0 6px 20px -4px rgba(0, 0, 0, 0.5);
 }
 
+/* Hide scrollbars on horizontal scrollers (mobile filter rails etc.) */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
 /* Reduced motion + browsers without backdrop-filter get a solid fallback */
 @supports not (backdrop-filter: blur(1px)) {
   .glass, .glass-capsule { background: var(--surface); }

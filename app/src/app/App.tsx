@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { Toaster } from 'sonner';
 import { initTheme } from './lib/theme';
 import { NexusProvider } from './data/store';
+import { Splash } from './components/Splash';
 
 initTheme();
 import { AuthProvider, useAuth } from './auth/AuthProvider';
@@ -52,8 +54,10 @@ function Gate() {
 }
 
 export default function App() {
+  const [splashDone, setSplashDone] = useState(false);
   return (
     <AuthProvider>
+      {!splashDone && <Splash onDone={() => setSplashDone(true)} />}
       <Gate />
       <Toaster
         theme="dark"
