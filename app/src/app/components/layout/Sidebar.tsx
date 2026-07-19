@@ -133,7 +133,7 @@ export function Sidebar() {
                       boxShadow: 'inset 0 1px 0 0 var(--glass-rim), 0 6px 18px -6px rgba(var(--accent-rgb),0.5)',
                       backdropFilter: 'blur(6px) saturate(160%)',
                     }}
-                    transition={{ type: 'spring', stiffness: 420, damping: 30, mass: 0.7 }}
+                    transition={{ type: 'spring', stiffness: 230, damping: 19, mass: 0.9 }}
                   />
                 )}
                 <div className="relative shrink-0 z-10" style={{ width: 16, height: 16 }}>

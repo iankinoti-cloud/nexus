@@ -673,7 +673,7 @@ export function SettingsPage() {
                       boxShadow: 'inset 0 1px 0 0 var(--glass-rim), 0 6px 18px -6px rgba(var(--accent-rgb),0.5)',
                       backdropFilter: 'blur(6px) saturate(160%)',
                     }}
-                    transition={{ type: 'spring', stiffness: 420, damping: 30, mass: 0.7 }}
+                    transition={{ type: 'spring', stiffness: 230, damping: 19, mass: 0.9 }}
                   />
                 )}
                 <Icon size={14} className="relative z-10" style={{ opacity: isHi ? 1 : 0.8 }} />

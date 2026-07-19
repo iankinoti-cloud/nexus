@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import nexusEmblem from '../../imports/NEXUS-_-EMBLEM.jpeg';
 
-const SIZE = 168;               // final emblem size
+const SIZE = 168;
 const HALF = SIZE / 2;
 const WORD = ['N', 'E', 'X', 'U', 'S'];
-const DURATION = 3000;
 
-// Each quadrant: where it sits when assembled, which corner it flies in from,
-// and the background offset that makes it show the correct quarter of the mark.
+// Timeline (ms)
+const T_DISPERSE = 2300; // converge (~0.9s) + hold beat, then reverse
+const T_DONE = 3400;
+
 const QUADRANTS = [
   { key: 'tl', left: 0, top: 0, bgX: 0, bgY: 0, fromX: -150, fromY: -150, spin: -35 },
   { key: 'tr', left: HALF, top: 0, bgX: -HALF, bgY: 0, fromX: 150, fromY: -150, spin: 35 },
@@ -16,7 +17,11 @@ const QUADRANTS = [
   { key: 'br', left: HALF, top: HALF, bgX: -HALF, bgY: -HALF, fromX: 150, fromY: 150, spin: -35 },
 ];
 
+// Underdamped "spring-water" settle — overshoots slightly then finds its level.
+const LIQUID = { type: 'spring' as const, stiffness: 90, damping: 12, mass: 1.1 };
+
 export function Splash({ onDone }: { onDone: () => void }) {
+  const [phase, setPhase] = useState<'in' | 'out'>('in');
   const [gone, setGone] = useState(false);
   const reduce =
     typeof window !== 'undefined' &&
@@ -24,14 +29,21 @@ export function Splash({ onDone }: { onDone: () => void }) {
 
   const finish = () => {
     setGone(true);
-    setTimeout(onDone, 450); // let the exit fade play
+    setTimeout(onDone, 200);
   };
 
   useEffect(() => {
-    const t = setTimeout(finish, reduce ? 1400 : DURATION);
-    return () => clearTimeout(t);
+    if (reduce) {
+      const t = setTimeout(finish, 1400);
+      return () => clearTimeout(t);
+    }
+    const t1 = setTimeout(() => setPhase('out'), T_DISPERSE);
+    const t2 = setTimeout(finish, T_DONE);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const out = phase === 'out';
 
   return (
     <AnimatePresence>
@@ -39,12 +51,12 @@ export function Splash({ onDone }: { onDone: () => void }) {
         <motion.div
           onClick={finish}
           initial={{ opacity: 1 }}
+          animate={{ opacity: out ? 0 : 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.45, ease: 'easeInOut' }}
+          transition={{ duration: 0.8, delay: out ? 0.35 : 0, ease: 'easeInOut' }}
           className="fixed inset-0 flex flex-col items-center justify-center cursor-pointer"
           style={{ zIndex: 100, background: '#000000' }}
         >
-          {/* Ambient accent wash */}
           <div
             className="pointer-events-none absolute inset-0"
             style={{
@@ -53,14 +65,18 @@ export function Splash({ onDone }: { onDone: () => void }) {
             }}
           />
 
-          {/* Emblem assembling from the four compass corners */}
-          <div className="relative" style={{ width: SIZE, height: SIZE, marginBottom: 34 }}>
+          {/* Emblem — gentle liquid breathing while it holds */}
+          <motion.div
+            className="relative"
+            style={{ width: SIZE, height: SIZE, marginBottom: 34 }}
+            animate={reduce || out ? {} : { scale: [1, 1.03, 1] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+          >
             {/* bloom at the moment of union */}
             <motion.div
               className="absolute rounded-full pointer-events-none"
               style={{
-                left: '50%', top: '50%', width: 200, height: 200,
-                x: '-50%', y: '-50%',
+                left: '50%', top: '50%', width: 200, height: 200, x: '-50%', y: '-50%',
                 background:
                   'radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(var(--accent-rgb),0.5) 30%, transparent 62%)',
               }}
@@ -74,15 +90,12 @@ export function Splash({ onDone }: { onDone: () => void }) {
                 key={q.key}
                 className="absolute"
                 style={{
-                  left: q.left,
-                  top: q.top,
-                  width: HALF,
-                  height: HALF,
+                  left: q.left, top: q.top, width: HALF, height: HALF,
                   backgroundImage: `url(${nexusEmblem})`,
                   backgroundSize: `${SIZE}px ${SIZE}px`,
                   backgroundPosition: `${q.bgX}px ${q.bgY}px`,
                   backgroundRepeat: 'no-repeat',
-                  mixBlendMode: 'screen', // drops the emblem's black tile — only the white mark shows
+                  mixBlendMode: 'screen',
                 }}
                 initial={
                   reduce
@@ -92,49 +105,37 @@ export function Splash({ onDone }: { onDone: () => void }) {
                 animate={
                   reduce
                     ? { opacity: 1 }
+                    : out
+                    ? { x: q.fromX * 1.5, y: q.fromY * 1.5, rotate: -q.spin, opacity: 0, filter: 'blur(3px)' }
                     : { x: 0, y: 0, rotate: 0, opacity: 1, filter: 'blur(0px)' }
                 }
                 transition={
                   reduce
                     ? { duration: 0.5 }
-                    : { type: 'spring', stiffness: 120, damping: 15, mass: 0.9, delay: 0.1 + i * 0.06 }
+                    : out
+                    ? { duration: 0.65, ease: [0.55, 0, 1, 0.45], delay: i * 0.04 }
+                    : { ...LIQUID, delay: 0.1 + i * 0.06 }
                 }
               />
             ))}
+          </motion.div>
 
-            {/* light streaks trailing the incoming slices */}
-            {!reduce &&
-              QUADRANTS.map((q, i) => (
-                <motion.div
-                  key={`streak-${q.key}`}
-                  className="absolute pointer-events-none"
-                  style={{
-                    left: '50%',
-                    top: '50%',
-                    width: 2,
-                    height: 220,
-                    transformOrigin: 'center top',
-                    background:
-                      'linear-gradient(to bottom, rgba(255,255,255,0.5), transparent)',
-                    rotate: `${Math.atan2(q.fromY, q.fromX) * (180 / Math.PI) - 90}deg`,
-                  }}
-                  initial={{ opacity: 0, scaleY: 0 }}
-                  animate={{ opacity: [0, 0.5, 0], scaleY: [0.2, 1, 0] }}
-                  transition={{ duration: 0.6, delay: 0.15 + i * 0.06, ease: 'easeOut' }}
-                />
-              ))}
-          </div>
-
-          {/* NEXUS — letter by letter */}
+          {/* NEXUS — letter by letter, then retracts on reverse */}
           <div className="flex items-center" style={{ gap: '0.14em' }}>
             {WORD.map((ch, i) => (
               <motion.span
                 key={i}
                 initial={reduce ? { opacity: 0 } : { opacity: 0, y: 10, filter: 'blur(6px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                animate={
+                  reduce
+                    ? { opacity: 1 }
+                    : out
+                    ? { opacity: 0, y: -8, filter: 'blur(4px)' }
+                    : { opacity: 1, y: 0, filter: 'blur(0px)' }
+                }
                 transition={{
-                  duration: 0.5,
-                  delay: (reduce ? 0.4 : 1.15) + i * 0.11,
+                  duration: out ? 0.3 : 0.5,
+                  delay: out ? i * 0.03 : (reduce ? 0.4 : 1.1) + i * 0.11,
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 style={{
@@ -150,11 +151,10 @@ export function Splash({ onDone }: { onDone: () => void }) {
             ))}
           </div>
 
-          {/* tagline */}
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.55 }}
-            transition={{ duration: 0.6, delay: reduce ? 0.7 : 1.95 }}
+            animate={{ opacity: out ? 0 : 0.55 }}
+            transition={{ duration: out ? 0.25 : 0.6, delay: out ? 0 : (reduce ? 0.7 : 1.9) }}
             style={{ color: '#A1A1AA', fontSize: 'clamp(11px, 2.6vw, 13px)', letterSpacing: '0.08em', marginTop: 14 }}
           >
             The Operating System for Creative Enterprises
