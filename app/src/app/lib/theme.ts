@@ -21,7 +21,8 @@ const ACCENT_KEY = 'nexus-accent';
 const MODE_KEY = 'nexus-color-mode';
 const SCALE_KEY = 'nexus-font-scale';
 
-const SCALE_VALUE: Record<FontScale, string> = { small: '0.92', default: '1', large: '1.08' };
+// Scales TEXT only (via the --fs multiplier on every font-size), not the layout.
+const SCALE_VALUE: Record<FontScale, string> = { small: '0.9', default: '1', large: '1.12' };
 
 // --- Accent ---------------------------------------------------------------
 export function applyAccent(accent: Accent) {
@@ -60,7 +61,8 @@ export function currentMode(): ColorMode {
 
 // --- Font scale -----------------------------------------------------------
 export function applyFontScale(scale: FontScale) {
-  document.documentElement.style.setProperty('zoom', SCALE_VALUE[scale]);
+  document.documentElement.style.removeProperty('zoom'); // undo the old whole-page zoom approach
+  document.documentElement.style.setProperty('--fs', SCALE_VALUE[scale]);
   localStorage.setItem(SCALE_KEY, scale);
 }
 

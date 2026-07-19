@@ -2,6 +2,7 @@
 
 :root {
   --font-size: 16px;
+  --fs: 1; /* text-size multiplier (Settings → Theme → Font Size) */
 
   /* NEXUS accent (switchable in Settings → Theme) */
   --accent: #4FD1C5;

@@ -16,11 +16,11 @@ export function AIChip({ text, className }: AIChipProps) {
         borderRadius: 8,
         padding: '6px 10px',
         color: 'var(--accent)',
-        fontSize: 12,
+        fontSize: 'calc(12px * var(--fs))',
         lineHeight: 1.4,
       }}
     >
-      <span style={{ fontSize: 11, marginTop: 1, opacity: 0.8, flexShrink: 0 }}>✦</span>
+      <span style={{ fontSize: 'calc(11px * var(--fs))', marginTop: 1, opacity: 0.8, flexShrink: 0 }}>✦</span>
       <span>{text}</span>
     </div>
   );

@@ -46,11 +46,11 @@ function NotificationRow({ notif, onRead, onAction }: { notif: Notification; onR
       {/* Content */}
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-3">
-          <div style={{ color: 'var(--text)', fontSize: 13, fontWeight: notif.read ? 400 : 600, lineHeight: 1.4 }}>
+          <div style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: notif.read ? 400 : 600, lineHeight: 1.4 }}>
             {notif.title}
           </div>
           <div className="flex items-center gap-2 shrink-0">
-            <span style={{ color: 'var(--text-dim)', fontSize: 11, whiteSpace: 'nowrap' }}>{notif.timestamp}</span>
+            <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))', whiteSpace: 'nowrap' }}>{notif.timestamp}</span>
             {!notif.read && (
               <div
                 className="rounded-full shrink-0"
@@ -59,14 +59,14 @@ function NotificationRow({ notif, onRead, onAction }: { notif: Notification; onR
             )}
           </div>
         </div>
-        <p style={{ color: 'var(--text-dim)', fontSize: 12, lineHeight: 1.5, marginTop: 3 }}>{notif.message}</p>
+        <p style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))', lineHeight: 1.5, marginTop: 3 }}>{notif.message}</p>
         <div className="flex items-center gap-3 mt-2.5">
           {notif.action && (
             <button
               onClick={() => onAction(notif)}
               style={{
                 color: 'var(--accent)',
-                fontSize: 12,
+                fontSize: 'calc(12px * var(--fs))',
                 fontWeight: 500,
                 background: 'none',
                 border: 'none',
@@ -81,7 +81,7 @@ function NotificationRow({ notif, onRead, onAction }: { notif: Notification; onR
             <button
               onClick={() => onRead(notif.id)}
               className="flex items-center gap-1"
-              style={{ color: 'var(--text-dim)', fontSize: 11, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+              style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
             >
               <Check size={11} /> Mark read
             </button>
@@ -128,11 +128,11 @@ export function NotificationsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <h1 style={{ color: 'var(--text)', fontSize: 24, fontWeight: 600 }}>Notifications</h1>
+          <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600 }}>Notifications</h1>
           {unreadCount > 0 && (
             <span
               className="flex items-center justify-center rounded-full"
-              style={{ width: 22, height: 22, background: 'var(--accent)', color: '#0B0B0F', fontSize: 11, fontWeight: 700 }}
+              style={{ width: 22, height: 22, background: 'var(--accent)', color: '#0B0B0F', fontSize: 'calc(11px * var(--fs))', fontWeight: 700 }}
             >
               {unreadCount}
             </span>
@@ -143,7 +143,7 @@ export function NotificationsPage() {
             onClick={markAllRead}
             style={{
               color: 'var(--text-dim)',
-              fontSize: 13,
+              fontSize: 'calc(13px * var(--fs))',
               background: 'none',
               border: '1px solid var(--hair-2)',
               borderRadius: 8,
@@ -167,7 +167,7 @@ export function NotificationsPage() {
               background: activeTab === tab ? 'rgba(var(--accent-rgb),0.1)' : 'transparent',
               border: `1px solid ${activeTab === tab ? 'rgba(var(--accent-rgb),0.3)' : 'var(--hair)'}`,
               color: activeTab === tab ? 'var(--accent)' : 'var(--text-dim)',
-              fontSize: 12,
+              fontSize: 'calc(12px * var(--fs))',
               fontWeight: activeTab === tab ? 500 : 400,
               borderRadius: 8,
               padding: '6px 16px',
@@ -182,7 +182,7 @@ export function NotificationsPage() {
                   marginLeft: 6,
                   background: 'var(--accent)',
                   color: '#0B0B0F',
-                  fontSize: 10,
+                  fontSize: 'calc(10px * var(--fs))',
                   fontWeight: 700,
                   borderRadius: 10,
                   padding: '1px 5px',
@@ -200,7 +200,7 @@ export function NotificationsPage() {
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20" style={{ color: 'var(--text-dim)' }}>
             <CheckCircle size={36} style={{ opacity: 0.2, marginBottom: 12 }} />
-            <p style={{ fontSize: 14 }}>All caught up!</p>
+            <p style={{ fontSize: 'calc(14px * var(--fs))' }}>All caught up!</p>
           </div>
         ) : (
           filtered.map((notif, i) => (
@@ -267,8 +267,8 @@ function InvoiceDialog({ notif, clients, onClose }: { notif: Notification | null
                   <ImageWithFallback src={nexusEmblem} alt="NEXUS" className="w-full h-full object-cover" />
                 </div>
                 <div>
-                  <div className="tracking-widest" style={{ color: 'var(--text)', fontSize: 12, fontWeight: 700, letterSpacing: '0.16em' }}>NEXUS STUDIO</div>
-                  <div style={{ color: 'var(--text-dim)', fontSize: 11 }}>Invoice #{invoiceNo}</div>
+                  <div className="tracking-widest" style={{ color: 'var(--text)', fontSize: 'calc(12px * var(--fs))', fontWeight: 700, letterSpacing: '0.16em' }}>NEXUS STUDIO</div>
+                  <div style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>Invoice #{invoiceNo}</div>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -278,7 +278,7 @@ function InvoiceDialog({ notif, clients, onClose }: { notif: Notification | null
                     background: paid ? 'rgba(34,197,94,0.1)' : 'rgba(255,181,71,0.1)',
                     border: `1px solid ${paid ? 'rgba(34,197,94,0.35)' : 'rgba(255,181,71,0.35)'}`,
                     color: paid ? '#22C55E' : '#FFB547',
-                    fontSize: 11,
+                    fontSize: 'calc(11px * var(--fs))',
                     fontWeight: 700,
                     letterSpacing: '0.08em',
                   }}
@@ -299,14 +299,14 @@ function InvoiceDialog({ notif, clients, onClose }: { notif: Notification | null
             <div className="px-7 py-6">
               <div className="flex justify-between mb-6">
                 <div>
-                  <div style={{ color: 'var(--text-dim)', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', marginBottom: 6 }}>BILLED TO</div>
-                  <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>{client?.name}</div>
-                  <div style={{ color: 'var(--text-dim)', fontSize: 12 }}>{client?.industry}</div>
+                  <div style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 6 }}>BILLED TO</div>
+                  <div style={{ color: 'var(--text)', fontSize: 'calc(14px * var(--fs))', fontWeight: 600 }}>{client?.name}</div>
+                  <div style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))' }}>{client?.industry}</div>
                 </div>
                 <div className="text-right">
-                  <div style={{ color: 'var(--text-dim)', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', marginBottom: 6 }}>PROJECT</div>
-                  <div style={{ color: 'var(--text)', fontSize: 13 }}>{project}</div>
-                  <div style={{ color: 'var(--text-dim)', fontSize: 11, marginTop: 4 }}>Net 30 · {notif.timestamp}</div>
+                  <div style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))', fontWeight: 600, letterSpacing: '0.08em', marginBottom: 6 }}>PROJECT</div>
+                  <div style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))' }}>{project}</div>
+                  <div style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))', marginTop: 4 }}>Net 30 · {notif.timestamp}</div>
                 </div>
               </div>
 
@@ -320,16 +320,16 @@ function InvoiceDialog({ notif, clients, onClose }: { notif: Notification | null
                       borderBottom: i < items.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
                     }}
                   >
-                    <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>{item.label}</span>
-                    <span style={{ color: 'var(--text)', fontSize: 13, fontWeight: 500 }}>{fmt(item.value)}</span>
+                    <span style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))' }}>{item.label}</span>
+                    <span style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 500 }}>{fmt(item.value)}</span>
                   </div>
                 ))}
               </div>
 
               <div className="flex justify-end mt-5">
                 <div className="text-right">
-                  <div style={{ color: 'var(--text-dim)', fontSize: 12, marginBottom: 2 }}>Total due</div>
-                  <div style={{ color: 'var(--accent)', fontSize: 26, fontWeight: 700 }}>{fmt(amount)}</div>
+                  <div style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))', marginBottom: 2 }}>Total due</div>
+                  <div style={{ color: 'var(--accent)', fontSize: 'calc(26px * var(--fs))', fontWeight: 700 }}>{fmt(amount)}</div>
                 </div>
               </div>
 
@@ -337,7 +337,7 @@ function InvoiceDialog({ notif, clients, onClose }: { notif: Notification | null
                 className="mt-6 rounded-lg px-4 py-3"
                 style={{ background: 'rgba(var(--accent-rgb),0.05)', border: '1px solid rgba(var(--accent-rgb),0.15)' }}
               >
-                <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>
+                <span style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))' }}>
                   {paid
                     ? `Payment received from ${client?.name}. Reconciled automatically by Core.`
                     : `Core will follow up automatically if unpaid after 14 days.`}

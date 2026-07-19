@@ -26,8 +26,8 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
         <div>
-          <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600, lineHeight: 1.3 }}>{project.name}</div>
-          <div style={{ color: 'var(--text-dim)', fontSize: 12, marginTop: 2 }}>{project.client}</div>
+          <div style={{ color: 'var(--text)', fontSize: 'calc(14px * var(--fs))', fontWeight: 600, lineHeight: 1.3 }}>{project.name}</div>
+          <div style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))', marginTop: 2 }}>{project.client}</div>
         </div>
         <RiskBadge level={project.risk} />
       </div>
@@ -35,8 +35,8 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
       {/* Progress */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <span style={{ color: 'var(--text-dim)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Progress</span>
-          <span style={{ color: 'var(--text)', fontSize: 13, fontWeight: 600 }}>{project.progress}%</span>
+          <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Progress</span>
+          <span style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 600 }}>{project.progress}%</span>
         </div>
         <div className="rounded-full overflow-hidden" style={{ height: 5, background: 'var(--hair)' }}>
           <motion.div
@@ -59,15 +59,15 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5">
           <Calendar size={12} style={{ color: 'var(--text-dim)' }} />
-          <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>{project.deadline}</span>
+          <span style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))' }}>{project.deadline}</span>
         </div>
         <TeamAvatarStack avatars={project.team} max={3} size={24} />
       </div>
 
       {/* Budget */}
       <div className="flex items-center justify-between">
-        <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>Budget</span>
-        <span style={{ color: 'var(--text)', fontSize: 13, fontWeight: 500 }}>{project.budget}</span>
+        <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>Budget</span>
+        <span style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 500 }}>{project.budget}</span>
       </div>
 
       {/* AI Chip */}
@@ -99,8 +99,8 @@ export function ProjectsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 style={{ color: 'var(--text)', fontSize: 24, fontWeight: 600 }}>Projects</h1>
-          <p style={{ color: 'var(--text-dim)', fontSize: 13, marginTop: 2 }}>{PROJECTS.length} total · {PROJECTS.filter(p => p.status === 'active').length} active</p>
+          <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600 }}>Projects</h1>
+          <p style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))', marginTop: 2 }}>{PROJECTS.length} total · {PROJECTS.filter(p => p.status === 'active').length} active</p>
         </div>
         <motion.button
           whileHover={{ background: 'var(--accent-hover)' }}
@@ -109,7 +109,7 @@ export function ProjectsPage() {
           style={{
             background: 'var(--accent)',
             color: '#0B0B0F',
-            fontSize: 13,
+            fontSize: 'calc(13px * var(--fs))',
             fontWeight: 600,
             border: 'none',
             cursor: 'pointer',
@@ -137,7 +137,7 @@ export function ProjectsPage() {
               border: 'none',
               outline: 'none',
               color: 'var(--text)',
-              fontSize: 13,
+              fontSize: 'calc(13px * var(--fs))',
               width: '100%',
             }}
           />
@@ -151,7 +151,7 @@ export function ProjectsPage() {
                 background: activeFilter === f ? 'rgba(var(--accent-rgb),0.1)' : 'transparent',
                 border: `1px solid ${activeFilter === f ? 'rgba(var(--accent-rgb),0.3)' : 'var(--hair)'}`,
                 color: activeFilter === f ? 'var(--accent)' : 'var(--text-dim)',
-                fontSize: 12,
+                fontSize: 'calc(12px * var(--fs))',
                 fontWeight: activeFilter === f ? 500 : 400,
                 borderRadius: 8,
                 padding: '6px 14px',
@@ -168,19 +168,19 @@ export function ProjectsPage() {
           style={{ background: 'var(--surface)', border: '1px solid var(--hair)', cursor: 'pointer' }}
         >
           <SlidersHorizontal size={14} style={{ color: 'var(--text-dim)' }} />
-          <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>Sort</span>
+          <span style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))' }}>Sort</span>
         </div>
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {filtered.map((project, i) => (
           <ProjectCard key={project.id} project={project} delay={i * 0.07} />
         ))}
         {filtered.length === 0 && (
           <div className="col-span-3 flex flex-col items-center justify-center py-20" style={{ color: 'var(--text-dim)' }}>
             <Search size={32} style={{ opacity: 0.3, marginBottom: 12 }} />
-            <p style={{ fontSize: 14 }}>No projects match your search</p>
+            <p style={{ fontSize: 'calc(14px * var(--fs))' }}>No projects match your search</p>
           </div>
         )}
       </div>

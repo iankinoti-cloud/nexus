@@ -32,7 +32,7 @@ export function KPICard({ label, value, change, changeType, icon: Icon, delay = 
       }}
     >
       <div className="flex items-center justify-between">
-        <span style={{ color: 'var(--text-dim)', fontSize: 12, fontWeight: 500, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+        <span style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))', fontWeight: 500, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
           {label}
         </span>
         <div
@@ -43,10 +43,10 @@ export function KPICard({ label, value, change, changeType, icon: Icon, delay = 
         </div>
       </div>
       <div>
-        <div style={{ color: 'var(--text)', fontSize: 28, fontWeight: 600, lineHeight: 1.1 }}>{value}</div>
+        <div style={{ color: 'var(--text)', fontSize: 'calc(28px * var(--fs))', fontWeight: 600, lineHeight: 1.1 }}>{value}</div>
         <div className="flex items-center gap-1.5 mt-2">
           <ChangeIcon size={12} style={{ color: changeColor }} />
-          <span style={{ color: changeColor, fontSize: 12 }}>{change}</span>
+          <span style={{ color: changeColor, fontSize: 'calc(12px * var(--fs))' }}>{change}</span>
         </div>
       </div>
     </motion.div>

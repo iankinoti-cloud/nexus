@@ -43,10 +43,10 @@ export function LoginScreen() {
           <ImageWithFallback src={nexusEmblem} alt="NEXUS" className="w-full h-full object-cover" />
         </motion.div>
 
-        <div className="tracking-widest mb-1" style={{ color: 'var(--text)', fontSize: 22, fontWeight: 700, letterSpacing: '0.22em' }}>
+        <div className="tracking-widest mb-1" style={{ color: 'var(--text)', fontSize: 'calc(22px * var(--fs))', fontWeight: 700, letterSpacing: '0.22em' }}>
           NEXUS
         </div>
-        <p style={{ color: 'var(--text-dim)', fontSize: 14, marginBottom: authError ? 20 : 36 }}>
+        <p style={{ color: 'var(--text-dim)', fontSize: 'calc(14px * var(--fs))', marginBottom: authError ? 20 : 36 }}>
           The Operating System for Creative Enterprises.
         </p>
 
@@ -56,7 +56,7 @@ export function LoginScreen() {
             style={{ background: 'rgba(255,107,107,0.08)', border: '1px solid rgba(255,107,107,0.3)' }}
           >
             <AlertTriangle size={14} style={{ color: '#FF6B6B', flexShrink: 0, marginTop: 2 }} />
-            <span style={{ color: '#FF6B6B', fontSize: 12, lineHeight: 1.5 }}>
+            <span style={{ color: '#FF6B6B', fontSize: 'calc(12px * var(--fs))', lineHeight: 1.5 }}>
               Sign-in failed: {authError}
             </span>
           </div>
@@ -70,7 +70,7 @@ export function LoginScreen() {
           style={{
             background: 'var(--text)',
             color: '#0B0B0F',
-            fontSize: 14,
+            fontSize: 'calc(14px * var(--fs))',
             fontWeight: 600,
             border: 'none',
             cursor: 'pointer',
@@ -89,7 +89,7 @@ export function LoginScreen() {
             background: 'transparent',
             border: '1px solid rgba(255,255,255,0.12)',
             color: 'var(--text-dim)',
-            fontSize: 13,
+            fontSize: 'calc(13px * var(--fs))',
             cursor: 'pointer',
             transition: 'all 0.15s ease',
           }}
@@ -97,7 +97,7 @@ export function LoginScreen() {
           Explore as guest
         </motion.button>
 
-        <p style={{ color: 'var(--text-dim)', fontSize: 11, marginTop: 28, opacity: 0.6 }}>
+        <p style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))', marginTop: 28, opacity: 0.6 }}>
           Guest sessions run locally. Sign in to sync your workspace across devices.
         </p>
       </motion.div>

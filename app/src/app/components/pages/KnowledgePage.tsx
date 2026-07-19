@@ -42,25 +42,25 @@ function NoteCard({ note, highlighted, delay }: { note: KnowledgeNote; highlight
         >
           <Icon size={12} style={{ color: meta.color }} />
         </div>
-        <span style={{ color: meta.color, fontSize: 11, fontWeight: 600 }}>{meta.label}</span>
-        <span className="ml-auto" style={{ color: 'var(--text-dim)', fontSize: 11 }}>{note.date}</span>
+        <span style={{ color: meta.color, fontSize: 'calc(11px * var(--fs))', fontWeight: 600 }}>{meta.label}</span>
+        <span className="ml-auto" style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>{note.date}</span>
         {highlighted && (
           <span
             className="rounded-full px-2 py-0.5 flex items-center gap-1"
-            style={{ background: 'rgba(var(--accent-rgb),0.12)', color: 'var(--accent)', fontSize: 10, fontWeight: 600 }}
+            style={{ background: 'rgba(var(--accent-rgb),0.12)', color: 'var(--accent)', fontSize: 'calc(10px * var(--fs))', fontWeight: 600 }}
           >
             <Sparkles size={9} /> SOURCE
           </span>
         )}
       </div>
-      <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 500, marginBottom: 6 }}>{note.title}</div>
-      <p style={{ color: 'var(--text-dim)', fontSize: 12.5, lineHeight: 1.6 }}>{note.content}</p>
+      <div style={{ color: 'var(--text)', fontSize: 'calc(14px * var(--fs))', fontWeight: 500, marginBottom: 6 }}>{note.title}</div>
+      <p style={{ color: 'var(--text-dim)', fontSize: 'calc(12.5px * var(--fs))', lineHeight: 1.6 }}>{note.content}</p>
       <div className="flex flex-wrap gap-1.5 mt-3">
         {note.tags.map(tag => (
           <span
             key={tag}
             className="rounded-full px-2 py-0.5"
-            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--hair)', color: 'var(--text-dim)', fontSize: 10.5 }}
+            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--hair)', color: 'var(--text-dim)', fontSize: 'calc(10.5px * var(--fs))' }}
           >
             {tag}
           </span>
@@ -111,8 +111,8 @@ export function KnowledgePage() {
             <BookOpen size={18} style={{ color: 'var(--accent)' }} />
           </div>
           <div>
-            <h1 style={{ color: 'var(--text)', fontSize: 24, fontWeight: 600 }}>Knowledge</h1>
-            <p style={{ color: 'var(--text-dim)', fontSize: 13 }}>Your organization never forgets.</p>
+            <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600 }}>Knowledge</h1>
+            <p style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))' }}>Your organization never forgets.</p>
           </div>
         </div>
       </motion.div>
@@ -136,7 +136,7 @@ export function KnowledgePage() {
             placeholder='Ask organizational memory anything — e.g. "What did we learn from the Titan rebranding?"'
             style={{
               flex: 1, background: 'transparent', border: 'none', outline: 'none',
-              color: 'var(--text)', fontSize: 14,
+              color: 'var(--text)', fontSize: 'calc(14px * var(--fs))',
             }}
           />
           <motion.button
@@ -147,7 +147,7 @@ export function KnowledgePage() {
             style={{
               background: query.trim() ? 'var(--accent)' : 'rgba(var(--accent-rgb),0.15)',
               color: query.trim() ? '#0B0B0F' : 'var(--accent)',
-              fontSize: 13, fontWeight: 600, border: 'none',
+              fontSize: 'calc(13px * var(--fs))', fontWeight: 600, border: 'none',
               cursor: query.trim() ? 'pointer' : 'default',
               transition: 'background 0.15s ease',
             }}
@@ -162,7 +162,7 @@ export function KnowledgePage() {
               onClick={() => handleSearch(q)}
               style={{
                 background: 'rgba(255,255,255,0.04)', border: '1px solid var(--hair-2)',
-                color: 'var(--text-dim)', fontSize: 12, borderRadius: 20, padding: '5px 12px', cursor: 'pointer',
+                color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))', borderRadius: 20, padding: '5px 12px', cursor: 'pointer',
               }}
             >
               {q}
@@ -189,7 +189,7 @@ export function KnowledgePage() {
                 style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', opacity: 0.7 }}
               />
             ))}
-            <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>Searching organizational memory…</span>
+            <span style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))' }}>Searching organizational memory…</span>
           </motion.div>
         )}
         {result && (
@@ -206,16 +206,16 @@ export function KnowledgePage() {
           >
             <div className="flex items-center gap-2 mb-2">
               {result.offline ? <WifiOff size={13} style={{ color: '#FFB547' }} /> : <Sparkles size={13} style={{ color: 'var(--accent)' }} />}
-              <span style={{ color: result.offline ? '#FFB547' : 'var(--accent)', fontSize: 12, fontWeight: 600 }}>
+              <span style={{ color: result.offline ? '#FFB547' : 'var(--accent)', fontSize: 'calc(12px * var(--fs))', fontWeight: 600 }}>
                 {result.offline ? 'Offline keyword search' : 'Core · semantic answer'}
               </span>
               {result.sourceIds.length > 0 && (
-                <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>
+                <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>
                   · {result.sourceIds.length} source{result.sourceIds.length > 1 ? 's' : ''} cited below
                 </span>
               )}
             </div>
-            <p style={{ color: 'var(--text)', fontSize: 14, lineHeight: 1.65, whiteSpace: 'pre-wrap' }}>{result.answer}</p>
+            <p style={{ color: 'var(--text)', fontSize: 'calc(14px * var(--fs))', lineHeight: 1.65, whiteSpace: 'pre-wrap' }}>{result.answer}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -234,7 +234,7 @@ export function KnowledgePage() {
                 background: active ? 'rgba(var(--accent-rgb),0.1)' : 'transparent',
                 border: `1px solid ${active ? 'rgba(var(--accent-rgb),0.3)' : 'var(--hair-2)'}`,
                 color: active ? 'var(--accent)' : 'var(--text-dim)',
-                fontSize: 12, fontWeight: active ? 600 : 400, cursor: 'pointer',
+                fontSize: 'calc(12px * var(--fs))', fontWeight: active ? 600 : 400, cursor: 'pointer',
                 transition: 'all 0.15s ease',
               }}
             >

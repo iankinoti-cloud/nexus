@@ -31,7 +31,7 @@ export function RiskBadge({ level }: RiskBadgeProps) {
         color: c.color,
         background: c.bg,
         border: `1px solid ${c.border}`,
-        fontSize: 11,
+        fontSize: 'calc(11px * var(--fs))',
         fontWeight: 500,
         borderRadius: 6,
         padding: '2px 8px',

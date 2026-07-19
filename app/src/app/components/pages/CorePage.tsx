@@ -24,10 +24,10 @@ function UserMessage({ msg }: { msg: CoreChatMsg }) {
     >
       <div
         className="rounded-xl px-4 py-3 max-w-[520px]"
-        style={{ background: 'var(--surface-2)', border: '1px solid var(--hair-2)', color: 'var(--text)', fontSize: 14 }}
+        style={{ background: 'var(--surface-2)', border: '1px solid var(--hair-2)', color: 'var(--text)', fontSize: 'calc(14px * var(--fs))' }}
       >
         {msg.content}
-        <div style={{ color: 'var(--text-dim)', fontSize: 11, marginTop: 4, textAlign: 'right' }}>{msg.timestamp}</div>
+        <div style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))', marginTop: 4, textAlign: 'right' }}>{msg.timestamp}</div>
       </div>
     </motion.div>
   );
@@ -49,8 +49,8 @@ function CoreMessage({ msg, onApply }: { msg: CoreChatMsg; onApply: (msgId: stri
           >
             <Cpu size={12} style={{ color: 'var(--accent)' }} />
           </div>
-          <span style={{ color: 'var(--accent)', fontSize: 12, fontWeight: 600 }}>Core</span>
-          <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>{msg.timestamp}</span>
+          <span style={{ color: 'var(--accent)', fontSize: 'calc(12px * var(--fs))', fontWeight: 600 }}>Core</span>
+          <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>{msg.timestamp}</span>
         </div>
         <div
           className="rounded-xl p-4"
@@ -60,7 +60,7 @@ function CoreMessage({ msg, onApply }: { msg: CoreChatMsg; onApply: (msgId: stri
             borderLeft: '3px solid var(--accent)',
           }}
         >
-          <p style={{ color: 'var(--text-dim)', fontSize: 14, marginBottom: msg.recommendations?.length ? 14 : 0, whiteSpace: 'pre-wrap' }}>
+          <p style={{ color: 'var(--text-dim)', fontSize: 'calc(14px * var(--fs))', marginBottom: msg.recommendations?.length ? 14 : 0, whiteSpace: 'pre-wrap' }}>
             {msg.content}
             {msg.streaming && <span className="animate-pulse" style={{ color: 'var(--accent)' }}>▍</span>}
           </p>
@@ -72,8 +72,8 @@ function CoreMessage({ msg, onApply }: { msg: CoreChatMsg; onApply: (msgId: stri
                   className="rounded-lg p-3"
                   style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--hair)' }}
                 >
-                  <div style={{ color: 'var(--text)', fontSize: 13, fontWeight: 500, marginBottom: 4 }}>{rec.title}</div>
-                  <div style={{ color: 'var(--text-dim)', fontSize: 12, lineHeight: 1.5, marginBottom: rec.action && rec.action.type !== 'none' ? 10 : 0 }}>
+                  <div style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 500, marginBottom: 4 }}>{rec.title}</div>
+                  <div style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))', lineHeight: 1.5, marginBottom: rec.action && rec.action.type !== 'none' ? 10 : 0 }}>
                     {rec.description}
                   </div>
                   {rec.action && rec.action.type !== 'none' && (
@@ -86,7 +86,7 @@ function CoreMessage({ msg, onApply }: { msg: CoreChatMsg; onApply: (msgId: stri
                         background: rec.applied ? 'rgba(34,197,94,0.08)' : 'rgba(var(--accent-rgb),0.07)',
                         border: `1px solid ${rec.applied ? 'rgba(34,197,94,0.25)' : 'rgba(var(--accent-rgb),0.2)'}`,
                         color: rec.applied ? '#22C55E' : 'var(--accent)',
-                        fontSize: 12,
+                        fontSize: 'calc(12px * var(--fs))',
                         fontWeight: 500,
                         cursor: rec.applied ? 'default' : 'pointer',
                         transition: 'all 0.15s ease',
@@ -204,7 +204,7 @@ export function CorePage() {
             <Cpu size={18} style={{ color: 'var(--accent)' }} />
           </div>
           <div>
-            <div style={{ color: 'var(--text)', fontSize: 16, fontWeight: 600 }}>Core</div>
+            <div style={{ color: 'var(--text)', fontSize: 'calc(16px * var(--fs))', fontWeight: 600 }}>Core</div>
           </div>
         </div>
         {aiStatus === false ? (
@@ -213,7 +213,7 @@ export function CorePage() {
             style={{ background: 'rgba(255,181,71,0.08)', border: '1px solid rgba(255,181,71,0.2)' }}
           >
             <WifiOff size={12} style={{ color: '#FFB547' }} />
-            <span style={{ color: '#FFB547', fontSize: 12 }}>Offline — local analysis</span>
+            <span style={{ color: '#FFB547', fontSize: 'calc(12px * var(--fs))' }}>Offline — local analysis</span>
           </div>
         ) : (
           <div
@@ -221,7 +221,7 @@ export function CorePage() {
             style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)' }}
           >
             <div className="rounded-full" style={{ width: 6, height: 6, background: '#22C55E' }} />
-            <span style={{ color: '#22C55E', fontSize: 12 }}>All systems connected</span>
+            <span style={{ color: '#22C55E', fontSize: 'calc(12px * var(--fs))' }}>All systems connected</span>
           </div>
         )}
       </motion.div>
@@ -285,7 +285,7 @@ export function CorePage() {
                     background: 'rgba(255,255,255,0.04)',
                     border: '1px solid var(--hair-2)',
                     color: 'var(--text-dim)',
-                    fontSize: 12,
+                    fontSize: 'calc(12px * var(--fs))',
                     borderRadius: 20,
                     padding: '6px 14px',
                     cursor: 'pointer',
@@ -332,14 +332,14 @@ export function CorePage() {
                 border: 'none',
                 outline: 'none',
                 color: 'var(--text)',
-                fontSize: 14,
+                fontSize: 'calc(14px * var(--fs))',
                 resize: 'none',
                 lineHeight: 1.5,
                 fontFamily: 'inherit',
               }}
             />
             <div className="flex items-center gap-2 shrink-0">
-              <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>⌘ Enter</span>
+              <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>⌘ Enter</span>
               <motion.button
                 whileHover={{ background: 'var(--accent-hover)' }}
                 whileTap={{ scale: 0.95 }}

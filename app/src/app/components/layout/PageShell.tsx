@@ -15,7 +15,7 @@ export function PageShell({ children, fullHeight }: PageShellProps) {
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.28, ease: 'easeOut' }}
-        className={fullHeight ? 'h-full flex flex-col' : 'p-8 max-w-[1200px] mx-auto'}
+        className={fullHeight ? 'h-full flex flex-col' : 'p-4 sm:p-6 md:p-8 max-w-[1200px] mx-auto'}
       >
         {children}
       </motion.div>

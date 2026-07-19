@@ -35,7 +35,7 @@ export function WorkloadRing({ value, size = 72 }: WorkloadRingProps) {
         />
       </svg>
       <div className="absolute flex flex-col items-center">
-        <span style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>{value}%</span>
+        <span style={{ color: 'var(--text)', fontSize: 'calc(14px * var(--fs))', fontWeight: 600 }}>{value}%</span>
       </div>
     </div>
   );

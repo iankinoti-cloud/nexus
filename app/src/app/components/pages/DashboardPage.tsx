@@ -80,10 +80,10 @@ export function DashboardPage() {
         className="mb-8 flex items-start justify-between"
       >
         <div>
-          <h1 style={{ color: 'var(--text)', fontSize: 28, fontWeight: 600, lineHeight: 1.2 }}>
+          <h1 style={{ color: 'var(--text)', fontSize: 'calc(28px * var(--fs))', fontWeight: 600, lineHeight: 1.2 }}>
             {greeting}, {displayName}.
           </h1>
-          <p style={{ color: 'var(--text-dim)', fontSize: 15, marginTop: 6 }}>
+          <p style={{ color: 'var(--text-dim)', fontSize: 'calc(15px * var(--fs))', marginTop: 6 }}>
             Everything is running smoothly.
           </p>
         </div>
@@ -92,19 +92,19 @@ export function DashboardPage() {
           style={{ background: 'var(--surface)', border: '1px solid var(--hair)' }}
         >
           <Calendar size={14} style={{ color: 'var(--text-dim)' }} />
-          <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>{dateStr}</span>
+          <span style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))' }}>{dateStr}</span>
         </div>
       </motion.div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-4 gap-4 mb-7">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-7">
         {KPIs.map((kpi, i) => (
           <KPICard key={kpi.label} {...kpi} delay={i * 0.07} />
         ))}
       </div>
 
       {/* Middle Row */}
-      <div className="grid gap-5 mb-7" style={{ gridTemplateColumns: '1fr 380px' }}>
+      <div className="grid gap-5 mb-7 grid-cols-1 lg:grid-cols-[1fr_380px]">
         {/* Core Intelligence Panel */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
@@ -122,13 +122,13 @@ export function DashboardPage() {
                 <Cpu size={15} style={{ color: 'var(--accent)' }} />
               </div>
               <div>
-                <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>Core Intelligence</div>
-                <div style={{ color: 'var(--text-dim)', fontSize: 11 }}>3 active recommendations</div>
+                <div style={{ color: 'var(--text)', fontSize: 'calc(14px * var(--fs))', fontWeight: 600 }}>Core Intelligence</div>
+                <div style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>3 active recommendations</div>
               </div>
             </div>
             <span
               className="rounded-full px-2 py-0.5"
-              style={{ background: 'rgba(var(--accent-rgb),0.1)', color: 'var(--accent)', fontSize: 11 }}
+              style={{ background: 'rgba(var(--accent-rgb),0.1)', color: 'var(--accent)', fontSize: 'calc(11px * var(--fs))' }}
             >
               Live
             </span>
@@ -143,15 +143,15 @@ export function DashboardPage() {
                     style={{ width: 7, height: 7, background: appliedInsights.includes(i) ? '#22C55E' : ins.color, marginTop: 6 }}
                   />
                   <div className="flex-1">
-                    <div className="flex items-center gap-2" style={{ color: 'var(--text)', fontSize: 13, fontWeight: 500, marginBottom: 3 }}>
+                    <div className="flex items-center gap-2" style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 500, marginBottom: 3 }}>
                       {ins.title}
                       {appliedInsights.includes(i) && (
-                        <span className="flex items-center gap-1" style={{ color: '#22C55E', fontSize: 10, fontWeight: 600 }}>
+                        <span className="flex items-center gap-1" style={{ color: '#22C55E', fontSize: 'calc(10px * var(--fs))', fontWeight: 600 }}>
                           <Check size={10} /> APPLIED
                         </span>
                       )}
                     </div>
-                    <div style={{ color: 'var(--text-dim)', fontSize: 12, lineHeight: 1.5 }}>
+                    <div style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))', lineHeight: 1.5 }}>
                       {ins.description}
                     </div>
                   </div>
@@ -172,7 +172,7 @@ export function DashboardPage() {
               background: nextActionable === -1 ? 'rgba(34,197,94,0.07)' : 'rgba(var(--accent-rgb),0.07)',
               border: `1px solid ${nextActionable === -1 ? 'rgba(34,197,94,0.25)' : 'rgba(var(--accent-rgb),0.25)'}`,
               color: nextActionable === -1 ? '#22C55E' : 'var(--accent)',
-              fontSize: 13,
+              fontSize: 'calc(13px * var(--fs))',
               fontWeight: 500,
               cursor: nextActionable === -1 ? 'default' : 'pointer',
               transition: 'background 0.15s ease',
@@ -195,11 +195,11 @@ export function DashboardPage() {
           style={{ background: 'var(--surface)', border: '1px solid var(--hair)' }}
         >
           <div className="flex items-center justify-between mb-1">
-            <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>Revenue Trend</div>
-            <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>Last 30 days</span>
+            <div style={{ color: 'var(--text)', fontSize: 'calc(14px * var(--fs))', fontWeight: 600 }}>Revenue Trend</div>
+            <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>Last 30 days</span>
           </div>
-          <div style={{ color: 'var(--accent)', fontSize: 26, fontWeight: 600, marginBottom: 4 }}>$284K</div>
-          <div style={{ color: '#22C55E', fontSize: 12, marginBottom: 16 }}>↑ +12% vs last month</div>
+          <div style={{ color: 'var(--accent)', fontSize: 'calc(26px * var(--fs))', fontWeight: 600, marginBottom: 4 }}>$284K</div>
+          <div style={{ color: '#22C55E', fontSize: 'calc(12px * var(--fs))', marginBottom: 16 }}>↑ +12% vs last month</div>
           <div className="flex-1">
             <MiniAreaChart />
           </div>
@@ -208,7 +208,7 @@ export function DashboardPage() {
             style={{ background: 'rgba(34,197,94,0.07)', border: '1px solid rgba(34,197,94,0.15)' }}
           >
             <TrendingUp size={13} style={{ color: '#22C55E' }} />
-            <span style={{ color: '#22C55E', fontSize: 12 }}>Q3 forecast: $847K (+18.5%)</span>
+            <span style={{ color: '#22C55E', fontSize: 'calc(12px * var(--fs))' }}>Q3 forecast: $847K (+18.5%)</span>
           </div>
         </motion.div>
       </div>
@@ -222,8 +222,8 @@ export function DashboardPage() {
         style={{ background: 'var(--surface)', border: '1px solid var(--hair)' }}
       >
         <div className="flex items-center justify-between mb-5">
-          <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>Active Projects</div>
-          <button style={{ color: 'var(--accent)', fontSize: 12, background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}>
+          <div style={{ color: 'var(--text)', fontSize: 'calc(14px * var(--fs))', fontWeight: 600 }}>Active Projects</div>
+          <button style={{ color: 'var(--accent)', fontSize: 'calc(12px * var(--fs))', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}>
             View all <ArrowRight size={12} />
           </button>
         </div>
@@ -234,13 +234,13 @@ export function DashboardPage() {
               <div key={project.id}>
                 <div className="flex items-center gap-4 py-3.5">
                   <div style={{ width: 200, flexShrink: 0 }}>
-                    <div style={{ color: 'var(--text)', fontSize: 13, fontWeight: 500 }}>{project.name}</div>
-                    <div style={{ color: 'var(--text-dim)', fontSize: 11, marginTop: 1 }}>{project.client}</div>
+                    <div style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 500 }}>{project.name}</div>
+                    <div style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))', marginTop: 1 }}>{project.client}</div>
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-1.5">
-                      <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>Progress</span>
-                      <span style={{ color: 'var(--text)', fontSize: 12, fontWeight: 500 }}>{project.progress}%</span>
+                      <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>Progress</span>
+                      <span style={{ color: 'var(--text)', fontSize: 'calc(12px * var(--fs))', fontWeight: 500 }}>{project.progress}%</span>
                     </div>
                     <div className="rounded-full overflow-hidden" style={{ height: 5, background: 'var(--hair)' }}>
                       <div
@@ -251,7 +251,7 @@ export function DashboardPage() {
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0" style={{ width: 120 }}>
                     <Clock size={11} style={{ color: 'var(--text-dim)' }} />
-                    <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>{project.deadline}</span>
+                    <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>{project.deadline}</span>
                   </div>
                   <div className="shrink-0">
                     <TeamAvatarStack avatars={project.team} max={3} size={24} />

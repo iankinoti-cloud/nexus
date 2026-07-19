@@ -29,21 +29,21 @@ function ClientCard({ client, delay }: { client: Client; delay: number }) {
             className="flex items-center justify-center rounded-xl shrink-0"
             style={{ width: 44, height: 44, background: client.avatarColor + '20', border: `1px solid ${client.avatarColor}35` }}
           >
-            <span style={{ color: client.avatarColor, fontSize: 15, fontWeight: 700 }}>{client.initials}</span>
+            <span style={{ color: client.avatarColor, fontSize: 'calc(15px * var(--fs))', fontWeight: 700 }}>{client.initials}</span>
           </div>
           <div>
-            <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>{client.name}</div>
-            <div style={{ color: 'var(--text-dim)', fontSize: 12 }}>{client.industry}</div>
+            <div style={{ color: 'var(--text)', fontSize: 'calc(14px * var(--fs))', fontWeight: 600 }}>{client.name}</div>
+            <div style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))' }}>{client.industry}</div>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <HealthDot score={client.healthScore} />
-          <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>{client.healthScore}/10</span>
+          <span style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))' }}>{client.healthScore}/10</span>
         </div>
       </div>
 
       {/* Metrics grid */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {[
           { icon: FolderOpen, label: 'Projects', value: client.activeProjects },
           { icon: DollarSign, label: 'Revenue', value: client.revenue },
@@ -57,9 +57,9 @@ function ClientCard({ client, delay }: { client: Client; delay: number }) {
           >
             <div className="flex items-center gap-1.5 mb-1">
               <Icon size={11} style={{ color: 'var(--text-dim)' }} />
-              <span style={{ color: 'var(--text-dim)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</span>
+              <span style={{ color: 'var(--text-dim)', fontSize: 'calc(10px * var(--fs))', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</span>
             </div>
-            <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>{value}</div>
+            <div style={{ color: 'var(--text)', fontSize: 'calc(14px * var(--fs))', fontWeight: 600 }}>{value}</div>
           </div>
         ))}
       </div>
@@ -71,7 +71,7 @@ function ClientCard({ client, delay }: { client: Client; delay: number }) {
           style={{ background: 'rgba(255,107,107,0.08)', border: '1px solid rgba(255,107,107,0.2)' }}
         >
           <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#FF6B6B', display: 'inline-block' }} />
-          <span style={{ color: '#FF6B6B', fontSize: 12 }}>Account at risk — action required</span>
+          <span style={{ color: '#FF6B6B', fontSize: 'calc(12px * var(--fs))' }}>Account at risk — action required</span>
         </div>
       )}
 
@@ -103,8 +103,8 @@ export function ClientsPage() {
     <PageShell>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 style={{ color: 'var(--text)', fontSize: 24, fontWeight: 600 }}>Clients</h1>
-          <p style={{ color: 'var(--text-dim)', fontSize: 13, marginTop: 2 }}>
+          <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600 }}>Clients</h1>
+          <p style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))', marginTop: 2 }}>
             {CLIENTS.length} clients · {totalRevenue} total revenue
           </p>
         </div>
@@ -112,7 +112,7 @@ export function ClientsPage() {
           whileHover={{ background: 'var(--accent-hover)' }}
           whileTap={{ scale: 0.97 }}
           className="flex items-center gap-2 rounded-lg px-4 py-2.5"
-          style={{ background: 'var(--accent)', color: '#0B0B0F', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer' }}
+          style={{ background: 'var(--accent)', color: '#0B0B0F', fontSize: 'calc(13px * var(--fs))', fontWeight: 600, border: 'none', cursor: 'pointer' }}
         >
           <Plus size={15} />
           Add Client
@@ -130,7 +130,7 @@ export function ClientsPage() {
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search clients..."
-            style={{ background: 'transparent', border: 'none', outline: 'none', color: 'var(--text)', fontSize: 13, width: '100%' }}
+            style={{ background: 'transparent', border: 'none', outline: 'none', color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', width: '100%' }}
           />
         </div>
         <div className="flex items-center gap-1.5">
@@ -142,7 +142,7 @@ export function ClientsPage() {
                 background: activeFilter === f ? 'rgba(var(--accent-rgb),0.1)' : 'transparent',
                 border: `1px solid ${activeFilter === f ? 'rgba(var(--accent-rgb),0.3)' : 'var(--hair)'}`,
                 color: activeFilter === f ? 'var(--accent)' : 'var(--text-dim)',
-                fontSize: 12,
+                fontSize: 'calc(12px * var(--fs))',
                 fontWeight: activeFilter === f ? 500 : 400,
                 borderRadius: 8,
                 padding: '6px 14px',
@@ -156,7 +156,7 @@ export function ClientsPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {filtered.map((client, i) => (
           <ClientCard key={client.id} client={client} delay={i * 0.07} />
         ))}

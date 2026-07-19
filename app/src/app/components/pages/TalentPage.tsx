@@ -17,7 +17,7 @@ function AvailabilityBadge({ status }: { status: Employee['availability'] }) {
       color: config.color,
       background: config.bg,
       border: `1px solid ${config.border}`,
-      fontSize: 11,
+      fontSize: 'calc(11px * var(--fs))',
       fontWeight: 500,
       borderRadius: 6,
       padding: '2px 8px',
@@ -51,11 +51,11 @@ function EmployeeCard({ emp, delay }: { emp: Employee; delay: number }) {
             className="flex items-center justify-center rounded-xl shrink-0"
             style={{ width: 42, height: 42, background: emp.avatarColor + '22', border: `1px solid ${emp.avatarColor}44` }}
           >
-            <span style={{ color: emp.avatarColor, fontSize: 14, fontWeight: 700 }}>{emp.initials}</span>
+            <span style={{ color: emp.avatarColor, fontSize: 'calc(14px * var(--fs))', fontWeight: 700 }}>{emp.initials}</span>
           </div>
           <div>
-            <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>{emp.name}</div>
-            <div style={{ color: 'var(--text-dim)', fontSize: 12 }}>{emp.role}</div>
+            <div style={{ color: 'var(--text)', fontSize: 'calc(14px * var(--fs))', fontWeight: 600 }}>{emp.name}</div>
+            <div style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))' }}>{emp.role}</div>
           </div>
         </div>
         <AvailabilityBadge status={emp.availability} />
@@ -66,12 +66,12 @@ function EmployeeCard({ emp, delay }: { emp: Employee; delay: number }) {
         <WorkloadRing value={emp.workload} size={68} />
         <div className="flex flex-col gap-2">
           <div>
-            <div style={{ color: 'var(--text-dim)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Projects</div>
-            <div style={{ color: 'var(--text)', fontSize: 18, fontWeight: 600 }}>{emp.currentProjects}</div>
+            <div style={{ color: 'var(--text-dim)', fontSize: 'calc(10px * var(--fs))', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Projects</div>
+            <div style={{ color: 'var(--text)', fontSize: 'calc(18px * var(--fs))', fontWeight: 600 }}>{emp.currentProjects}</div>
           </div>
           <div className="flex items-center gap-1">
             <Star size={12} style={{ color: '#FFB547', fill: '#FFB547' }} />
-            <span style={{ color: 'var(--text)', fontSize: 13, fontWeight: 500 }}>{emp.performanceScore}</span>
+            <span style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 500 }}>{emp.performanceScore}</span>
           </div>
         </div>
       </div>
@@ -85,7 +85,7 @@ function EmployeeCard({ emp, delay }: { emp: Employee; delay: number }) {
               background: 'rgba(255,255,255,0.05)',
               border: '1px solid var(--hair-2)',
               color: 'var(--text-dim)',
-              fontSize: 11,
+              fontSize: 'calc(11px * var(--fs))',
               borderRadius: 6,
               padding: '3px 8px',
             }}
@@ -99,8 +99,8 @@ function EmployeeCard({ emp, delay }: { emp: Employee; delay: number }) {
       <div className="flex flex-col gap-2.5">
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>Burnout Risk</span>
-            <span style={{ color: burnoutColor, fontSize: 12, fontWeight: 500 }}>{emp.burnoutRisk}%</span>
+            <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>Burnout Risk</span>
+            <span style={{ color: burnoutColor, fontSize: 'calc(12px * var(--fs))', fontWeight: 500 }}>{emp.burnoutRisk}%</span>
           </div>
           <div className="rounded-full overflow-hidden" style={{ height: 4, background: 'var(--hair)' }}>
             <motion.div
@@ -116,8 +116,8 @@ function EmployeeCard({ emp, delay }: { emp: Employee; delay: number }) {
           className="flex items-center justify-between rounded-lg px-3 py-2"
           style={{ background: 'rgba(var(--accent-rgb),0.06)', border: '1px solid rgba(var(--accent-rgb),0.12)' }}
         >
-          <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>AI Compatibility</span>
-          <span style={{ color: 'var(--accent)', fontSize: 14, fontWeight: 600 }}>{emp.compatibilityScore}%</span>
+          <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>AI Compatibility</span>
+          <span style={{ color: 'var(--accent)', fontSize: 'calc(14px * var(--fs))', fontWeight: 600 }}>{emp.compatibilityScore}%</span>
         </div>
       </div>
     </motion.div>
@@ -130,8 +130,8 @@ export function TalentPage() {
     <PageShell>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 style={{ color: 'var(--text)', fontSize: 24, fontWeight: 600 }}>Talent</h1>
-          <p style={{ color: 'var(--text-dim)', fontSize: 13, marginTop: 2 }}>
+          <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600 }}>Talent</h1>
+          <p style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))', marginTop: 2 }}>
             {EMPLOYEES.length} team members · {EMPLOYEES.filter(e => e.availability === 'available').length} available
           </p>
         </div>
@@ -139,7 +139,7 @@ export function TalentPage() {
           whileHover={{ background: 'var(--accent-hover)' }}
           whileTap={{ scale: 0.97 }}
           className="flex items-center gap-2 rounded-lg px-4 py-2.5"
-          style={{ background: 'var(--accent)', color: '#0B0B0F', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer' }}
+          style={{ background: 'var(--accent)', color: '#0B0B0F', fontSize: 'calc(13px * var(--fs))', fontWeight: 600, border: 'none', cursor: 'pointer' }}
         >
           <Plus size={15} />
           Add Member
@@ -160,18 +160,18 @@ export function TalentPage() {
           <div key={i} className="flex items-center gap-3">
             {i > 0 && <div style={{ width: 1, height: 24, background: 'var(--hair)' }} />}
             <div>
-              <div style={{ color: 'var(--text-dim)', fontSize: 11 }}>{item.label}</div>
-              <div style={{ color: (item as any).color || 'var(--text)', fontSize: 18, fontWeight: 600 }}>{item.value}</div>
+              <div style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>{item.label}</div>
+              <div style={{ color: (item as any).color || 'var(--text)', fontSize: 'calc(18px * var(--fs))', fontWeight: 600 }}>{item.value}</div>
             </div>
           </div>
         ))}
-        <div className="ml-auto flex items-center gap-1.5" style={{ color: 'var(--text-dim)', fontSize: 12 }}>
+        <div className="ml-auto flex items-center gap-1.5" style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))' }}>
           <Briefcase size={13} />
           6 open projects
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {EMPLOYEES.map((emp, i) => (
           <EmployeeCard key={emp.id} emp={emp} delay={i * 0.07} />
         ))}

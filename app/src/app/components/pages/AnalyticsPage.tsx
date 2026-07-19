@@ -26,8 +26,8 @@ function ChartCard({ title, subtitle, children, delay = 0, colSpan = 1 }: {
       }}
     >
       <div className="mb-5">
-        <div style={{ color: 'var(--text)', fontSize: 14, fontWeight: 600 }}>{title}</div>
-        {subtitle && <div style={{ color: 'var(--text-dim)', fontSize: 12, marginTop: 2 }}>{subtitle}</div>}
+        <div style={{ color: 'var(--text)', fontSize: 'calc(14px * var(--fs))', fontWeight: 600 }}>{title}</div>
+        {subtitle && <div style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))', marginTop: 2 }}>{subtitle}</div>}
       </div>
       {children}
     </motion.div>
@@ -45,8 +45,8 @@ export function AnalyticsPage() {
   return (
     <PageShell>
       <div className="mb-6">
-        <h1 style={{ color: 'var(--text)', fontSize: 24, fontWeight: 600 }}>Analytics</h1>
-        <p style={{ color: 'var(--text-dim)', fontSize: 13, marginTop: 2 }}>Executive overview · July 2026</p>
+        <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600 }}>Analytics</h1>
+        <p style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))', marginTop: 2 }}>Executive overview · July 2026</p>
       </div>
 
       {/* KPI Strip */}
@@ -72,10 +72,10 @@ export function AnalyticsPage() {
                 <Icon size={16} style={{ color: metric.color }} />
               </div>
               <div>
-                <div style={{ color: 'var(--text-dim)', fontSize: 11 }}>{metric.label}</div>
+                <div style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>{metric.label}</div>
                 <div className="flex items-center gap-2">
-                  <span style={{ color: 'var(--text)', fontSize: 20, fontWeight: 600 }}>{metric.value}</span>
-                  <span style={{ color: metric.color, fontSize: 12 }}>{metric.change}</span>
+                  <span style={{ color: 'var(--text)', fontSize: 'calc(20px * var(--fs))', fontWeight: 600 }}>{metric.value}</span>
+                  <span style={{ color: metric.color, fontSize: 'calc(12px * var(--fs))' }}>{metric.change}</span>
                 </div>
               </div>
             </div>
@@ -95,9 +95,9 @@ export function AnalyticsPage() {
         }}
       >
         <div>
-          <div style={{ color: 'var(--text-dim)', fontSize: 12, marginBottom: 4 }}>Revenue Growth Prediction · Next 90 Days</div>
-          <div style={{ color: '#22C55E', fontSize: 36, fontWeight: 700, lineHeight: 1 }}>+18.5%</div>
-          <div style={{ color: 'var(--text-dim)', fontSize: 13, marginTop: 6 }}>
+          <div style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))', marginBottom: 4 }}>Revenue Growth Prediction · Next 90 Days</div>
+          <div style={{ color: '#22C55E', fontSize: 'calc(36px * var(--fs))', fontWeight: 700, lineHeight: 1 }}>+18.5%</div>
+          <div style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))', marginTop: 6 }}>
             Forecast: $847K · Confidence: 87% · 2 pipeline deals closing in August
           </div>
         </div>
@@ -106,14 +106,14 @@ export function AnalyticsPage() {
             className="rounded-lg px-4 py-2"
             style={{ background: 'rgba(34,197,94,0.15)', border: '1px solid rgba(34,197,94,0.3)' }}
           >
-            <span style={{ color: '#22C55E', fontSize: 13, fontWeight: 500 }}>↑ On Track</span>
+            <span style={{ color: '#22C55E', fontSize: 'calc(13px * var(--fs))', fontWeight: 500 }}>↑ On Track</span>
           </div>
-          <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>Updated Jul 16, 2026</span>
+          <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>Updated Jul 16, 2026</span>
         </div>
       </motion.div>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <ChartCard title="Revenue Growth" subtitle="Monthly actual vs forecast (USD thousands)" delay={0.15} colSpan={2}>
           <RevenueAreaChart />
         </ChartCard>
