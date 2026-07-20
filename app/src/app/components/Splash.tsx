@@ -6,9 +6,9 @@ const SIZE = 168;
 const HALF = SIZE / 2;
 const WORD = ['N', 'E', 'X', 'U', 'S'];
 
-// Timeline (ms)
-const T_DISPERSE = 2300; // converge (~0.9s) + hold beat, then reverse
-const T_DONE = 3400;
+// Timeline (ms) — assemble ~1s, hold ~3s, disperse ~1.8s → total ~5.8s
+const T_DISPERSE = 4200;
+const T_DONE = 5800;
 
 const QUADRANTS = [
   { key: 'tl', left: 0, top: 0, bgX: 0, bgY: 0, fromX: -150, fromY: -150, spin: -35 },
