@@ -148,26 +148,28 @@ export function TalentPage() {
 
       {/* Summary bar */}
       <div
-        className="flex items-center gap-6 rounded-xl px-5 py-3.5 mb-6"
+        className="rounded-xl px-5 py-3.5 mb-6"
         style={{ background: 'var(--surface)', border: '1px solid var(--hair)' }}
       >
-        {[
-          { label: 'Avg Workload', value: `${Math.round(EMPLOYEES.reduce((a, e) => a + e.workload, 0) / EMPLOYEES.length)}%` },
-          { label: 'High Burnout Risk', value: EMPLOYEES.filter(e => e.burnoutRisk >= 70).length, color: '#FF6B6B' },
-          { label: 'At Capacity', value: EMPLOYEES.filter(e => e.availability === 'at-capacity').length, color: '#FFB547' },
-          { label: 'Avg Performance', value: (EMPLOYEES.reduce((a, e) => a + e.performanceScore, 0) / EMPLOYEES.length).toFixed(1) },
-        ].map((item, i) => (
-          <div key={i} className="flex items-center gap-3">
-            {i > 0 && <div style={{ width: 1, height: 24, background: 'var(--hair)' }} />}
-            <div>
-              <div style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>{item.label}</div>
-              <div style={{ color: (item as any).color || 'var(--text)', fontSize: 'calc(18px * var(--fs))', fontWeight: 600 }}>{item.value}</div>
+        <div className="grid grid-cols-2 gap-y-3 gap-x-4 sm:flex sm:items-center sm:gap-6">
+          {[
+            { label: 'Avg Workload', value: `${Math.round(EMPLOYEES.reduce((a, e) => a + e.workload, 0) / EMPLOYEES.length)}%` },
+            { label: 'High Burnout Risk', value: EMPLOYEES.filter(e => e.burnoutRisk >= 70).length, color: '#FF6B6B' },
+            { label: 'At Capacity', value: EMPLOYEES.filter(e => e.availability === 'at-capacity').length, color: '#FFB547' },
+            { label: 'Avg Performance', value: (EMPLOYEES.reduce((a, e) => a + e.performanceScore, 0) / EMPLOYEES.length).toFixed(1) },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center gap-3">
+              {i > 0 && <div className="hidden sm:block" style={{ width: 1, height: 24, background: 'var(--hair)' }} />}
+              <div>
+                <div style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>{item.label}</div>
+                <div style={{ color: (item as any).color || 'var(--text)', fontSize: 'calc(18px * var(--fs))', fontWeight: 600 }}>{item.value}</div>
+              </div>
             </div>
+          ))}
+          <div className="hidden sm:flex sm:ml-auto items-center gap-1.5" style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))' }}>
+            <Briefcase size={13} />
+            6 open projects
           </div>
-        ))}
-        <div className="ml-auto flex items-center gap-1.5" style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))' }}>
-          <Briefcase size={13} />
-          6 open projects
         </div>
       </div>
 

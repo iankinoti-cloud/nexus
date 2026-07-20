@@ -158,7 +158,11 @@ export function NotificationsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1.5 mb-6">
+      <div
+        className="overflow-x-auto mb-6 [&::-webkit-scrollbar]:hidden"
+        style={{ scrollbarWidth: 'none' }}
+      >
+        <div className="flex items-center gap-1.5 w-max pb-0.5">
         {TABS.map(tab => (
           <button
             key={tab}
@@ -193,6 +197,7 @@ export function NotificationsPage() {
             )}
           </button>
         ))}
+        </div>
       </div>
 
       {/* Notification list */}
