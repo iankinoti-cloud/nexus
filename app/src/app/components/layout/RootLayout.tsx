@@ -11,11 +11,16 @@ export function RootLayout() {
 
   if (isMobile) {
     return (
-      <div className="flex flex-col h-screen w-screen overflow-hidden" style={{ background: ambient }}>
+      <div className="flex flex-col h-dvh w-full overflow-hidden" style={{ background: ambient }}>
         <MobileNav />
         <main
           className="flex-1 flex flex-col overflow-hidden rounded-2xl"
-          style={{ background: 'var(--bg-2)', border: '1px solid var(--hair)', margin: 8 }}
+          style={{
+            background: 'var(--bg-2)',
+            border: '1px solid var(--hair)',
+            margin: '0 8px 8px',
+            marginBottom: 'max(8px, env(safe-area-inset-bottom))',
+          }}
         >
           <Outlet />
         </main>
@@ -25,7 +30,7 @@ export function RootLayout() {
 
   return (
     <div
-      className="flex h-screen w-screen overflow-hidden p-3 gap-3"
+      className="flex h-dvh w-full overflow-hidden p-3 gap-3"
       style={{ background: ambient }}
     >
       <Sidebar />

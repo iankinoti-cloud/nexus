@@ -88,7 +88,7 @@ export function DashboardPage() {
           </p>
         </div>
         <div
-          className="flex items-center gap-2 rounded-lg px-4 py-2"
+          className="hidden sm:flex items-center gap-2 rounded-lg px-4 py-2"
           style={{ background: 'var(--surface)', border: '1px solid var(--hair)' }}
         >
           <Calendar size={14} style={{ color: 'var(--text-dim)' }} />
@@ -232,12 +232,23 @@ export function DashboardPage() {
             const riskColor = project.risk === 'low' ? '#22C55E' : project.risk === 'medium' ? '#FFB547' : '#FF6B6B';
             return (
               <div key={project.id}>
-                <div className="flex items-center gap-4 py-3.5">
-                  <div style={{ width: 200, flexShrink: 0 }}>
-                    <div style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 500 }}>{project.name}</div>
-                    <div style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))', marginTop: 1 }}>{project.client}</div>
+                <div className="py-3.5 flex flex-col gap-2.5">
+                  {/* Row 1: Name + deadline + avatars */}
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="truncate" style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 500 }}>{project.name}</div>
+                      <div style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))', marginTop: 1 }}>{project.client}</div>
+                    </div>
+                    <div className="flex items-center gap-3 shrink-0">
+                      <div className="flex items-center gap-1.5">
+                        <Clock size={11} style={{ color: 'var(--text-dim)' }} />
+                        <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>{project.deadline}</span>
+                      </div>
+                      <TeamAvatarStack avatars={project.team} max={3} size={24} />
+                    </div>
                   </div>
-                  <div className="flex-1">
+                  {/* Row 2: Progress bar */}
+                  <div>
                     <div className="flex items-center justify-between mb-1.5">
                       <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>Progress</span>
                       <span style={{ color: 'var(--text)', fontSize: 'calc(12px * var(--fs))', fontWeight: 500 }}>{project.progress}%</span>
@@ -248,13 +259,6 @@ export function DashboardPage() {
                         style={{ width: `${project.progress}%`, background: riskColor, transition: 'width 0.8s ease' }}
                       />
                     </div>
-                  </div>
-                  <div className="flex items-center gap-1.5 shrink-0" style={{ width: 120 }}>
-                    <Clock size={11} style={{ color: 'var(--text-dim)' }} />
-                    <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>{project.deadline}</span>
-                  </div>
-                  <div className="shrink-0">
-                    <TeamAvatarStack avatars={project.team} max={3} size={24} />
                   </div>
                 </div>
                 {i < 3 && <div style={{ height: 1, background: 'rgba(255,255,255,0.04)' }} />}
