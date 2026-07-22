@@ -102,7 +102,7 @@ export function Sidebar() {
           )}
         </div>
 
-        <nav className="flex-1 px-3 py-4 flex flex-col gap-1 overflow-y-auto overflow-x-hidden relative">
+        <nav className="flex-1 min-h-0 px-3 py-4 flex flex-col gap-1 overflow-y-auto overflow-x-hidden relative">
           {NAV_ITEMS.map((item) => {
             const isActive = activePath === item.path;
             const isHi = highlight === item.path;

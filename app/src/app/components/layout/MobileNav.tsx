@@ -85,7 +85,7 @@ export function MobileNav() {
                 </button>
               </div>
 
-              <nav className="flex-1 px-3 py-4 flex flex-col gap-1 overflow-y-auto">
+              <nav className="flex-1 min-h-0 px-3 py-4 flex flex-col gap-1 overflow-y-auto">
                 {NAV_ITEMS.map(item => {
                   const isActive = isPathActive(location.pathname, item);
                   const Icon = item.icon;
@@ -119,7 +119,7 @@ export function MobileNav() {
                 })}
               </nav>
 
-            <div style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+            <div className="shrink-0" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
               <UserBlock open />
             </div>
           </motion.div>,
