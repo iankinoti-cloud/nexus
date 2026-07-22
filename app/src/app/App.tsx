@@ -19,7 +19,6 @@ import { CorePage } from './components/pages/CorePage';
 import { KnowledgePage } from './components/pages/KnowledgePage';
 import { NotificationsPage } from './components/pages/NotificationsPage';
 import { SettingsPage } from './components/pages/SettingsPage';
-import { EnquiriesPage } from './components/pages/EnquiriesPage';
 
 // Each page gets its own error boundary so a crash degrades that one panel
 // while the shell (sidebar / mobile nav) keeps running.
@@ -27,7 +26,6 @@ const pages = [
   { index: true, Component: DashboardPage },
   { path: 'projects', Component: ProjectsPage },
   { path: 'talent', Component: TalentPage },
-  { path: 'enquiries', Component: EnquiriesPage },
   { path: 'clients', Component: ClientsPage },
   { path: 'analytics', Component: AnalyticsPage },
   { path: 'core', Component: CorePage },
