@@ -1117,12 +1117,51 @@ function Slide16Closing() {
   );
 }
 
+function SlideDemo() {
+  const t = useT();
+  return (
+    <SlideWrapper>
+      <Stagger delay={0}>
+        <SlideHeadline size="md">See NEXUS think.</SlideHeadline>
+      </Stagger>
+      <Stagger delay={0.2}>
+        <div
+          className="mt-8 rounded-2xl overflow-hidden mx-auto"
+          style={{
+            border: `1px solid ${t.accent}47`,
+            boxShadow: `0 30px 90px -20px rgba(0,0,0,0.75), 0 0 60px ${t.accent}14`,
+            maxWidth: 1180,
+          }}
+        >
+          <video
+            src="/NEXUS-film.mp4"
+            poster="/NEXUS-poster.jpg"
+            controls
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-auto block"
+            style={{ background: t.bg }}
+          />
+        </div>
+      </Stagger>
+      <Stagger delay={0.32}>
+        <p className="text-center text-sm mt-5 tracking-wide" style={{ color: t.muted }}>
+          Real product · live AI · narrated · desktop &amp; mobile — press&nbsp;
+          <span style={{ color: t.accent }}>▶</span>&nbsp;and unmute for sound.
+        </p>
+      </Stagger>
+    </SlideWrapper>
+  );
+}
+
 // ─── Registry ─────────────────────────────────────────────────────────────────
 
 const SLIDES = [
   Slide01Opening, Slide02Problem, Slide03SoftwareFallsShort, Slide04Introducing,
   Slide05MissionControl, Slide06CoreIntelligence, Slide07Projects, Slide08People,
-  Slide09Clients, Slide10Knowledge, Slide11Automation, Slide12Architecture,
+  Slide09Clients, Slide10Knowledge, Slide11Automation, SlideDemo, Slide12Architecture,
   Slide13Technology, Slide14BusinessImpact, Slide15Vision, Slide16Closing,
 ];
 
