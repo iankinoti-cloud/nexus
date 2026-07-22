@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { PROJECTS, EMPLOYEES, CLIENTS, NOTIFICATIONS } from './mockData';
+import { PROJECTS, EMPLOYEES, CLIENTS, NOTIFICATIONS, ENQUIRIES, USERS } from './mockData';
 import { KNOWLEDGE_NOTES, type KnowledgeNote } from './knowledge';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../auth/AuthProvider';
-import type { Project, Employee, Client, Notification } from './types';
+import type { Project, Employee, Client, Notification, Enquiry, NexusUser } from './types';
 
 export type CoreAction =
   | { type: 'reassign'; fromEmployeeId: string; toEmployeeId: string; note?: string }
@@ -24,14 +24,21 @@ interface NexusState {
   notifications: Notification[];
   knowledge: KnowledgeNote[];
   activity: ActivityEntry[];
+  enquiries: Enquiry[];
+  users: NexusUser[];
+  currentUserId: string;
 }
 
 interface NexusStore extends NexusState {
+  currentUser: NexusUser;
   applyAction: (action: CoreAction) => string | null;
   markRead: (id: string) => void;
   markAllRead: () => void;
   resetDemo: () => void;
   contextSnapshot: () => object;
+  addEnquiry: (data: Omit<Enquiry, 'id' | 'createdAt' | 'status'>) => string;
+  updateEnquiry: (id: string, patch: Partial<Enquiry>) => void;
+  setCurrentUser: (id: string) => void;
 }
 
 const STORAGE_KEY = 'nexus-store-v1';
@@ -43,6 +50,9 @@ const initialState = (): NexusState => ({
   notifications: NOTIFICATIONS,
   knowledge: KNOWLEDGE_NOTES,
   activity: [],
+  enquiries: ENQUIRIES,
+  users: USERS,
+  currentUserId: 'u1',
 });
 
 function load(): NexusState {
@@ -187,8 +197,11 @@ export function NexusProvider({ children }: { children: ReactNode }) {
       }
     };
 
+    const currentUser = state.users.find(u => u.id === state.currentUserId) ?? state.users[0];
+
     return {
       ...state,
+      currentUser,
       applyAction,
       markRead: (id: string) =>
         setState(s => ({
@@ -212,8 +225,29 @@ export function NexusProvider({ children }: { children: ReactNode }) {
         clients: state.clients.map(({ id, name, industry, activeProjects, revenue, lastContact, healthScore, status }) => ({
           id, name, industry, activeProjects, revenue, lastContact, healthScore, status,
         })),
+        enquiries: state.enquiries.map(({ id, companyName, status, serviceInterest, budgetRange }) => ({
+          id, companyName, status, serviceInterest, budgetRange,
+        })),
         recentActions: state.activity.slice(0, 5).map(a => a.label),
       }),
+      addEnquiry: (data) => {
+        const id = `eq${Date.now()}`;
+        setState(s => ({
+          ...s,
+          enquiries: [
+            { ...data, id, status: 'new' as const, createdAt: new Date().toISOString() },
+            ...s.enquiries,
+          ],
+        }));
+        return id;
+      },
+      updateEnquiry: (id: string, patch: Partial<Enquiry>) =>
+        setState(s => ({
+          ...s,
+          enquiries: s.enquiries.map(e => (e.id === id ? { ...e, ...patch } : e)),
+        })),
+      setCurrentUser: (id: string) =>
+        setState(s => (s.users.some(u => u.id === id) ? { ...s, currentUserId: id } : s)),
     };
   }, [state]);
 

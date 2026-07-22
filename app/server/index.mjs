@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import { makeClient, hasKey, chatParams, knowledgeParams, guard, MODEL } from './core-logic.mjs';
+import { makeClient, hasKey, chatParams, knowledgeParams, briefParams, proposalParams, quoteParams, guard, MODEL } from './core-logic.mjs';
 
 const PORT = process.env.PORT || 8787;
 const client = hasKey() ? makeClient() : null;
@@ -48,6 +48,65 @@ app.post('/api/knowledge', async (req, res) => {
     res.json(JSON.parse(text));
   } catch (err) {
     console.error('[knowledge]', err.message);
+    res.status(502).json({ error: 'upstream', message: err.message });
+  }
+});
+
+async function pipelineJSON(params, res) {
+  const stream = client.messages.stream(params);
+  let full = '';
+  stream.on('text', t => { full += t; });
+  await stream.finalMessage();
+  const jsonStart = full.indexOf('{');
+  const jsonEnd = full.lastIndexOf('}');
+  if (jsonStart === -1 || jsonEnd === -1) throw new Error('no JSON in response');
+  return JSON.parse(full.slice(jsonStart, jsonEnd + 1));
+}
+
+app.post('/api/pipeline/brief', async (req, res) => {
+  if (!client) return res.status(503).json({ error: 'no_api_key' });
+  const blocked = guard({ origin: req.headers.origin, referer: req.headers.referer, body: req.body });
+  if (blocked) return res.status(blocked.status).json({ error: blocked.error });
+  const { transcript, enquiry } = req.body || {};
+  if (!transcript) return res.status(400).json({ error: 'transcript_required' });
+  try {
+    const brief = await pipelineJSON(briefParams(transcript, enquiry ?? {}), res);
+    brief.generatedAt = new Date().toISOString();
+    res.json(brief);
+  } catch (err) {
+    console.error('[pipeline/brief]', err.message);
+    res.status(502).json({ error: 'upstream', message: err.message });
+  }
+});
+
+app.post('/api/pipeline/proposal', async (req, res) => {
+  if (!client) return res.status(503).json({ error: 'no_api_key' });
+  const blocked = guard({ origin: req.headers.origin, referer: req.headers.referer, body: req.body });
+  if (blocked) return res.status(blocked.status).json({ error: blocked.error });
+  const { brief, ideation, enquiry } = req.body || {};
+  if (!brief || !ideation) return res.status(400).json({ error: 'brief_and_ideation_required' });
+  try {
+    const proposal = await pipelineJSON(proposalParams(brief, ideation, enquiry ?? {}), res);
+    proposal.generatedAt = new Date().toISOString();
+    res.json(proposal);
+  } catch (err) {
+    console.error('[pipeline/proposal]', err.message);
+    res.status(502).json({ error: 'upstream', message: err.message });
+  }
+});
+
+app.post('/api/pipeline/quote', async (req, res) => {
+  if (!client) return res.status(503).json({ error: 'no_api_key' });
+  const blocked = guard({ origin: req.headers.origin, referer: req.headers.referer, body: req.body });
+  if (blocked) return res.status(blocked.status).json({ error: blocked.error });
+  const { brief, proposal, enquiry } = req.body || {};
+  if (!brief || !proposal) return res.status(400).json({ error: 'brief_and_proposal_required' });
+  try {
+    const quote = await pipelineJSON(quoteParams(brief, proposal, enquiry ?? {}), res);
+    quote.generatedAt = new Date().toISOString();
+    res.json(quote);
+  } catch (err) {
+    console.error('[pipeline/quote]', err.message);
     res.status(502).json({ error: 'upstream', message: err.message });
   }
 });

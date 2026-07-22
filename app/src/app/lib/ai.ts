@@ -151,6 +151,129 @@ function localFallback(query: string, context: object): CoreReply {
   };
 }
 
+// --- Creative Services Pipeline ---
+
+import type { Enquiry, ProjectBrief, CreativeIdeation, Proposal, Quotation } from '../data/types';
+
+export async function generateBrief(transcript: string, enquiry: Partial<Enquiry>): Promise<ProjectBrief> {
+  try {
+    const res = await fetch('/api/pipeline/brief', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ transcript, enquiry }),
+    });
+    if (!res.ok) throw new Error(`brief ${res.status}`);
+    aiLive = true;
+    return await res.json();
+  } catch {
+    aiLive = false;
+    return localBriefFallback(enquiry);
+  }
+}
+
+export async function generateProposal(brief: ProjectBrief, ideation: CreativeIdeation, enquiry: Partial<Enquiry>): Promise<Proposal> {
+  try {
+    const res = await fetch('/api/pipeline/proposal', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ brief, ideation, enquiry }),
+    });
+    if (!res.ok) throw new Error(`proposal ${res.status}`);
+    aiLive = true;
+    return await res.json();
+  } catch {
+    aiLive = false;
+    return localProposalFallback(brief, ideation, enquiry);
+  }
+}
+
+export async function generateQuotation(brief: ProjectBrief, proposal: Proposal, enquiry: Partial<Enquiry>): Promise<Quotation> {
+  try {
+    const res = await fetch('/api/pipeline/quote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ brief, proposal, enquiry }),
+    });
+    if (!res.ok) throw new Error(`quote ${res.status}`);
+    aiLive = true;
+    return await res.json();
+  } catch {
+    aiLive = false;
+    return localQuoteFallback(brief, proposal, enquiry);
+  }
+}
+
+function localBriefFallback(enquiry: Partial<Enquiry>): ProjectBrief {
+  const company = enquiry.companyName ?? 'the client';
+  const service = enquiry.serviceInterest ?? 'creative services';
+  return {
+    objectives: [
+      `Deliver ${service} for ${company} that meets their stated goals`,
+      'Create a cohesive visual system aligned with the client\'s brand positioning',
+      'Complete all deliverables on schedule and within agreed budget',
+      'Establish a foundation for ongoing creative collaboration',
+    ],
+    deliverables: [
+      'Primary creative deliverables as discussed',
+      'Brand asset files in all required formats',
+      'Style guide and usage documentation',
+      'Final handoff with revision rounds included',
+    ],
+    timeline: enquiry.timeline ?? 'To be confirmed',
+    budgetSignal: enquiry.budgetRange ?? 'To be discussed',
+    targetAudience: 'As defined by the client in discovery',
+    keyMessages: [
+      'Quality and craft as non-negotiables',
+      'Timeline discipline and clear communication',
+      'Creative work grounded in strategy',
+    ],
+    generatedAt: new Date().toISOString(),
+  };
+}
+
+function localProposalFallback(brief: ProjectBrief, ideation: CreativeIdeation, enquiry: Partial<Enquiry>): Proposal {
+  const company = enquiry.companyName ?? 'the client';
+  return {
+    title: `${company} — Creative Partnership Proposal`,
+    executiveSummary: `We have reviewed your brief carefully and are excited by the opportunity to work with ${company}.\n\nOur proposal covers the full scope discussed: ${brief.deliverables.slice(0, 3).join(', ')}, and more. We will deliver a cohesive creative system built around the principle: ${ideation.bigIdea}.\n\nTimeline: ${brief.timeline}. Investment: ${brief.budgetSignal}.`,
+    sections: [
+      { title: 'Our Approach', body: `Guided by the creative direction: ${ideation.creativeDirection.slice(0, 200)}...` },
+      { title: 'Scope of Work', body: brief.deliverables.join('\n') },
+      { title: 'Timeline & Process', body: `${brief.timeline}. We work in two-week sprints with a formal review at each milestone.` },
+      { title: 'Delivery & Handoff', body: 'All assets delivered in organised, documented files. A handoff session is included to ensure a smooth transition to your team.' },
+    ],
+    deliverables: brief.deliverables,
+    timeline: brief.timeline,
+    teamNotes: 'Led by our Creative Director with senior talent across design, motion, and strategy.',
+    generatedAt: new Date().toISOString(),
+  };
+}
+
+function localQuoteFallback(brief: ProjectBrief, proposal: Proposal, _enquiry: Partial<Enquiry>): Quotation {
+  const deliverableCount = proposal.deliverables.length;
+  const baseHours = Math.max(40, deliverableCount * 16);
+  const rate = 225;
+  const items = proposal.deliverables.slice(0, 6).map((d, i) => {
+    const qty = Math.max(8, Math.round((baseHours / deliverableCount) * (i === 0 ? 1.5 : 1)));
+    return { description: d, quantity: qty, unit: 'hrs', rate, total: qty * rate };
+  });
+  items.push({ description: 'Project Management & Handoff', quantity: 16, unit: 'hrs', rate: 175, total: 2800 });
+  items.push({ description: 'Revisions Allowance (2 rounds)', quantity: 1, unit: 'unit', rate: 3500, total: 3500 });
+  const subtotal = items.reduce((s, i) => s + i.total, 0);
+  const validDate = new Date();
+  validDate.setDate(validDate.getDate() + 30);
+  return {
+    lineItems: items,
+    subtotal,
+    tax: 0,
+    total: subtotal,
+    currency: 'USD',
+    validUntil: validDate.toISOString().split('T')[0],
+    notes: '50% deposit required to commence. Balance due on final delivery. Out-of-scope revisions billed at $225/hr. Rates locked for 30 days.',
+    generatedAt: new Date().toISOString(),
+  };
+}
+
 export interface KnowledgeResult {
   answer: string;
   sourceIds: string[];

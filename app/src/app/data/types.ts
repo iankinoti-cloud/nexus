@@ -87,3 +87,103 @@ export interface SatisfactionDataPoint {
   month: string;
   score: number;
 }
+
+// --- Creative Services Pipeline ---
+
+export interface NexusUser {
+  id: string;
+  name: string;
+  role: 'owner' | 'creative_lead' | 'account_manager' | 'team_member';
+  initials: string;
+  avatarColor: string;
+}
+
+export type EnquiryStatus =
+  | 'new'
+  | 'transcript'
+  | 'briefed'
+  | 'ideation'
+  | 'proposed'
+  | 'quoted'
+  | 'approved'
+  | 'sent'
+  | 'converted'
+  | 'lost';
+
+export interface ProjectBrief {
+  objectives: string[];
+  deliverables: string[];
+  timeline: string;
+  budgetSignal: string;
+  targetAudience: string;
+  keyMessages: string[];
+  generatedAt: string;
+}
+
+export interface CreativeIdeation {
+  bigIdea: string;
+  toneWords: [string, string, string];
+  creativeDirection: string;
+  completedBy: string;
+  completedAt: string;
+}
+
+export interface ProposalSection {
+  title: string;
+  body: string;
+}
+
+export interface Proposal {
+  title: string;
+  executiveSummary: string;
+  sections: ProposalSection[];
+  deliverables: string[];
+  timeline: string;
+  teamNotes: string;
+  generatedAt: string;
+}
+
+export interface QuotationLineItem {
+  description: string;
+  quantity: number;
+  unit: string;
+  rate: number;
+  total: number;
+}
+
+export interface Quotation {
+  lineItems: QuotationLineItem[];
+  subtotal: number;
+  tax: number;
+  total: number;
+  currency: string;
+  validUntil: string;
+  notes: string;
+  generatedAt: string;
+}
+
+export interface Enquiry {
+  id: string;
+  companyName: string;
+  contactName: string;
+  contactEmail: string;
+  contactPhone?: string;
+  industry: string;
+  serviceInterest: string;
+  budgetRange: string;
+  timeline: string;
+  source: 'website' | 'referral' | 'cold-outreach' | 'event' | 'social';
+  status: EnquiryStatus;
+  createdAt: string;
+  meetingDate?: string;
+  transcript?: string;
+  brief?: ProjectBrief;
+  ideation?: CreativeIdeation;
+  proposal?: Proposal;
+  quotation?: Quotation;
+  assignedTo?: string;
+  approvedBy?: string;
+  approvedAt?: string;
+  deliveryMethod?: 'nexus' | 'pdf' | 'stored';
+  notes?: string;
+}

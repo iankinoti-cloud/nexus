@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import {
   LayoutDashboard, FolderKanban, Users, Building2,
-  BarChart3, Cpu, BookOpen, Bell, Settings,
+  BarChart3, Cpu, BookOpen, Bell, Settings, Workflow,
 } from 'lucide-react';
 
 export const NAV_ITEMS = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/', end: true },
   { label: 'Projects', icon: FolderKanban, path: '/projects', end: false },
   { label: 'Talent', icon: Users, path: '/talent', end: false },
+  { label: 'Enquiries', icon: Workflow, path: '/enquiries', end: false },
   { label: 'Clients', icon: Building2, path: '/clients', end: false },
   { label: 'Analytics', icon: BarChart3, path: '/analytics', end: false },
   { label: 'Core', icon: Cpu, path: '/core', end: false },
@@ -20,7 +21,7 @@ export function isPathActive(pathname: string, item: { path: string; end: boolea
   return item.end ? pathname === item.path : pathname.startsWith(item.path);
 }
 
-export function useIsMobile(query = '(max-width: 820px)') {
+export function useIsMobile(query = '(max-width: 1023px)') {
   const [mobile, setMobile] = useState(
     () => typeof window !== 'undefined' && window.matchMedia(query).matches,
   );

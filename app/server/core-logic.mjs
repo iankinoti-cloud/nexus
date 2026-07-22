@@ -121,3 +121,83 @@ export function knowledgeParams(query, notes) {
     },
   };
 }
+
+// --- Creative Services Pipeline ---
+
+const BRIEF_SYSTEM = `You are Core, the intelligence engine of NEXUS. Extract a structured project brief from a client discovery call transcript.
+
+Return ONLY valid JSON matching this exact schema — no markdown, no commentary:
+{
+  "objectives": string[],        // 3-5 clear project objectives
+  "deliverables": string[],      // 4-7 specific deliverables
+  "timeline": string,            // e.g. "10 weeks — delivery by 15 September 2026"
+  "budgetSignal": string,        // inferred from conversation
+  "targetAudience": string,      // the client's target audience
+  "keyMessages": string[],       // 3-4 creative themes or key messages
+  "generatedAt": string          // current ISO timestamp
+}`;
+
+const PROPOSAL_SYSTEM = `You are Core, the intelligence engine of NEXUS. Generate a professional creative agency proposal for a client.
+
+Return ONLY valid JSON matching this exact schema — no markdown, no commentary:
+{
+  "title": string,
+  "executiveSummary": string,    // 2-3 paragraphs, newline-separated
+  "sections": [{ "title": string, "body": string }],  // 4 sections
+  "deliverables": string[],      // 6-8 specific deliverables
+  "timeline": string,
+  "teamNotes": string,
+  "generatedAt": string
+}`;
+
+const QUOTE_SYSTEM = `You are Core, the intelligence engine of NEXUS. Generate a detailed line-item quotation for a creative project.
+
+Return ONLY valid JSON matching this exact schema — no markdown, no commentary:
+{
+  "lineItems": [{ "description": string, "quantity": number, "unit": string, "rate": number, "total": number }],
+  "subtotal": number,
+  "tax": number,
+  "total": number,
+  "currency": string,
+  "validUntil": string,
+  "notes": string,
+  "generatedAt": string
+}
+
+Use hourly rates typical for a premium creative agency ($175–$300/hr). Include 6-8 line items covering all deliverables. tax should be 0. total = subtotal.`;
+
+export function briefParams(transcript, enquiry) {
+  return {
+    model: MODEL,
+    max_tokens: 1500,
+    system: BRIEF_SYSTEM,
+    messages: [{
+      role: 'user',
+      content: `Enquiry context: ${JSON.stringify({ company: enquiry.companyName, service: enquiry.serviceInterest, budget: enquiry.budgetRange, timeline: enquiry.timeline })}\n\nTranscript:\n${transcript}`,
+    }],
+  };
+}
+
+export function proposalParams(brief, ideation, enquiry) {
+  return {
+    model: MODEL,
+    max_tokens: 2500,
+    system: PROPOSAL_SYSTEM,
+    messages: [{
+      role: 'user',
+      content: `Client: ${enquiry.companyName} (${enquiry.industry})\nContact: ${enquiry.contactName}\nService: ${enquiry.serviceInterest}\n\nProject Brief:\n${JSON.stringify(brief)}\n\nCreative Direction:\nBig Idea: ${ideation.bigIdea}\nTone: ${ideation.toneWords.join(', ')}\nDirection: ${ideation.creativeDirection}`,
+    }],
+  };
+}
+
+export function quoteParams(brief, proposal, enquiry) {
+  return {
+    model: MODEL,
+    max_tokens: 1500,
+    system: QUOTE_SYSTEM,
+    messages: [{
+      role: 'user',
+      content: `Client: ${enquiry.companyName}\nBudget signal: ${brief.budgetSignal}\nTimeline: ${brief.timeline}\nDeliverables:\n${proposal.deliverables.join('\n')}\n\nToday's date: ${new Date().toISOString().split('T')[0]}`,
+    }],
+  };
+}

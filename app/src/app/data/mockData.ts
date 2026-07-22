@@ -1,6 +1,7 @@
 import type {
   Project, Employee, Client, Notification, ChatMessage,
-  RevenueDataPoint, CompletionDataPoint, UtilizationDataPoint, SatisfactionDataPoint
+  RevenueDataPoint, CompletionDataPoint, UtilizationDataPoint, SatisfactionDataPoint,
+  NexusUser, Enquiry,
 } from './types';
 
 export const PROJECTS: Project[] = [
@@ -421,4 +422,286 @@ export const SATISFACTION_DATA: SatisfactionDataPoint[] = [
   { month: 'May', score: 4.6 },
   { month: 'Jun', score: 4.7 },
   { month: 'Jul', score: 4.8 },
+];
+
+// --- Creative Services Pipeline ---
+
+export const USERS: NexusUser[] = [
+  { id: 'u1', name: 'Sarah Chen', role: 'owner', initials: 'SC', avatarColor: '#C084FC' },
+  { id: 'u2', name: 'Maya Kim', role: 'creative_lead', initials: 'MK', avatarColor: '#A78BFA' },
+  { id: 'u3', name: 'Omar Fathi', role: 'account_manager', initials: 'OF', avatarColor: '#F472B6' },
+  { id: 'u4', name: 'Alex Johnson', role: 'team_member', initials: 'AJ', avatarColor: '#4FD1C5' },
+];
+
+export const ENQUIRIES: Enquiry[] = [
+  {
+    id: 'eq1',
+    companyName: 'Orbit Digital',
+    contactName: 'Kwame Asante',
+    contactEmail: 'kwame@orbitdigital.io',
+    contactPhone: '+1 415 882 0041',
+    industry: 'EdTech',
+    serviceInterest: 'Brand identity + website design for Series A launch',
+    budgetRange: '$35,000 – $50,000',
+    timeline: '10 weeks',
+    source: 'referral',
+    status: 'new',
+    createdAt: new Date(Date.now() - 8 * 60 * 1000).toISOString(),
+    assignedTo: 'u3',
+    notes: 'Referred by Titan Ventures. Kwame is the co-founder. They have a pitch deck but no visual identity yet.',
+  },
+  {
+    id: 'eq2',
+    companyName: 'Bloom Botanics',
+    contactName: 'Priya Sharma',
+    contactEmail: 'priya@bloombotanics.co',
+    industry: 'Wellness & Beauty',
+    serviceInterest: 'Product launch campaign — social content, art direction, email',
+    budgetRange: '$20,000 – $25,000',
+    timeline: '6 weeks',
+    source: 'website',
+    status: 'transcript',
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    meetingDate: '2026-07-19',
+    assignedTo: 'u3',
+    transcript: `Client Discovery Call — Bloom Botanics
+Date: 19 July 2026, 09:30 AM
+Duration: 18 minutes
+
+Omar Fathi (NEXUS): Tell us about what you're launching.
+
+Priya Sharma (Bloom Botanics): We've been developing our clean skincare range for two years. Three hero products — a face oil, a serum, and a moisturiser. We're finally ready to go to market. September launch, ideally around the 15th.
+
+Omar: What do you need from us creatively?
+
+Priya: The campaign. We need imagery direction — mood board level, art direction for the shoot, and then the actual social content rollout. Maybe 30 pieces across Instagram and email. We're targeting women 28 to 45, conscious consumers — they shop at Aesop, Byredo, that kind of brand. Clean but luxurious, not clinical.
+
+Omar: Budget range?
+
+Priya: We have £20,000 set aside. Could go to £25K if the work is exceptional.
+
+Omar: Timeline for delivery?
+
+Priya: We need everything — final assets, all copy, social calendar — by August 30th. Six weeks from now.
+
+Omar: Who makes the final call on creative approvals?
+
+Priya: Me and my business partner, Diane. We both need to sign off, but I'm the primary contact.
+
+Omar: Perfect. We'll have a brief back to you within the hour.`,
+  },
+  {
+    id: 'eq3',
+    companyName: 'Skyline Properties',
+    contactName: 'Marcus Reid',
+    contactEmail: 'marcus.reid@skylineprops.com',
+    contactPhone: '+44 207 946 0832',
+    industry: 'Real Estate',
+    serviceInterest: 'Brand refresh — logo, visual identity, marketing collateral',
+    budgetRange: '$40,000 – $60,000',
+    timeline: '14 weeks',
+    source: 'event',
+    status: 'ideation',
+    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    meetingDate: '2026-07-18',
+    assignedTo: 'u2',
+    transcript: `Discovery Call — Skyline Properties
+Date: 18 July 2026, 2:00 PM
+Duration: 24 minutes
+
+Sarah Chen (NEXUS): Marcus, you mentioned at the conference that your current brand is holding you back. Tell me more.
+
+Marcus Reid (Skyline): Exactly. We started 12 years ago as a mid-market residential agent. Now we're doing commercial, development, and luxury residential — but our brand still looks like the 2014 agency we were. We're losing deals to younger firms whose aesthetics signal premium before the meeting even starts.
+
+Sarah: So this is a repositioning.
+
+Marcus: Full repositioning. New logo, updated color palette — we want to move from the navy and gold cliché. New photography direction, pitch deck templates, office signage, the works.
+
+Sarah: Who's the new target client?
+
+Marcus: High-net-worth individuals, family offices, and corporate occupiers in the £5M+ bracket. We want to feel like a boutique private bank, not a high-street agent.
+
+Sarah: Timeline?
+
+Marcus: We need to be live for our Q4 awards submission in October. So everything locked by end of September — 14 weeks.
+
+Sarah: Budget?
+
+Marcus: Board has signed off £45,000. Could release more if the strategic case is there.`,
+    brief: {
+      objectives: [
+        'Reposition Skyline from mid-market agent to premium boutique property firm',
+        'Create a brand identity that signals authority and discretion at the £5M+ client level',
+        'Deliver a cohesive visual system across digital, print, and environmental touchpoints',
+        'Complete all deliverables before October awards submission deadline',
+      ],
+      deliverables: [
+        'New logo suite (primary, secondary, mono, reversed)',
+        'Refined color palette and typography system',
+        'Brand guidelines document (PDF + Figma)',
+        'Photography art direction brief',
+        'Pitch deck master template (PowerPoint + Keynote)',
+        'Office signage specifications',
+        'Digital asset pack (email signatures, social templates)',
+      ],
+      timeline: '14 weeks — delivery by 26 September 2026',
+      budgetSignal: '£45,000 (approx. $57,000) — board-approved, potential flex',
+      targetAudience: 'High-net-worth individuals, family offices, and corporate occupiers in the £5M+ property bracket',
+      keyMessages: [
+        'Boutique private bank aesthetic — not a high-street agent',
+        'Authority and discretion as visual principles',
+        'Move away from navy/gold toward a more sophisticated palette',
+        'Premium feels effortless, not loud',
+      ],
+      generatedAt: '2026-07-18T15:12:00Z',
+    },
+  },
+  {
+    id: 'eq4',
+    companyName: 'Fable Studio',
+    contactName: 'James Okafor',
+    contactEmail: 'james@fablestudio.co',
+    contactPhone: '+1 646 203 7714',
+    industry: 'Gaming & Interactive',
+    serviceInterest: 'App redesign, brand identity, and launch trailer motion for Drift (mobile game)',
+    budgetRange: '$65,000 – $75,000',
+    timeline: '12 weeks',
+    source: 'referral',
+    status: 'quoted',
+    createdAt: new Date(Date.now() - 23 * 60 * 1000).toISOString(),
+    meetingDate: '2026-07-21',
+    assignedTo: 'u2',
+    transcript: `Discovery Call — Fable Studio (Drift mobile)
+Date: 21 July 2026, 10:00 AM
+Duration: 22 minutes
+
+Sarah Chen (NEXUS): Walk me through what you're working on, James.
+
+James Okafor (Fable Studio): We're an indie game studio — our first title launched on Steam last year and performed really well. Now we're preparing the mobile launch of our new game, Drift. It's a rhythm-based puzzle game. Very aesthetic — influenced by lo-fi music and Japanese minimalism.
+
+Sarah: And what do you need from us?
+
+James: The full creative package. App UI redesign — our current screens feel flat, they don't match the vibe of the game itself. We want motion sequences for the launch trailer. And brand identity work — logo refinement, color palette, the whole kit.
+
+Sarah: Timeline?
+
+James: We're targeting October. All assets by mid-September. About 12 weeks.
+
+Sarah: Budget range?
+
+James: We've set aside $65,000 for this phase. Could flex to $75K if the work is right.
+
+Sarah: And the audience for Drift?
+
+James: Primarily 18–34. Music lovers, people who play on commutes. We want to go after the same crowd that loves Spotify's visual identity — clean, emotive, modern. Every screen should feel like album art.
+
+Sarah: Who's signing off on creative?
+
+James: Me and our art director, Yuna Park. We both review, but I have final say.
+
+Sarah: Perfect. We'll have a full proposal to you within the hour.`,
+    brief: {
+      objectives: [
+        'Redesign Drift app UI to match the game\'s lo-fi, Japanese minimalism aesthetic',
+        'Create a unified brand identity system (logo, palette, typography)',
+        'Produce a launch trailer motion sequence for mobile release',
+        'Deliver all assets App Store-ready by mid-September 2026',
+      ],
+      deliverables: [
+        'App icon redesign (3 variants)',
+        'UI kit: core screens, components, interaction states',
+        'Refined logo suite (primary, secondary, icon mark)',
+        'Color palette + typography guide',
+        '30-second launch trailer (After Effects)',
+        'Social media asset templates (5 formats)',
+        'Brand style guide (PDF)',
+      ],
+      timeline: '12 weeks — delivery by 15 September 2026',
+      budgetSignal: '$65,000–$75,000',
+      targetAudience: '18–34 year-old music lovers and mobile gamers who value clean, emotive, premium visual design',
+      keyMessages: [
+        'Every screen should feel like album art',
+        'Lo-fi, Japanese minimalism as the core design language',
+        'Emotive and modern — never flat or generic',
+        'Premium indie aesthetic that stands apart on the App Store',
+      ],
+      generatedAt: '2026-07-21T10:28:00Z',
+    },
+    ideation: {
+      bigIdea: 'Drift as a living album — a game you don\'t just play, but inhabit',
+      toneWords: ['Atmospheric', 'Refined', 'Emotive'],
+      creativeDirection: 'Draw from Japanese lo-fi aesthetics and vinyl record culture. Muted earth tones — warm greys, bone white, deep charcoal — with one electric accent colour that pulses like a notification. Typography that breathes: generous leading, light weight. Motion that feels like music visualised — slow pulses, soft dissolves, never jarring. The app icon should feel like it belongs in a curated playlist.',
+      completedBy: 'u2',
+      completedAt: '2026-07-21T10:41:00Z',
+    },
+    proposal: {
+      title: 'Drift Mobile — Creative Partnership Proposal',
+      executiveSummary: 'Fable Studio has built something rare: a game with genuine soul. Drift deserves a visual identity that matches its depth — one that communicates atmosphere before a single note plays.\n\nOur proposal covers the full creative arc: brand identity refinement, complete app UI redesign, and launch motion. We will deliver a cohesive system where every touchpoint — App Store listing, onboarding, in-game menus — feels like part of the same world.\n\n12 weeks to final delivery. Investment within your confirmed range.',
+      sections: [
+        {
+          title: 'Brand Identity',
+          body: 'We will refine the Drift logo into a suite that works at every scale — from app icon to billboard. A defined colour system (muted earth tones with a single electric accent) and bespoke typography pairing form the foundation. Visual language: Japanese minimalism meets lo-fi music culture. The output: a brand that feels curated, not designed.',
+        },
+        {
+          title: 'App UI Redesign',
+          body: 'A complete redesign of Drift\'s interface — from first launch to core game screens. We deliver a full UI kit including all primary screens, component library with documented states, and interaction specifications ready for your engineering team. The governing principle: every screen is album art.',
+        },
+        {
+          title: 'Launch Trailer Motion',
+          body: 'A 30-second launch trailer crafted in After Effects, optimised for App Store preview and social distribution. Motion language: slow pulses, soft dissolves, music-synchronised rhythm. We deliver the master file plus cut-down versions for Instagram Reels and TikTok, with source files included.',
+        },
+        {
+          title: 'Delivery & Handoff',
+          body: 'All assets structured in a clean Figma workspace with organised component libraries. Brand style guide as a polished PDF. Motion deliverables as .mp4 masters and .aep source files. A 1-hour handoff session with your team is included in scope.',
+        },
+      ],
+      deliverables: [
+        'Logo suite (primary, secondary, icon mark) in all formats',
+        'Colour palette + typography guide',
+        'App icon redesign (3 variants)',
+        'UI kit: all core screens + component library',
+        '30-second launch trailer (.mp4 + .aep source)',
+        'Social asset templates (5 formats)',
+        'Brand style guide (PDF)',
+        'Figma handoff + 1-hour session',
+      ],
+      timeline: '12 weeks — final delivery 15 September 2026',
+      teamNotes: 'Led by Maya Kim (Creative Director) with Alex Johnson on UI design and Sam Rivera on motion. Leo Tan available for a UX research sprint in Week 2 to validate navigation patterns.',
+      generatedAt: '2026-07-21T10:48:00Z',
+    },
+    quotation: {
+      lineItems: [
+        { description: 'Brand Identity System', quantity: 40, unit: 'hrs', rate: 250, total: 10000 },
+        { description: 'App UI Redesign — Design', quantity: 80, unit: 'hrs', rate: 250, total: 20000 },
+        { description: 'App UI Redesign — Interaction Spec', quantity: 16, unit: 'hrs', rate: 225, total: 3600 },
+        { description: 'Launch Trailer — Motion Design', quantity: 60, unit: 'hrs', rate: 275, total: 16500 },
+        { description: 'Social Asset Templates', quantity: 12, unit: 'hrs', rate: 200, total: 2400 },
+        { description: 'Brand Style Guide', quantity: 16, unit: 'hrs', rate: 200, total: 3200 },
+        { description: 'Project Management & Handoff', quantity: 20, unit: 'hrs', rate: 175, total: 3500 },
+        { description: 'Revisions Allowance (2 rounds)', quantity: 1, unit: 'unit', rate: 5000, total: 5000 },
+      ],
+      subtotal: 64200,
+      tax: 0,
+      total: 64200,
+      currency: 'USD',
+      validUntil: '2026-08-20',
+      notes: '50% deposit required to commence. Balance due on final delivery. Out-of-scope revisions billed at $225/hr. Rates locked for 30 days.',
+      generatedAt: '2026-07-21T10:52:00Z',
+    },
+  },
+  {
+    id: 'eq5',
+    companyName: 'Mesa Coffee',
+    contactName: 'Leila Osman',
+    contactEmail: 'leila@mesacoffee.com',
+    industry: 'Food & Beverage',
+    serviceInterest: 'Packaging design + brand identity for specialty coffee range',
+    budgetRange: '$12,000 – $18,000',
+    timeline: '8 weeks',
+    source: 'social',
+    status: 'lost',
+    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+    assignedTo: 'u3',
+    notes: 'Went with a freelancer — decision based on budget. Follow up in Q1 2027 when they expand to retail.',
+  },
 ];
