@@ -8,6 +8,7 @@ import { Splash } from './components/Splash';
 initTheme();
 import { AuthProvider, useAuth } from './auth/AuthProvider';
 import { LoginScreen } from './auth/LoginScreen';
+import { AppErrorBoundary, RouteError } from './components/ErrorBoundary';
 import { RootLayout } from './components/layout/RootLayout';
 import { DashboardPage } from './components/pages/DashboardPage';
 import { ProjectsPage } from './components/pages/ProjectsPage';
@@ -18,22 +19,29 @@ import { CorePage } from './components/pages/CorePage';
 import { KnowledgePage } from './components/pages/KnowledgePage';
 import { NotificationsPage } from './components/pages/NotificationsPage';
 import { SettingsPage } from './components/pages/SettingsPage';
+import { EnquiriesPage } from './components/pages/EnquiriesPage';
+
+// Each page gets its own error boundary so a crash degrades that one panel
+// while the shell (sidebar / mobile nav) keeps running.
+const pages = [
+  { index: true, Component: DashboardPage },
+  { path: 'projects', Component: ProjectsPage },
+  { path: 'talent', Component: TalentPage },
+  { path: 'enquiries', Component: EnquiriesPage },
+  { path: 'clients', Component: ClientsPage },
+  { path: 'analytics', Component: AnalyticsPage },
+  { path: 'core', Component: CorePage },
+  { path: 'knowledge', Component: KnowledgePage },
+  { path: 'notifications', Component: NotificationsPage },
+  { path: 'settings', Component: SettingsPage },
+].map(r => ({ ...r, ErrorBoundary: RouteError }));
 
 const router = createBrowserRouter([
   {
     path: '/',
     Component: RootLayout,
-    children: [
-      { index: true, Component: DashboardPage },
-      { path: 'projects', Component: ProjectsPage },
-      { path: 'talent', Component: TalentPage },
-      { path: 'clients', Component: ClientsPage },
-      { path: 'analytics', Component: AnalyticsPage },
-      { path: 'core', Component: CorePage },
-      { path: 'knowledge', Component: KnowledgePage },
-      { path: 'notifications', Component: NotificationsPage },
-      { path: 'settings', Component: SettingsPage },
-    ],
+    ErrorBoundary: RouteError,
+    children: pages,
   },
 ]);
 
@@ -43,7 +51,9 @@ function Gate() {
   if (cloudMode && loading) {
     return <div className="h-screen w-screen" style={{ background: 'var(--bg)' }} />;
   }
-  if (cloudMode && !session && !guest) {
+  // Landing always gates entry — Supabase or not. In local/no-cloud mode the
+  // screen leads with "Explore as guest"; with cloud, Google sign-in appears.
+  if (!session && !guest) {
     return <LoginScreen />;
   }
   return (
@@ -56,10 +66,11 @@ function Gate() {
 export default function App() {
   const [splashDone, setSplashDone] = useState(false);
   return (
-    <AuthProvider>
-      {!splashDone && <Splash onDone={() => setSplashDone(true)} />}
-      <Gate />
-      <Toaster
+    <AppErrorBoundary>
+      <AuthProvider>
+        {!splashDone && <Splash onDone={() => setSplashDone(true)} />}
+        <Gate />
+        <Toaster
         theme="dark"
         position="bottom-right"
         toastOptions={{
@@ -69,7 +80,8 @@ export default function App() {
             color: 'var(--text)',
           },
         }}
-      />
-    </AuthProvider>
+        />
+      </AuthProvider>
+    </AppErrorBoundary>
   );
 }

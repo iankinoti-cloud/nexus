@@ -18,10 +18,14 @@ const AuthContext = createContext<AuthState | null>(null);
 
 const GUEST_KEY = 'nexus-guest-mode';
 
+// Guest mode lives in sessionStorage, not localStorage: a fresh visit (new tab
+// or window) always lands on the branded landing, while a mid-demo refresh in
+// the same tab keeps your place. Signed-in Google sessions persist separately
+// via Supabase, so real accounts still survive across tabs.
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(cloudMode);
-  const [guest, setGuest] = useState(() => localStorage.getItem(GUEST_KEY) === '1');
+  const [guest, setGuest] = useState(() => sessionStorage.getItem(GUEST_KEY) === '1');
 
   useEffect(() => {
     if (!supabase) return;
@@ -32,7 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
       setSession(s);
       if (s) {
-        localStorage.removeItem(GUEST_KEY);
+        sessionStorage.removeItem(GUEST_KEY);
         setGuest(false);
       }
     });
@@ -55,12 +59,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         });
       },
       continueAsGuest: () => {
-        localStorage.setItem(GUEST_KEY, '1');
+        sessionStorage.setItem(GUEST_KEY, '1');
         setGuest(true);
       },
       signOut: async () => {
         await supabase?.auth.signOut();
-        localStorage.removeItem(GUEST_KEY);
+        sessionStorage.removeItem(GUEST_KEY);
         setGuest(false);
       },
     };

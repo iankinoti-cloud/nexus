@@ -23,7 +23,7 @@ function GoogleIcon() {
 }
 
 export function LoginScreen() {
-  const { signInWithGoogle, continueAsGuest } = useAuth();
+  const { cloudMode, signInWithGoogle, continueAsGuest } = useAuth();
   const [authError] = useState<string | null>(authErrorFromUrl);
 
   return (
@@ -67,23 +67,26 @@ export function LoginScreen() {
           </div>
         )}
 
-        <motion.button
-          whileHover={{ scale: 1.01, background: '#FFFFFF' }}
-          whileTap={{ scale: 0.98 }}
-          onClick={signInWithGoogle}
-          className="w-full flex items-center justify-center gap-3 rounded-xl py-3 mb-3"
-          style={{
-            background: 'var(--text)',
-            color: '#0B0B0F',
-            fontSize: 'calc(14px * var(--fs))',
-            fontWeight: 600,
-            border: 'none',
-            cursor: 'pointer',
-          }}
-        >
-          <GoogleIcon />
-          Continue with Google
-        </motion.button>
+        {cloudMode && (
+          <motion.button
+            whileHover={{ scale: 1.01, background: '#F5F5F5' }}
+            whileTap={{ scale: 0.98 }}
+            onClick={signInWithGoogle}
+            className="w-full flex items-center justify-center gap-3 rounded-xl py-3 mb-3"
+            style={{
+              background: '#FFFFFF',
+              color: '#1F1F1F',
+              fontSize: 'calc(14px * var(--fs))',
+              fontWeight: 600,
+              border: '1px solid rgba(255,255,255,0.18)',
+              cursor: 'pointer',
+              colorScheme: 'light',
+            } as React.CSSProperties}
+          >
+            <GoogleIcon />
+            Continue with Google
+          </motion.button>
+        )}
 
         <motion.button
           whileHover={{ borderColor: 'rgba(var(--accent-rgb),0.4)', color: 'var(--accent)' }}
@@ -91,19 +94,22 @@ export function LoginScreen() {
           onClick={continueAsGuest}
           className="w-full rounded-xl py-3"
           style={{
-            background: 'transparent',
-            border: '1px solid rgba(255,255,255,0.12)',
-            color: 'var(--text-dim)',
+            background: cloudMode ? 'transparent' : 'rgba(var(--accent-rgb),0.12)',
+            border: cloudMode ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(var(--accent-rgb),0.35)',
+            color: cloudMode ? 'var(--text-dim)' : 'var(--accent)',
             fontSize: 'calc(13px * var(--fs))',
+            fontWeight: cloudMode ? 400 : 600,
             cursor: 'pointer',
             transition: 'all 0.15s ease',
           }}
         >
-          Explore as guest
+          {cloudMode ? 'Explore as guest' : 'Enter demo workspace'}
         </motion.button>
 
         <p style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))', marginTop: 28, opacity: 0.6 }}>
-          Guest sessions run locally. Sign in to sync your workspace across devices.
+          {cloudMode
+            ? 'Guest sessions run locally. Sign in to sync your workspace across devices.'
+            : 'A fully interactive local demo — no account needed.'}
         </p>
       </motion.div>
     </div>
