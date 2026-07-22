@@ -64,8 +64,8 @@ export function MobileNav() {
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', stiffness: 380, damping: 38 }}
-            className="glass glass-strong fixed top-0 left-0 z-50 flex flex-col"
-            style={{ width: 268, height: '100dvh', borderRadius: '0 20px 20px 0' }}
+            className="glass glass-strong fixed top-0 bottom-0 left-0 z-50 flex flex-col"
+            style={{ width: 268, borderRadius: '0 20px 20px 0' }}
           >
               <div
                 className="flex items-center gap-3 px-5 py-5"
