@@ -1,0 +1,10 @@
+# Dependencies
+node_modules/
+
+# Rendered output & raw captures — large and regenerable from the scripts
+out/
+raw/
+
+# Heavy generated audio (WAV masters — the smaller mp3 voiceover is kept,
+# since regenerating it costs ElevenLabs credits)
+*.wav

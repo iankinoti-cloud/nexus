@@ -1,0 +1,27 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, OutlineColour, BackColour, Bold, Italic, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Line,Liberation Sans,46,&H00F4F4F5,&H90000000,&H90000000,0,0,1,0,3,2,180,180,172,1
+Style: Tag,Liberation Sans,24,&H00C5D14F,&H00000000,&H00000000,1,0,1,0,0,2,180,180,248,1
+[Events]
+Format: Layer, Start, End, Style, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.35,0:00:07.20,Line,,,,,Creative teams don't have a work problem.\NThey have a knowing problem.
+Dialogue: 0,0:00:07.45,0:00:16.30,Line,,,,,This is NEXUS. Executive clarity, in real\Ntime.
+Dialogue: 0,0:00:07.45,0:00:16.30,Tag,,,,,MISSION CONTROL
+Dialogue: 0,0:00:16.55,0:00:22.40,Line,,,,,Every project — intelligent from kickoff\Nto close.
+Dialogue: 0,0:00:16.55,0:00:22.40,Tag,,,,,PROJECTS
+Dialogue: 0,0:00:22.65,0:00:28.00,Line,,,,,See your team with clarity — before they\Nburn out.
+Dialogue: 0,0:00:22.65,0:00:28.00,Tag,,,,,PEOPLE
+Dialogue: 0,0:00:28.25,0:00:47.80,Line,,,,,Ask it anything. The intelligence at the\Nheart of everything answers.
+Dialogue: 0,0:00:28.25,0:00:47.80,Tag,,,,,CORE INTELLIGENCE
+Dialogue: 0,0:00:48.05,0:00:52.60,Line,,,,,Measurable outcomes, from day one.
+Dialogue: 0,0:00:48.05,0:00:52.60,Tag,,,,,BUSINESS IMPACT
+Dialogue: 0,0:00:52.85,0:00:58.70,Line,,,,,And it lives in your pocket —\Nrelationships, not records.
+Dialogue: 0,0:00:52.85,0:00:58.70,Tag,,,,,CLIENTS
+Dialogue: 0,0:00:58.95,0:01:05.30,Line,,,,,Every signal that matters, the moment it\Nmatters.
+Dialogue: 0,0:00:58.95,0:01:05.30,Tag,,,,,NOTIFICATIONS
+Dialogue: 0,0:01:05.55,0:01:13.90,Line,,,,,Your organization never forgets.
+Dialogue: 0,0:01:05.55,0:01:13.90,Tag,,,,,KNOWLEDGE

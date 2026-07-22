@@ -1,0 +1,10 @@
+{
+  "name": "nexus-demo-film",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Deterministic screen-recording harness for the NEXUS product film.",
+  "devDependencies": {
+    "playwright": "^1.61.1"
+  }
+}
