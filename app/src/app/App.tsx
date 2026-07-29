@@ -8,6 +8,7 @@ import { Splash } from './components/Splash';
 initTheme();
 import { AuthProvider, useAuth } from './auth/AuthProvider';
 import { LoginScreen } from './auth/LoginScreen';
+import { PasswordGate } from './auth/PasswordGate';
 import { AppErrorBoundary, RouteError } from './components/ErrorBoundary';
 import { RootLayout } from './components/layout/RootLayout';
 import { DashboardPage } from './components/pages/DashboardPage';
@@ -73,6 +74,7 @@ export default function App() {
   const [splashDone, setSplashDone] = useState(false);
   return (
     <AppErrorBoundary>
+      <PasswordGate>
       <AuthProvider>
         {!splashDone && <Splash onDone={() => setSplashDone(true)} />}
         <Gate />
@@ -88,6 +90,7 @@ export default function App() {
         }}
         />
       </AuthProvider>
+      </PasswordGate>
     </AppErrorBoundary>
   );
 }
