@@ -73,11 +73,10 @@ export async function streamCoreChat(
     }
     return parseReply(full);
   } catch (err) {
-    aiLive = false;
-    console.warn('[nexus/ai] chat fell back to offline:', err instanceof Error ? err.message : err);
-    const fallback = localFallback(history[history.length - 1]?.content ?? '', context, agent);
-    await typeOut(fallback.text, onDelta);
-    return fallback;
+    console.warn('[nexus/ai] chat error:', err instanceof Error ? err.message : err);
+    const msg = "I'm having trouble connecting right now. Please try again in a moment.";
+    onDelta(msg);
+    return { text: msg, recommendations: [] };
   }
 }
 
@@ -96,73 +95,6 @@ function parseReply(full: string): CoreReply {
   return { text: text.trimEnd(), recommendations };
 }
 
-async function typeOut(text: string, onDelta: (t: string) => void) {
-  const words = text.split(' ');
-  let acc = '';
-  for (const word of words) {
-    acc += (acc ? ' ' : '') + word;
-    onDelta(acc);
-    await new Promise(r => setTimeout(r, 18));
-  }
-}
-
-/**
- * Offline fallback: computes a real answer from the live store snapshot so
- * even without a network the reply is grounded in actual app state.
- */
-function localFallback(query: string, context: object, agent: AgentId = 'ops'): CoreReply {
-  const agentNames: Record<AgentId, string> = { ops: 'Zara', talent: 'Knox', client: 'Mira', production: 'Axel' };
-  const ctx = context as {
-    employees?: { id: string; name: string; workload: number; burnoutRisk: number; availability: string }[];
-    projects?: { id: string; name: string; risk: string; deadline: string; progress: number }[];
-    clients?: { id: string; name: string; lastContact: string; healthScore: number }[];
-  };
-  const employees = ctx.employees ?? [];
-  const projects = ctx.projects ?? [];
-  const clients = ctx.clients ?? [];
-
-  const q = query.toLowerCase();
-  const stressed = [...employees].sort((a, b) => b.burnoutRisk - a.burnoutRisk)[0];
-  const freest = [...employees].sort((a, b) => a.workload - b.workload)[0];
-  const riskiest = projects.find(p => p.risk === 'high') ?? [...projects].sort((a, b) => a.progress - b.progress)[0];
-  const coldest = [...clients].sort((a, b) => a.healthScore - b.healthScore)[0];
-
-  const prefix = `[${agentNames[agent]} — offline mode] `;
-  if (q.includes('burn') || q.includes('workload') || q.includes('capacity') || q.includes('team')) {
-    return {
-      text: `${prefix}${stressed?.name} is carrying the highest burnout risk on the team (${stressed?.burnoutRisk}%) at ${stressed?.workload}% utilization — past the 85% threshold our Q2 retro flagged. ${freest?.name} has the most available capacity (${freest?.workload}%).`,
-      recommendations: stressed && freest ? [{
-        title: `Rebalance ${stressed.name} → ${freest.name}`,
-        description: `Shift one active workstream from ${stressed.name} to ${freest.name} to bring utilization back into the healthy 70–85% band.`,
-        action: { type: 'reassign', fromEmployeeId: stressed.id, toEmployeeId: freest.id },
-      }] : [],
-    };
-  }
-  if (q.includes('client') || q.includes('follow') || q.includes('churn')) {
-    return {
-      text: `${prefix}${coldest?.name} has the weakest relationship health (${coldest?.healthScore}%) and was last contacted ${coldest?.lastContact}. Silence gaps over two weeks correlate with churn in our client history.`,
-      recommendations: coldest ? [{
-        title: `Follow up with ${coldest.name}`,
-        description: 'Send a check-in with a project status summary to re-open the conversation.',
-        action: { type: 'contact_client', clientId: coldest.id },
-      }] : [],
-    };
-  }
-  if (q.includes('risk') || q.includes('project') || q.includes('deadline') || q.includes('behind')) {
-    return {
-      text: `${prefix}${riskiest?.name} is the project most at risk — ${riskiest?.progress}% complete with a ${riskiest?.deadline} deadline and risk level "${riskiest?.risk}".`,
-      recommendations: riskiest ? [{
-        title: `Extend ${riskiest.name} deadline`,
-        description: 'Add 7 days of buffer and notify the client with a revised timeline before it becomes a surprise.',
-        action: { type: 'extend_deadline', projectId: riskiest.id, days: 7 },
-      }] : [],
-    };
-  }
-  return {
-    text: `${prefix}Snapshot: ${projects.length} active projects (${projects.filter(p => p.risk === 'high').length} high-risk), team utilization peaks at ${stressed?.workload}% (${stressed?.name}), and ${coldest?.name} is the client most in need of attention (health ${coldest?.healthScore}%). Ask me about team capacity, project risk, or client health for a deeper cut.`,
-    recommendations: [],
-  };
-}
 
 // --- Creative Services Pipeline ---
 

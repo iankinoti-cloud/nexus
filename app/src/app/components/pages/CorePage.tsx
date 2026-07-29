@@ -86,7 +86,7 @@ const SEED_MESSAGES: Record<AgentId, CoreChatMsg[]> = {
     {
       id: 'ops-seed-1',
       role: 'core',
-      content: "Operations Command online. I have live visibility across all 6 active projects, team utilization, and delivery risk. The Nexora Web Platform is currently flagged high-risk at 22% completion — scope creep is the primary concern. Ready to help you prioritize.",
+      content: "Nexora is flagged high-risk at 22% complete — scope creep is already showing. I'm tracking all six projects and your team's capacity. Where do you want to start?",
       timestamp: 'Now',
       recommendations: [],
     },
@@ -95,7 +95,7 @@ const SEED_MESSAGES: Record<AgentId, CoreChatMsg[]> = {
     {
       id: 'talent-seed-1',
       role: 'core',
-      content: "Talent Intelligence active. I'm monitoring 6 team members and have access to 8 vetted DMF candidates. Nina Chen is currently at 95% utilization with an 81% burnout risk — she's past the threshold. Omar Fathi and Leo Tan have the most available capacity. Ask me about skills matching, recruitment, or workload rebalancing.",
+      content: "Nina Chen is at 95% load with an 81% burnout risk — that's past threshold. Omar and Leo have capacity. I have 8 vetted candidates on standby. What's the move?",
       timestamp: 'Now',
       recommendations: [],
     },
@@ -104,7 +104,7 @@ const SEED_MESSAGES: Record<AgentId, CoreChatMsg[]> = {
     {
       id: 'client-seed-1',
       role: 'core',
-      content: "Client Success ready. I'm tracking 6 client relationships. Nexora AI has the weakest health signal right now — scope dispute creating friction. Titan Ventures is your strongest relationship at 9.1 health. I can draft follow-ups, flag churn risk, or help you prepare for client conversations.",
+      content: "Nexora AI is your most fragile relationship right now — scope friction, recent silence. Titan Ventures is your strongest at 9.1. I'm watching all six. Who needs attention today?",
       timestamp: 'Now',
       recommendations: [],
     },
@@ -113,7 +113,7 @@ const SEED_MESSAGES: Record<AgentId, CoreChatMsg[]> = {
     {
       id: 'production-seed-1',
       role: 'core',
-      content: "Production Control online. I have visibility across 3 studio spaces and 3 equipment packages. Verdant Foods campaign is in review phase — a shoot window may be needed soon. I can help schedule studio time, allocate crew, or plan production logistics for any active project.",
+      content: "Verdant Foods is wrapping review and a shoot window is opening soon — Studio A is clear. Three spaces and three equipment packages tracked. What's the next production to plan?",
       timestamp: 'Now',
       recommendations: [],
     },
