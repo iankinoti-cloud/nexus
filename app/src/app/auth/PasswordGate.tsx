@@ -213,16 +213,13 @@ function PasswordModal({ onUnlock }: { onUnlock: () => void }) {
 }
 
 export function PasswordGate({ children }: { children: ReactNode }) {
-  // If no password is configured (local dev / forks without the env var),
-  // the gate is a no-op so the app remains fully accessible.
-  const gateEnabled = Boolean(ACCESS_PASSWORD);
-  const [locked, setLocked] = useState(gateEnabled);
+  const [locked, setLocked] = useState(true);
 
   useEffect(() => {
-    if (!gateEnabled || locked) return;
+    if (locked) return;
     const id = setTimeout(() => setLocked(true), RELOCK_INTERVAL_MS);
     return () => clearTimeout(id);
-  }, [locked, gateEnabled]);
+  }, [locked]);
 
   return (
     <>
