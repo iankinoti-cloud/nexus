@@ -11,7 +11,7 @@ export function RootLayout() {
 
   if (isMobile) {
     return (
-      <div className="flex flex-col h-dvh w-full overflow-hidden" style={{ background: ambient }}>
+      <div className="flex flex-col h-dvh w-full overflow-hidden" style={{ background: ambient, paddingTop: 'env(safe-area-inset-top)' }}>
         <MobileNav />
         <main
           className="flex-1 flex flex-col overflow-hidden rounded-2xl"
