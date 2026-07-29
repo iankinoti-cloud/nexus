@@ -22,6 +22,13 @@ type AgentConfig = {
   prompts: string[];
 };
 
+function ca(color: string, hexAlpha: string): string {
+  if (color.startsWith('var(')) {
+    return `rgba(var(--accent-rgb), ${(parseInt(hexAlpha, 16) / 255).toFixed(2)})`;
+  }
+  return `${color}${hexAlpha}`;
+}
+
 const AGENTS: AgentConfig[] = [
   {
     id: 'ops',
@@ -142,12 +149,12 @@ function AgentTabBar({
             className="flex items-center gap-2 rounded-lg px-3 py-2 transition-all"
             style={{
               background: isActive ? 'var(--surface)' : 'transparent',
-              border: isActive ? `1px solid ${agent.color}30` : '1px solid transparent',
+              border: isActive ? `1px solid ${ca(agent.color, '30')}` : '1px solid transparent',
               color: isActive ? agent.color : 'var(--text-dim)',
               fontSize: 'calc(12px * var(--fs))',
               fontWeight: isActive ? 600 : 400,
               cursor: 'pointer',
-              boxShadow: isActive ? `0 0 12px ${agent.color}15` : 'none',
+              boxShadow: isActive ? `0 0 12px ${ca(agent.color, '15')}` : 'none',
             }}
           >
             <Icon size={13} />
@@ -168,14 +175,14 @@ function AgentIdentityCard({ agent, onFocusClick }: { agent: AgentConfig; onFocu
       transition={{ duration: 0.2 }}
       className="rounded-xl p-4 mb-4"
       style={{
-        background: `linear-gradient(135deg, ${agent.color}08, ${agent.color}04)`,
-        border: `1px solid ${agent.color}25`,
+        background: `linear-gradient(135deg, ${ca(agent.color, '08')}, ${ca(agent.color, '04')})`,
+        border: `1px solid ${ca(agent.color, '25')}`,
       }}
     >
       <div className="flex items-center gap-3 mb-3">
         <div
           className="flex items-center justify-center rounded-lg shrink-0"
-          style={{ width: 36, height: 36, background: `${agent.color}18` }}
+          style={{ width: 36, height: 36, background: ca(agent.color, '18') }}
         >
           <agent.icon size={16} style={{ color: agent.color }} />
         </div>
@@ -191,20 +198,20 @@ function AgentIdentityCard({ agent, onFocusClick }: { agent: AgentConfig; onFocu
             onClick={() => onFocusClick(f)}
             className="rounded-full px-2.5 py-1 transition-all"
             style={{
-              background: `${agent.color}12`,
-              border: `1px solid ${agent.color}22`,
+              background: ca(agent.color, '12'),
+              border: `1px solid ${ca(agent.color, '22')}`,
               color: 'var(--text-dim)',
               fontSize: 'calc(11px * var(--fs))',
               cursor: 'pointer',
             }}
             onMouseEnter={e => {
-              (e.currentTarget as HTMLButtonElement).style.background = `${agent.color}22`;
-              (e.currentTarget as HTMLButtonElement).style.borderColor = `${agent.color}44`;
+              (e.currentTarget as HTMLButtonElement).style.background = ca(agent.color, '22');
+              (e.currentTarget as HTMLButtonElement).style.borderColor = ca(agent.color, '44');
               (e.currentTarget as HTMLButtonElement).style.color = agent.color;
             }}
             onMouseLeave={e => {
-              (e.currentTarget as HTMLButtonElement).style.background = `${agent.color}12`;
-              (e.currentTarget as HTMLButtonElement).style.borderColor = `${agent.color}22`;
+              (e.currentTarget as HTMLButtonElement).style.background = ca(agent.color, '12');
+              (e.currentTarget as HTMLButtonElement).style.borderColor = ca(agent.color, '22');
               (e.currentTarget as HTMLButtonElement).style.color = 'var(--text-dim)';
             }}
           >
@@ -283,7 +290,7 @@ function CoreMessage({
         <div className="flex items-center gap-2 mb-2">
           <div
             className="flex items-center justify-center rounded-lg"
-            style={{ width: 24, height: 24, background: `${agent.color}20` }}
+            style={{ width: 24, height: 24, background: ca(agent.color, '20') }}
           >
             <agent.icon size={12} style={{ color: agent.color }} />
           </div>
@@ -293,8 +300,8 @@ function CoreMessage({
         <div
           className="rounded-xl p-4"
           style={{
-            background: `${agent.color}06`,
-            border: `1px solid ${agent.color}20`,
+            background: ca(agent.color, '06'),
+            border: `1px solid ${ca(agent.color, '20')}`,
             borderLeft: `3px solid ${agent.color}`,
           }}
         >
@@ -327,13 +334,13 @@ function CoreMessage({
                     </div>
                     {rec.action && rec.action.type !== 'none' && (
                       <motion.button
-                        whileHover={rec.applied ? {} : { background: `${agent.color}18` }}
+                        whileHover={rec.applied ? {} : { background: ca(agent.color, '18') }}
                         whileTap={rec.applied ? {} : { scale: 0.97 }}
                         onClick={() => !rec.applied && onApply(msg.id, i)}
                         className="rounded-lg py-1.5 px-3 flex items-center gap-2"
                         style={{
-                          background: rec.applied ? 'rgba(34,197,94,0.08)' : `${agent.color}10`,
-                          border: `1px solid ${rec.applied ? 'rgba(34,197,94,0.25)' : agent.color + '28'}`,
+                          background: rec.applied ? 'rgba(34,197,94,0.08)' : ca(agent.color, '10'),
+                          border: `1px solid ${rec.applied ? 'rgba(34,197,94,0.25)' : ca(agent.color, '28')}`,
                           color: rec.applied ? '#22C55E' : agent.color,
                           fontSize: 'calc(12px * var(--fs))',
                           fontWeight: 500,
@@ -545,13 +552,13 @@ export function CorePage() {
             >
               <div
                 className="flex items-center justify-center rounded-lg"
-                style={{ width: 24, height: 24, background: `${agent.color}20` }}
+                style={{ width: 24, height: 24, background: ca(agent.color, '20') }}
               >
                 <agent.icon size={12} style={{ color: agent.color }} />
               </div>
               <div
                 className="rounded-xl px-4 py-3"
-                style={{ background: `${agent.color}06`, border: `1px solid ${agent.color}20`, borderLeft: `3px solid ${agent.color}` }}
+                style={{ background: ca(agent.color, '06'), border: `1px solid ${ca(agent.color, '20')}`, borderLeft: `3px solid ${agent.color}` }}
               >
                 <div className="flex items-center gap-1.5">
                   {[0, 0.2, 0.4].map(delay => (
@@ -595,8 +602,8 @@ export function CorePage() {
                     transition: 'all 0.15s ease',
                   }}
                   onMouseEnter={e => {
-                    (e.target as HTMLButtonElement).style.background = `${agent.color}12`;
-                    (e.target as HTMLButtonElement).style.borderColor = `${agent.color}30`;
+                    (e.target as HTMLButtonElement).style.background = ca(agent.color, '12');
+                    (e.target as HTMLButtonElement).style.borderColor = ca(agent.color, '30');
                     (e.target as HTMLButtonElement).style.color = agent.color;
                   }}
                   onMouseLeave={e => {
@@ -656,7 +663,7 @@ export function CorePage() {
                 style={{
                   width: 36,
                   height: 36,
-                  background: input.trim() ? agent.color : `${agent.color}20`,
+                  background: input.trim() ? agent.color : ca(agent.color, '20'),
                   border: 'none',
                   cursor: input.trim() ? 'pointer' : 'default',
                   transition: 'background 0.15s ease',
