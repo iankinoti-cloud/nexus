@@ -1,5 +1,14 @@
 import type { CoreAction } from '../data/store';
 import type { KnowledgeNote } from '../data/knowledge';
+import type { AgentId } from '../data/types';
+import { supabase } from './supabase';
+
+async function authHeader(): Promise<Record<string, string>> {
+  if (!supabase) return {};
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
 export interface Recommendation {
   title: string;
@@ -41,12 +50,13 @@ export async function streamCoreChat(
   history: { role: 'user' | 'core'; content: string }[],
   context: object,
   onDelta: (visibleText: string) => void,
+  agent: AgentId = 'ops',
 ): Promise<CoreReply> {
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: history, context }),
+      headers: { 'Content-Type': 'application/json', ...await authHeader() },
+      body: JSON.stringify({ messages: history, context, agent }),
     });
     if (!res.ok || !res.body) throw new Error(`chat ${res.status}`);
     aiLive = true;
@@ -62,9 +72,10 @@ export async function streamCoreChat(
       onDelta(visible.trimEnd());
     }
     return parseReply(full);
-  } catch {
+  } catch (err) {
     aiLive = false;
-    const fallback = localFallback(history[history.length - 1]?.content ?? '', context);
+    console.warn('[nexus/ai] chat fell back to offline:', err instanceof Error ? err.message : err);
+    const fallback = localFallback(history[history.length - 1]?.content ?? '', context, agent);
     await typeOut(fallback.text, onDelta);
     return fallback;
   }
@@ -99,7 +110,8 @@ async function typeOut(text: string, onDelta: (t: string) => void) {
  * Offline fallback: computes a real answer from the live store snapshot so
  * even without a network the reply is grounded in actual app state.
  */
-function localFallback(query: string, context: object): CoreReply {
+function localFallback(query: string, context: object, agent: AgentId = 'ops'): CoreReply {
+  const agentNames: Record<AgentId, string> = { ops: 'Zara', talent: 'Knox', client: 'Mira', production: 'Axel' };
   const ctx = context as {
     employees?: { id: string; name: string; workload: number; burnoutRisk: number; availability: string }[];
     projects?: { id: string; name: string; risk: string; deadline: string; progress: number }[];
@@ -115,9 +127,10 @@ function localFallback(query: string, context: object): CoreReply {
   const riskiest = projects.find(p => p.risk === 'high') ?? [...projects].sort((a, b) => a.progress - b.progress)[0];
   const coldest = [...clients].sort((a, b) => a.healthScore - b.healthScore)[0];
 
+  const prefix = `[${agentNames[agent]} — offline mode] `;
   if (q.includes('burn') || q.includes('workload') || q.includes('capacity') || q.includes('team')) {
     return {
-      text: `Running in offline mode with local analysis. ${stressed?.name} is carrying the highest burnout risk on the team (${stressed?.burnoutRisk}%) at ${stressed?.workload}% utilization — past the 85% threshold our Q2 retro flagged. ${freest?.name} has the most available capacity (${freest?.workload}%).`,
+      text: `${prefix}${stressed?.name} is carrying the highest burnout risk on the team (${stressed?.burnoutRisk}%) at ${stressed?.workload}% utilization — past the 85% threshold our Q2 retro flagged. ${freest?.name} has the most available capacity (${freest?.workload}%).`,
       recommendations: stressed && freest ? [{
         title: `Rebalance ${stressed.name} → ${freest.name}`,
         description: `Shift one active workstream from ${stressed.name} to ${freest.name} to bring utilization back into the healthy 70–85% band.`,
@@ -127,7 +140,7 @@ function localFallback(query: string, context: object): CoreReply {
   }
   if (q.includes('client') || q.includes('follow') || q.includes('churn')) {
     return {
-      text: `Running in offline mode with local analysis. ${coldest?.name} has the weakest relationship health (${coldest?.healthScore}%) and was last contacted ${coldest?.lastContact}. Silence gaps over two weeks correlate with churn in our client history.`,
+      text: `${prefix}${coldest?.name} has the weakest relationship health (${coldest?.healthScore}%) and was last contacted ${coldest?.lastContact}. Silence gaps over two weeks correlate with churn in our client history.`,
       recommendations: coldest ? [{
         title: `Follow up with ${coldest.name}`,
         description: 'Send a check-in with a project status summary to re-open the conversation.',
@@ -137,7 +150,7 @@ function localFallback(query: string, context: object): CoreReply {
   }
   if (q.includes('risk') || q.includes('project') || q.includes('deadline') || q.includes('behind')) {
     return {
-      text: `Running in offline mode with local analysis. ${riskiest?.name} is the project most at risk — ${riskiest?.progress}% complete with a ${riskiest?.deadline} deadline and risk level "${riskiest?.risk}".`,
+      text: `${prefix}${riskiest?.name} is the project most at risk — ${riskiest?.progress}% complete with a ${riskiest?.deadline} deadline and risk level "${riskiest?.risk}".`,
       recommendations: riskiest ? [{
         title: `Extend ${riskiest.name} deadline`,
         description: 'Add 7 days of buffer and notify the client with a revised timeline before it becomes a surprise.',
@@ -146,7 +159,7 @@ function localFallback(query: string, context: object): CoreReply {
     };
   }
   return {
-    text: `Running in offline mode with local analysis. Snapshot: ${projects.length} active projects (${projects.filter(p => p.risk === 'high').length} high-risk), team utilization peaks at ${stressed?.workload}% (${stressed?.name}), and ${coldest?.name} is the client most in need of attention (health ${coldest?.healthScore}%). Ask me about team capacity, project risk, or client health for a deeper cut.`,
+    text: `${prefix}Snapshot: ${projects.length} active projects (${projects.filter(p => p.risk === 'high').length} high-risk), team utilization peaks at ${stressed?.workload}% (${stressed?.name}), and ${coldest?.name} is the client most in need of attention (health ${coldest?.healthScore}%). Ask me about team capacity, project risk, or client health for a deeper cut.`,
     recommendations: [],
   };
 }
@@ -159,7 +172,7 @@ export async function generateBrief(transcript: string, enquiry: Partial<Enquiry
   try {
     const res = await fetch('/api/pipeline/brief', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...await authHeader() },
       body: JSON.stringify({ transcript, enquiry }),
     });
     if (!res.ok) throw new Error(`brief ${res.status}`);
@@ -175,7 +188,7 @@ export async function generateProposal(brief: ProjectBrief, ideation: CreativeId
   try {
     const res = await fetch('/api/pipeline/proposal', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...await authHeader() },
       body: JSON.stringify({ brief, ideation, enquiry }),
     });
     if (!res.ok) throw new Error(`proposal ${res.status}`);
@@ -191,7 +204,7 @@ export async function generateQuotation(brief: ProjectBrief, proposal: Proposal,
   try {
     const res = await fetch('/api/pipeline/quote', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...await authHeader() },
       body: JSON.stringify({ brief, proposal, enquiry }),
     });
     if (!res.ok) throw new Error(`quote ${res.status}`);
@@ -284,7 +297,7 @@ export async function askKnowledge(query: string, notes: KnowledgeNote[]): Promi
   try {
     const res = await fetch('/api/knowledge', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...await authHeader() },
       body: JSON.stringify({ query, notes }),
     });
     if (!res.ok) throw new Error(`knowledge ${res.status}`);

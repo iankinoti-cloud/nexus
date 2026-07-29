@@ -126,12 +126,6 @@ export function DashboardPage() {
                 <div style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>3 active recommendations</div>
               </div>
             </div>
-            <span
-              className="rounded-full px-2 py-0.5"
-              style={{ background: 'rgba(var(--accent-rgb),0.1)', color: 'var(--accent)', fontSize: 'calc(11px * var(--fs))' }}
-            >
-              Live
-            </span>
           </div>
 
           <div className="flex flex-col gap-0">

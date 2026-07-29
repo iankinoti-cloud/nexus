@@ -103,71 +103,92 @@ export function Sidebar() {
         </div>
 
         <nav className="flex-1 min-h-0 px-3 py-4 flex flex-col gap-1 overflow-y-auto overflow-x-hidden relative">
-          {NAV_ITEMS.map((item) => {
+          {NAV_ITEMS.map((item, idx) => {
             const isActive = activePath === item.path;
             const isHi = highlight === item.path;
             const Icon = item.icon;
+            const prevGroup = idx > 0 ? NAV_ITEMS[idx - 1].group : null;
+            const groupChanged = prevGroup !== null && prevGroup !== item.group;
             return (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                end={item.end}
-                title={item.label}
-                onMouseEnter={() => setNavHover(item.path)}
-                className="flex items-center gap-3 rounded-xl relative no-underline"
-                style={{
-                  padding: '10px 12px',
-                  color: isHi ? 'var(--accent)' : 'var(--text-dim)',
-                  fontSize: 'calc(13.5px * var(--fs))',
-                  fontWeight: isActive ? 500 : 400,
-                  transition: 'color 0.18s ease',
-                }}
-              >
-                {isHi && (
-                  <motion.div
-                    layoutId="liquidPill"
-                    className="absolute inset-0 rounded-xl"
-                    style={{
-                      background: 'rgba(var(--accent-rgb),0.14)',
-                      border: '1px solid rgba(var(--accent-rgb),0.35)',
-                      boxShadow: 'inset 0 1px 0 0 var(--glass-rim), 0 6px 18px -6px rgba(var(--accent-rgb),0.5)',
-                      backdropFilter: 'blur(6px) saturate(160%)',
-                    }}
-                    transition={{ type: 'spring', stiffness: 230, damping: 19, mass: 0.9 }}
-                  />
+              <div key={item.path}>
+                {groupChanged && (
+                  <div style={{ padding: open ? '6px 0 2px' : '6px 0 2px' }}>
+                    <div style={{ height: 1, background: 'var(--hair)', marginLeft: open ? 12 : 8, marginRight: open ? 12 : 8 }} />
+                    <AnimatePresence>
+                      {open && (
+                        <motion.p
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.12 }}
+                          style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.1em', padding: '4px 12px 2px', opacity: 0.6 }}
+                        >
+                          {item.group}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 )}
-                <div className="relative shrink-0 z-10" style={{ width: 16, height: 16 }}>
-                  <Icon size={16} style={{ opacity: isHi ? 1 : 0.85 }} />
-                  {!open && item.label === 'Notifications' && unreadCount > 0 && (
-                    <span
-                      className="absolute rounded-full"
-                      style={{ top: -3, right: -3, width: 8, height: 8, background: 'var(--accent)', border: '2px solid var(--surface)' }}
+                <NavLink
+                  to={item.path}
+                  end={item.end}
+                  title={item.label}
+                  onMouseEnter={() => setNavHover(item.path)}
+                  className="flex items-center gap-3 rounded-xl relative no-underline"
+                  style={{
+                    padding: '10px 12px',
+                    color: isHi ? 'var(--accent)' : 'var(--text-dim)',
+                    fontSize: 'calc(13.5px * var(--fs))',
+                    fontWeight: isActive ? 500 : 400,
+                    transition: 'color 0.18s ease',
+                  }}
+                >
+                  {isHi && (
+                    <motion.div
+                      layoutId="liquidPill"
+                      className="absolute inset-0 rounded-xl"
+                      style={{
+                        background: 'rgba(var(--accent-rgb),0.14)',
+                        border: '1px solid rgba(var(--accent-rgb),0.35)',
+                        boxShadow: 'inset 0 1px 0 0 var(--glass-rim), 0 6px 18px -6px rgba(var(--accent-rgb),0.5)',
+                        backdropFilter: 'blur(6px) saturate(160%)',
+                      }}
+                      transition={{ type: 'spring', stiffness: 230, damping: 19, mass: 0.9 }}
                     />
                   )}
-                </div>
-                <AnimatePresence>
-                  {open && (
-                    <motion.span
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.12 }}
-                      className="flex-1 relative z-10"
-                      style={{ whiteSpace: 'nowrap' }}
+                  <div className="relative shrink-0 z-10" style={{ width: 16, height: 16 }}>
+                    <Icon size={16} style={{ opacity: isHi ? 1 : 0.85 }} />
+                    {!open && item.label === 'Notifications' && unreadCount > 0 && (
+                      <span
+                        className="absolute rounded-full"
+                        style={{ top: -3, right: -3, width: 8, height: 8, background: 'var(--accent)', border: '2px solid var(--surface)' }}
+                      />
+                    )}
+                  </div>
+                  <AnimatePresence>
+                    {open && (
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.12 }}
+                        className="flex-1 relative z-10"
+                        style={{ whiteSpace: 'nowrap' }}
+                      >
+                        {item.label}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                  {open && item.label === 'Notifications' && unreadCount > 0 && (
+                    <span
+                      className="flex items-center justify-center rounded-full shrink-0 relative z-10"
+                      style={{ width: 18, height: 18, background: 'var(--accent)', color: '#0B0B0F', fontSize: 'calc(10px * var(--fs))', fontWeight: 700 }}
                     >
-                      {item.label}
-                    </motion.span>
+                      {unreadCount}
+                    </span>
                   )}
-                </AnimatePresence>
-                {open && item.label === 'Notifications' && unreadCount > 0 && (
-                  <span
-                    className="flex items-center justify-center rounded-full shrink-0 relative z-10"
-                    style={{ width: 18, height: 18, background: 'var(--accent)', color: '#0B0B0F', fontSize: 'calc(10px * var(--fs))', fontWeight: 700 }}
-                  >
-                    {unreadCount}
-                  </span>
-                )}
-              </NavLink>
+                </NavLink>
+              </div>
             );
           })}
         </nav>

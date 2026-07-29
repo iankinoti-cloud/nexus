@@ -948,36 +948,61 @@ function Slide11Automation() {
 
 function Slide12Architecture() {
   const t = useT();
-  const layers = [
-    { name: "Presentation Layer",  items: ["Web App", "Mobile App", "API Consumers", "Embedded Widgets"], desc: "React · TypeScript · Tailwind",       highlight: false },
-    { name: "Intelligence Layer",  items: ["Core AI Engine", "Recommendation System", "Semantic Search", "Automation Engine"], desc: "Python · LangChain · Vector DB", highlight: true },
-    { name: "Data Layer",          items: ["Entity Graph", "Event Stream", "Document Store", "Analytics Warehouse"], desc: "PostgreSQL · Redis · S3 · Snowflake", highlight: false },
-    { name: "Infrastructure Layer",items: ["Multi-Region Cloud", "Zero-Trust Network", "SOC 2 Type II", "99.99% SLA"], desc: "AWS · Kubernetes · Terraform",       highlight: false },
+  const agents = [
+    { name: "Zara", title: "Operations Command", color: t.accent, items: ["Project risk", "Deadlines", "Resource allocation", "Timeline management"], actions: ["reassign", "extend_deadline", "handoff"] },
+    { name: "Knox", title: "Talent Intelligence", color: "#A855F7", items: ["Team capacity", "Burnout prevention", "Skills matching", "DMF recruitment"], actions: ["recommend_hire", "reassign", "handoff"] },
+    { name: "Mira", title: "Client Success", color: "#10B981", items: ["Client health", "CRM dossiers", "Follow-up drafts", "Churn prevention"], actions: ["contact_client", "log_contact", "handoff"] },
+    { name: "Axel", title: "Production Control", color: "#F59E0B", items: ["Studio scheduling", "Equipment allocation", "Crew assignment", "Shoot planning"], actions: ["book_studio", "allocate_crew", "handoff"] },
   ];
   return (
     <SlideWrapper>
-      <Stagger delay={0}><SlideLabel>Architecture</SlideLabel></Stagger>
-      <Stagger delay={0.1}><SlideHeadline size="md">Built for<br />enterprise scale.</SlideHeadline></Stagger>
-      <div className="space-y-3 mt-10 max-w-5xl">
-        {layers.map((l, i) => (
-          <motion.div key={i} className="flex items-center p-5 rounded-xl border"
-            style={{ background: t.surf, borderColor: t.hair, borderLeft: `2px solid ${l.highlight ? t.accent : t.a30}` }}
-            initial={{ opacity: 0, x: -24, scale: 0.98 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
+      <Stagger delay={0}><SlideLabel>Agent Architecture</SlideLabel></Stagger>
+      <Stagger delay={0.1}><SlideHeadline size="md">Four specialist agents.<br />One intelligent workforce.</SlideHeadline></Stagger>
+      <div className="grid grid-cols-4 gap-4 mt-10 max-w-5xl w-full">
+        {agents.map((agent, i) => (
+          <motion.div key={agent.name} className="rounded-2xl p-5 flex flex-col gap-4"
+            style={{ background: t.surf, border: `1px solid ${agent.color}25`, borderTop: `3px solid ${agent.color}` }}
+            initial={{ opacity: 0, y: 20, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ ...SPRING_SNAPPY, delay: 0.2 + i * 0.1 }}
           >
-            <div className="w-48 flex-shrink-0">
-              <p className="text-sm font-semibold" style={{ color: t.text }}>{l.name}</p>
-              <p className="text-xs mt-0.5" style={{ color: t.muted }}>{l.desc}</p>
+            <div>
+              <p className="text-base font-bold" style={{ color: agent.color }}>{agent.name}</p>
+              <p className="text-xs mt-0.5 font-medium" style={{ color: t.muted }}>{agent.title}</p>
             </div>
-            <div className="flex gap-2 flex-wrap flex-1 ml-8">
-              {l.items.map((item) => (
-                <span key={item} className="text-xs px-3 py-1.5 rounded-full" style={{ background: t.surf2, color: t.dim }}>{item}</span>
+            <div className="flex flex-col gap-1.5 flex-1">
+              {agent.items.map(item => (
+                <span key={item} className="text-xs px-2.5 py-1 rounded-lg" style={{ background: `${agent.color}10`, color: t.dim, border: `1px solid ${agent.color}20` }}>{item}</span>
+              ))}
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="text-xs font-semibold" style={{ color: t.muted, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 2 }}>Actions</p>
+              {agent.actions.map(a => (
+                <span key={a} className="text-xs font-mono px-2 py-0.5 rounded" style={{ background: `${agent.color}08`, color: agent.color, border: `1px solid ${agent.color}18` }}>{a}()</span>
               ))}
             </div>
           </motion.div>
         ))}
       </div>
+      <motion.div
+        className="flex items-center gap-6 mt-8 px-6 py-3 rounded-2xl"
+        style={{ background: t.surf, border: `1px solid ${t.hair}` }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.7 }}
+      >
+        {[
+          { label: "Powered by", value: "Claude claude-opus-4-8" },
+          { label: "Data layer", value: "Supabase · RLS per user" },
+          { label: "Stack", value: "React · Vite · Vercel" },
+          { label: "Security", value: "STRIDE · JWT · Rate limiting" },
+        ].map(({ label, value }) => (
+          <div key={label} className="flex flex-col gap-0.5">
+            <span className="text-xs" style={{ color: t.muted }}>{label}</span>
+            <span className="text-xs font-semibold" style={{ color: t.text }}>{value}</span>
+          </div>
+        ))}
+      </motion.div>
     </SlideWrapper>
   );
 }
@@ -985,10 +1010,10 @@ function Slide12Architecture() {
 function Slide13Technology() {
   const t = useT();
   const stacks = [
-    { name: "Frontend",       icon: <Globe size={18} />,    items: ["React 18", "TypeScript", "Tailwind CSS", "Vite", "PWA"] },
-    { name: "Backend",        icon: <Database size={18} />, items: ["Node.js", "GraphQL", "REST API", "WebSockets", "gRPC"] },
-    { name: "AI & ML",        icon: <Cpu size={18} />,      items: ["GPT-4o", "Claude 3", "LangChain", "Pinecone", "PyTorch"] },
-    { name: "Infrastructure", icon: <Shield size={18} />,   items: ["AWS EKS", "Terraform", "GitHub Actions", "DataDog", "Vault"] },
+    { name: "Frontend",       icon: <Globe size={18} />,    items: ["React 18", "TypeScript", "Tailwind CSS", "Vite", "shadcn/ui"] },
+    { name: "Backend",        icon: <Database size={18} />, items: ["Node.js", "Express", "Vercel Functions", "Supabase RLS", "Streaming API"] },
+    { name: "AI Layer",       icon: <Cpu size={18} />,      items: ["Claude claude-opus-4-8", "Prompt caching", "Structured outputs", "4-agent routing", "Offline fallback"] },
+    { name: "Security",       icon: <Shield size={18} />,   items: ["STRIDE model", "JWT verification", "Rate limiting", "Input caps", "Payload guard"] },
   ];
   return (
     <SlideWrapper>

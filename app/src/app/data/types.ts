@@ -26,6 +26,14 @@ export interface Employee {
   currentProjects: number;
 }
 
+export interface ContactEntry {
+  id: string;
+  date: string;
+  type: 'call' | 'email' | 'meeting' | 'note';
+  summary: string;
+  by: string;
+}
+
 export interface Client {
   id: string;
   name: string;
@@ -38,6 +46,18 @@ export interface Client {
   healthScore: number;
   aiFollowUp: string;
   status: 'active' | 'at-risk' | 'churned';
+  contactHistory?: ContactEntry[];
+  dossierNotes?: string;
+}
+
+export interface ResourceBooking {
+  id: string;
+  resourceId: string;
+  projectId: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  crew?: string[];
 }
 
 export interface Notification {
@@ -63,6 +83,23 @@ export interface ChatMessage {
   content: string;
   timestamp: string;
   recommendations?: { title: string; description: string }[];
+}
+
+export type AgentId = 'ops' | 'talent' | 'client' | 'production';
+
+export interface DmfCandidate {
+  id: string;
+  name: string;
+  initials: string;
+  avatarColor: string;
+  primaryRole: string;
+  skills: string[];
+  experience: number;
+  dmfRating: number;
+  availability: 'available' | 'busy' | 'contract-ending';
+  location: string;
+  dayRate: number;
+  lastProject: string;
 }
 
 export interface RevenueDataPoint {
@@ -160,6 +197,32 @@ export interface Quotation {
   validUntil: string;
   notes: string;
   generatedAt: string;
+}
+
+export type RfpStatus = 'new' | 'reviewing' | 'shortlisted' | 'submitted' | 'won' | 'lost';
+
+export interface RfpTender {
+  id: string;
+  title: string;
+  issuer: string;
+  category: 'branding' | 'campaign' | 'film' | 'digital' | 'experiential' | 'print';
+  estimatedValue: string;
+  submissionDeadline: string;
+  publishedAt: string;
+  status: RfpStatus;
+  fitScore: number;
+  aiRecommendation: string;
+  requirements: string[];
+  source: 'government' | 'corporate' | 'ngo' | 'private';
+}
+
+export interface AgentEvent {
+  id: string;
+  type: 'message' | 'handoff' | 'action';
+  agent: AgentId;
+  toAgent?: AgentId;
+  label: string;
+  timestamp: string;
 }
 
 export interface Enquiry {
