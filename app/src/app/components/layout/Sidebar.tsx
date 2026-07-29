@@ -201,16 +201,18 @@ export function Sidebar() {
 
 export function UserBlock({ open = true }: { open?: boolean }) {
   const { session, guest, displayName, avatarUrl, signOut } = useAuth();
-  const initials = displayName.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+  const [imgFailed, setImgFailed] = useState(false);
+  const initials = displayName.split(' ').map(w => w[0] ?? '').filter(Boolean).slice(0, 2).join('').toUpperCase() || '?';
 
   return (
     <div className="px-4 py-4 flex items-center gap-3 relative" style={{ borderTop: '1px solid var(--hair)' }}>
-      {avatarUrl ? (
+      {avatarUrl && !imgFailed ? (
         <img
           src={avatarUrl}
           alt={displayName}
           referrerPolicy="no-referrer"
           title={displayName}
+          onError={() => setImgFailed(true)}
           className="rounded-full shrink-0 object-cover"
           style={{ width: 34, height: 34 }}
         />

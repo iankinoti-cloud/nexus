@@ -123,8 +123,9 @@ function IntegrationItem({ name, description, connected, color }: {
 
 function ProfileTab() {
   const { session, displayName, avatarUrl } = useAuth();
+  const [imgFailed, setImgFailed] = useState(false);
   const email = session?.user?.email ?? 'sarah@apexstudio.co';
-  const initials = displayName.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+  const initials = displayName.split(' ').map(w => w[0] ?? '').filter(Boolean).slice(0, 2).join('').toUpperCase() || '?';
 
   return (
     <div className="flex flex-col gap-6">
@@ -136,11 +137,12 @@ function ProfileTab() {
       {/* Avatar */}
       <div className="flex items-center gap-5">
         <div className="relative">
-          {avatarUrl ? (
+          {avatarUrl && !imgFailed ? (
             <img
               src={avatarUrl}
               alt={displayName}
               referrerPolicy="no-referrer"
+              onError={() => setImgFailed(true)}
               className="rounded-xl object-cover"
               style={{ width: 72, height: 72 }}
             />
