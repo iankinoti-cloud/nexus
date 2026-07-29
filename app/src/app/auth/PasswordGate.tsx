@@ -1,13 +1,26 @@
 import { useState, useEffect, useRef, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Lock, Eye, EyeOff } from 'lucide-react';
+import { Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
 import nexusEmblem from '../../imports/NEXUS-_-EMBLEM.jpeg';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
-const ACCESS_PASSWORD = import.meta.env.VITE_GATE_PASSWORD as string;
 const RELOCK_INTERVAL_MS = 30_000;
 const ERROR_MESSAGE = 'MAYBE THE INTERNET MESSIAH KNOWS';
 const CHAR_DELAY_MS = 55;
+
+async function verifyPassword(password: string): Promise<boolean> {
+  try {
+    const res = await fetch('/api/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password }),
+    });
+    const data = await res.json();
+    return data.ok === true;
+  } catch {
+    return false;
+  }
+}
 
 function TypewriterError({ active }: { active: boolean }) {
   const [displayed, setDisplayed] = useState('');
@@ -25,7 +38,6 @@ function TypewriterError({ active }: { active: boolean }) {
     return () => clearInterval(id);
   }, [active]);
 
-  // blinking cursor
   useEffect(() => {
     if (!active) return;
     const id = setInterval(() => setCursorOn(c => !c), 530);
@@ -82,6 +94,7 @@ function PasswordModal({ onUnlock }: { onUnlock: () => void }) {
   const [value, setValue] = useState('');
   const [show, setShow] = useState(false);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [shake, setShake] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -89,9 +102,13 @@ function PasswordModal({ onUnlock }: { onUnlock: () => void }) {
     setTimeout(() => inputRef.current?.focus(), 200);
   }, []);
 
-  function submit() {
-    if (value === ACCESS_PASSWORD) {
-      setError(false);
+  async function submit() {
+    if (!value || loading) return;
+    setLoading(true);
+    setError(false);
+    const ok = await verifyPassword(value);
+    setLoading(false);
+    if (ok) {
       onUnlock();
     } else {
       setError(true);
@@ -162,6 +179,7 @@ function PasswordModal({ onUnlock }: { onUnlock: () => void }) {
             value={value}
             onChange={e => { setValue(e.target.value); setError(false); }}
             onKeyDown={e => e.key === 'Enter' && submit()}
+            disabled={loading}
             placeholder="Access password"
             style={{
               width: '100%',
@@ -172,13 +190,15 @@ function PasswordModal({ onUnlock }: { onUnlock: () => void }) {
               color: 'var(--text)',
               fontSize: 14,
               outline: 'none',
-              transition: 'border-color 0.2s',
+              opacity: loading ? 0.6 : 1,
+              transition: 'border-color 0.2s, opacity 0.15s',
               boxSizing: 'border-box',
             }}
           />
           <button
             type="button"
             onClick={() => setShow(s => !s)}
+            disabled={loading}
             style={{
               position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)',
               background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-dim)', padding: 2,
@@ -191,21 +211,25 @@ function PasswordModal({ onUnlock }: { onUnlock: () => void }) {
         <TypewriterError active={error} />
 
         <motion.button
-          whileHover={{ opacity: 0.9 }}
-          whileTap={{ scale: 0.97 }}
+          whileHover={{ opacity: loading ? 1 : 0.9 }}
+          whileTap={{ scale: loading ? 1 : 0.97 }}
           onClick={submit}
-          className="w-full rounded-xl py-2.5"
+          disabled={loading}
+          className="w-full rounded-xl py-2.5 flex items-center justify-center gap-2"
           style={{
             background: 'rgba(var(--accent-rgb),0.15)',
             border: '1px solid rgba(var(--accent-rgb),0.35)',
             color: 'var(--accent)',
             fontSize: 13,
             fontWeight: 600,
-            cursor: 'pointer',
+            cursor: loading ? 'not-allowed' : 'pointer',
             letterSpacing: '0.04em',
+            opacity: loading ? 0.7 : 1,
+            transition: 'opacity 0.15s',
           }}
         >
-          Unlock Access
+          {loading && <Loader2 size={13} style={{ animation: 'spin 0.8s linear infinite' }} />}
+          {loading ? 'Verifying…' : 'Unlock Access'}
         </motion.button>
       </motion.div>
     </div>
