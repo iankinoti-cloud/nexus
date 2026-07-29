@@ -159,7 +159,7 @@ function AgentTabBar({
   );
 }
 
-function AgentIdentityCard({ agent }: { agent: AgentConfig }) {
+function AgentIdentityCard({ agent, onFocusClick }: { agent: AgentConfig; onFocusClick: (f: string) => void }) {
   return (
     <motion.div
       key={agent.id}
@@ -186,18 +186,30 @@ function AgentIdentityCard({ agent }: { agent: AgentConfig }) {
       </div>
       <div className="flex flex-wrap gap-1.5">
         {agent.focus.map(f => (
-          <span
+          <button
             key={f}
-            className="rounded-full px-2.5 py-1"
+            onClick={() => onFocusClick(f)}
+            className="rounded-full px-2.5 py-1 transition-all"
             style={{
               background: `${agent.color}12`,
               border: `1px solid ${agent.color}22`,
               color: 'var(--text-dim)',
               fontSize: 'calc(11px * var(--fs))',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLButtonElement).style.background = `${agent.color}22`;
+              (e.currentTarget as HTMLButtonElement).style.borderColor = `${agent.color}44`;
+              (e.currentTarget as HTMLButtonElement).style.color = agent.color;
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLButtonElement).style.background = `${agent.color}12`;
+              (e.currentTarget as HTMLButtonElement).style.borderColor = `${agent.color}22`;
+              (e.currentTarget as HTMLButtonElement).style.color = 'var(--text-dim)';
             }}
           >
             {f}
-          </span>
+          </button>
         ))}
       </div>
     </motion.div>
@@ -508,7 +520,7 @@ export function CorePage() {
       <div className="flex-1 overflow-y-auto px-6 py-5">
         <div className="max-w-[800px] mx-auto flex flex-col gap-4">
           <AnimatePresence mode="wait">
-            <AgentIdentityCard key={activeAgent} agent={agent} />
+            <AgentIdentityCard key={activeAgent} agent={agent} onFocusClick={setInput} />
           </AnimatePresence>
 
           {messages.map(msg =>
