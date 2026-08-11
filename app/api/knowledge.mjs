@@ -1,16 +1,24 @@
-import { makeClient, hasKey, knowledgeParams, guard } from '../server/core-logic.mjs';
+import { makeClient, hasKey, knowledgeParams, guard, secLog } from '../server/core-logic.mjs';
 
 export async function POST(request) {
   if (!hasKey()) {
     return Response.json({ error: 'no_api_key' }, { status: 503 });
   }
   const body = await request.json();
-  const blocked = guard({
+  const token = request.headers.get('authorization')?.replace(/^Bearer\s+/i, '');
+  const ip =
+    request.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown';
+
+  const blocked = await guard({
     origin: request.headers.get('origin'),
     referer: request.headers.get('referer'),
     body,
+    token,
+    ip,
   });
-  if (blocked) return Response.json({ error: blocked.error }, { status: blocked.status });
+  if (blocked) {
+    return Response.json({ error: blocked.error }, { status: blocked.status });
+  }
 
   const { query, notes = [] } = body;
 
@@ -20,6 +28,8 @@ export async function POST(request) {
     const text = response.content.find((b) => b.type === 'text')?.text ?? '{}';
     return Response.json(JSON.parse(text));
   } catch (err) {
-    return Response.json({ error: 'upstream', message: err.message }, { status: 502 });
+    const ref = Math.random().toString(36).slice(2, 10).toUpperCase();
+    secLog('knowledge', ref, err.message);
+    return Response.json({ error: 'service_unavailable' }, { status: 502 });
   }
 }

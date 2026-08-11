@@ -6,9 +6,9 @@ import { NexusProvider } from './data/store';
 import { Splash } from './components/Splash';
 
 initTheme();
-import { AuthProvider, useAuth } from './auth/AuthProvider';
-import { LoginScreen } from './auth/LoginScreen';
-import { PasswordGate } from './auth/PasswordGate';
+import { AuthProvider } from './auth/AuthProvider';
+import { OnboardingProvider } from './onboarding/OnboardingProvider';
+import { WelcomeModal } from './onboarding/WelcomeModal';
 import { AppErrorBoundary, RouteError } from './components/ErrorBoundary';
 import { RootLayout } from './components/layout/RootLayout';
 import { DashboardPage } from './components/pages/DashboardPage';
@@ -24,6 +24,7 @@ import { EnquiriesPage } from './components/pages/EnquiriesPage';
 import { TalentPoolPage } from './components/pages/TalentPoolPage';
 import { ProductionPage } from './components/pages/ProductionPage';
 import { RfpScannerPage } from './components/pages/RfpScannerPage';
+import { StoryPage } from './components/pages/story/StoryPage';
 
 // Each page gets its own error boundary so a crash degrades that one panel
 // while the shell (sidebar / mobile nav) keeps running.
@@ -50,23 +51,21 @@ const router = createBrowserRouter([
     ErrorBoundary: RouteError,
     children: pages,
   },
+  {
+    path: '/story',
+    Component: StoryPage,
+    ErrorBoundary: RouteError,
+  },
 ]);
 
 function Gate() {
-  const { cloudMode, loading, session, guest } = useAuth();
-
-  if (cloudMode && loading) {
-    return <div className="h-screen w-screen" style={{ background: 'var(--bg)' }} />;
-  }
-  // Landing always gates entry — Supabase or not. In local/no-cloud mode the
-  // screen leads with "Explore as guest"; with cloud, Google sign-in appears.
-  if (!session && !guest) {
-    return <LoginScreen />;
-  }
   return (
-    <NexusProvider>
-      <RouterProvider router={router} />
-    </NexusProvider>
+    <OnboardingProvider>
+      <WelcomeModal />
+      <NexusProvider>
+        <RouterProvider router={router} />
+      </NexusProvider>
+    </OnboardingProvider>
   );
 }
 
@@ -74,23 +73,21 @@ export default function App() {
   const [splashDone, setSplashDone] = useState(false);
   return (
     <AppErrorBoundary>
-      <PasswordGate>
       <AuthProvider>
         {!splashDone && <Splash onDone={() => setSplashDone(true)} />}
         <Gate />
         <Toaster
-        theme="dark"
-        position="bottom-right"
-        toastOptions={{
-          style: {
-            background: 'var(--surface)',
-            border: '1px solid rgba(var(--accent-rgb),0.25)',
-            color: 'var(--text)',
-          },
-        }}
+          theme="dark"
+          position="bottom-right"
+          toastOptions={{
+            style: {
+              background: 'var(--surface)',
+              border: '1px solid rgba(var(--accent-rgb),0.25)',
+              color: 'var(--text)',
+            },
+          }}
         />
       </AuthProvider>
-      </PasswordGate>
     </AppErrorBoundary>
   );
 }

@@ -1,24 +1,26 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Search, Plus, FolderOpen, DollarSign, Clock, Activity } from 'lucide-react';
+import { Search, Plus, FolderOpen, DollarSign, Clock, Activity, ChevronRight } from 'lucide-react';
 import { PageShell } from '../layout/PageShell';
 import { HealthDot } from '../shared/HealthDot';
 import { AIChip } from '../shared/AIChip';
+import { ClientDetailSheet } from './clients/ClientDetailSheet';
 import { useNexus } from '../../data/store';
 import type { Client } from '../../data/types';
 
-function ClientCard({ client, delay }: { client: Client; delay: number }) {
+function ClientCard({ client, delay, onClick }: { client: Client; delay: number; onClick: () => void }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.28, delay, ease: 'easeOut' }}
-      whileHover={{ borderColor: 'rgba(var(--accent-rgb),0.2)', y: -2 }}
+      whileHover={{ borderColor: 'rgba(var(--accent-rgb),0.3)', y: -2 }}
+      onClick={onClick}
       className="rounded-xl p-5 flex flex-col gap-4"
       style={{
         background: 'var(--surface)',
         border: '1px solid var(--hair)',
-        cursor: 'default',
+        cursor: 'pointer',
         transition: 'border-color 0.2s ease',
       }}
     >
@@ -77,6 +79,11 @@ function ClientCard({ client, delay }: { client: Client; delay: number }) {
 
       {/* AI Follow-up */}
       <AIChip text={client.aiFollowUp} />
+
+      <div className="flex items-center gap-1" style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>
+        <span>View dossier & contact history</span>
+        <ChevronRight size={12} />
+      </div>
     </motion.div>
   );
 }
@@ -87,6 +94,7 @@ export function ClientsPage() {
   const { clients: CLIENTS } = useNexus();
   const [search, setSearch] = useState('');
   const [activeFilter, setActiveFilter] = useState('All Clients');
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
 
   const filtered = CLIENTS.filter(c => {
     const matchSearch = c.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -158,9 +166,11 @@ export function ClientsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {filtered.map((client, i) => (
-          <ClientCard key={client.id} client={client} delay={i * 0.07} />
+          <ClientCard key={client.id} client={client} delay={i * 0.07} onClick={() => setSelectedClient(client)} />
         ))}
       </div>
+
+      <ClientDetailSheet client={selectedClient} onClose={() => setSelectedClient(null)} />
     </PageShell>
   );
 }

@@ -35,17 +35,17 @@ function ChartCard({ title, subtitle, children, delay = 0, colSpan = 1 }: {
 }
 
 const KPI_METRICS = [
-  { icon: TrendingUp, label: 'Total Revenue YTD', value: '$1.39M', change: '+24%', color: '#22C55E' },
+  { icon: TrendingUp, label: 'Total Revenue YTD', value: '$1.39M', change: '+24%', color: 'var(--status-success)' },
   { icon: Target, label: 'Completion Rate', value: '91%', change: '+7%', color: 'var(--accent)' },
-  { icon: Users, label: 'Team Utilization', value: '66%', change: '-3%', color: '#FFB547' },
-  { icon: Star, label: 'Avg Satisfaction', value: '4.8', change: '+0.6', color: '#A78BFA' },
+  { icon: Users, label: 'Team Utilization', value: '66%', change: '-3%', color: 'var(--status-warning)' },
+  { icon: Star, label: 'Avg Satisfaction', value: '4.8', change: '+0.6', color: '#A07C6E' },
 ];
 
 export function AnalyticsPage() {
   return (
     <PageShell>
       <div className="mb-6">
-        <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600 }}>Analytics</h1>
+        <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600, fontFamily: 'var(--font-display)' }}>Analytics</h1>
         <p style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))', marginTop: 2 }}>Executive overview · July 2026</p>
       </div>
 
@@ -90,13 +90,13 @@ export function AnalyticsPage() {
         transition={{ duration: 0.3, delay: 0.1 }}
         className="rounded-xl p-5 mb-6 flex items-center justify-between"
         style={{
-          background: 'linear-gradient(135deg, rgba(34,197,94,0.1) 0%, rgba(var(--accent-rgb),0.06) 100%)',
-          border: '1px solid rgba(34,197,94,0.2)',
+          background: 'linear-gradient(135deg, rgba(107,168,136,0.1) 0%, rgba(var(--accent-rgb),0.06) 100%)',
+          border: '1px solid rgba(107,168,136,0.2)',
         }}
       >
         <div>
           <div style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))', marginBottom: 4 }}>Revenue Growth Prediction · Next 90 Days</div>
-          <div style={{ color: '#22C55E', fontSize: 'calc(36px * var(--fs))', fontWeight: 700, lineHeight: 1 }}>+18.5%</div>
+          <div style={{ color: 'var(--status-success)', fontSize: 'calc(36px * var(--fs))', fontWeight: 700, lineHeight: 1 }}>+18.5%</div>
           <div style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))', marginTop: 6 }}>
             Forecast: $847K · Confidence: 87% · 2 pipeline deals closing in August
           </div>
@@ -104,9 +104,9 @@ export function AnalyticsPage() {
         <div className="flex flex-col items-end gap-2">
           <div
             className="rounded-lg px-4 py-2"
-            style={{ background: 'rgba(34,197,94,0.15)', border: '1px solid rgba(34,197,94,0.3)' }}
+            style={{ background: 'rgba(107,168,136,0.15)', border: '1px solid rgba(107,168,136,0.3)' }}
           >
-            <span style={{ color: '#22C55E', fontSize: 'calc(13px * var(--fs))', fontWeight: 500 }}>↑ On Track</span>
+            <span style={{ color: 'var(--status-success)', fontSize: 'calc(13px * var(--fs))', fontWeight: 500 }}>↑ On Track</span>
           </div>
           <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>Updated Jul 16, 2026</span>
         </div>

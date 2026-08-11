@@ -12,8 +12,8 @@ interface KPICardProps {
 
 export function KPICard({ label, value, change, changeType, icon: Icon, delay = 0 }: KPICardProps) {
   const changeColor =
-    changeType === 'up' ? '#22C55E' :
-    changeType === 'down' ? '#FF6B6B' :
+    changeType === 'up' ? 'var(--status-success)' :
+    changeType === 'down' ? 'var(--status-danger)' :
     'var(--text-dim)';
 
   const ChangeIcon = changeType === 'up' ? TrendingUp : changeType === 'down' ? TrendingDown : Minus;

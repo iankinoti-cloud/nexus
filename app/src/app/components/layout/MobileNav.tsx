@@ -64,8 +64,15 @@ export function MobileNav() {
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', stiffness: 380, damping: 38 }}
-            className="glass glass-strong fixed top-0 bottom-0 left-0 z-50 flex flex-col"
-            style={{ width: 268, borderRadius: '0 20px 20px 0', paddingTop: 'env(safe-area-inset-top)' }}
+            className="fixed top-0 bottom-0 left-0 z-50 flex flex-col"
+            style={{
+              width: 268,
+              borderRadius: '0 20px 20px 0',
+              paddingTop: 'env(safe-area-inset-top)',
+              background: 'var(--surface)',
+              border: '1px solid var(--glass-brd)',
+              boxShadow: 'inset 0 1px 0 0 var(--glass-rim), 0 24px 60px -8px rgba(0,0,0,0.7)',
+            }}
           >
               {/* Sticky header */}
               <div

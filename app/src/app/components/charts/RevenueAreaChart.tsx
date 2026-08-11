@@ -29,15 +29,15 @@ export function RevenueAreaChart() {
       <AreaChart data={REVENUE_DATA} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
         <defs>
           <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#4FD1C5" stopOpacity={0.3} />
-            <stop offset="95%" stopColor="#4FD1C5" stopOpacity={0} />
+            <stop offset="5%" stopColor="#E07A52" stopOpacity={0.3} />
+            <stop offset="95%" stopColor="#E07A52" stopOpacity={0} />
           </linearGradient>
           <linearGradient id="forecastGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#4FD1C5" stopOpacity={0.12} />
-            <stop offset="95%" stopColor="#4FD1C5" stopOpacity={0} />
+            <stop offset="5%" stopColor="#C9A87C" stopOpacity={0.15} />
+            <stop offset="95%" stopColor="#C9A87C" stopOpacity={0} />
           </linearGradient>
         </defs>
-        <CartesianGrid stroke="rgba(255,255,255,0.04)" vertical={false} />
+        <CartesianGrid stroke="rgba(255,235,200,0.06)" vertical={false} />
         <XAxis dataKey="month" tick={{ fill: 'var(--text-dim)', fontSize: 11 }} axisLine={false} tickLine={false} />
         <YAxis tick={{ fill: 'var(--text-dim)', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}K`} />
         <Tooltip content={<CustomTooltip />} />
@@ -49,7 +49,7 @@ export function RevenueAreaChart() {
           type="monotone"
           dataKey="forecast"
           name="Forecast"
-          stroke="#4FD1C5"
+          stroke="#C9A87C"
           strokeWidth={1.5}
           strokeDasharray="5 3"
           fill="url(#forecastGrad)"
@@ -60,11 +60,11 @@ export function RevenueAreaChart() {
           type="monotone"
           dataKey="revenue"
           name="Revenue"
-          stroke="#4FD1C5"
+          stroke="#E07A52"
           strokeWidth={2}
           fill="url(#revenueGrad)"
-          dot={{ fill: '#4FD1C5', r: 3, strokeWidth: 0 }}
-          activeDot={{ r: 5, fill: '#4FD1C5' }}
+          dot={{ fill: '#E07A52', r: 3, strokeWidth: 0 }}
+          activeDot={{ r: 5, fill: '#E07A52' }}
         />
       </AreaChart>
     </ResponsiveContainer>

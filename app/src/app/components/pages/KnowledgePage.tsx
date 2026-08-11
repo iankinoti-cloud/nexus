@@ -181,12 +181,12 @@ export function KnowledgePage() {
             className="rounded-xl p-5 mb-6 flex items-center gap-3"
             style={{ background: 'rgba(var(--accent-rgb),0.04)', border: '1px solid rgba(var(--accent-rgb),0.15)' }}
           >
-            {[0, 0.2, 0.4].map(delay => (
+            {[0, 0.35, 0.7].map(delay => (
               <motion.div
                 key={delay}
-                animate={{ y: [0, -4, 0] }}
-                transition={{ duration: 0.6, repeat: Infinity, delay }}
-                style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', opacity: 0.7 }}
+                animate={{ opacity: [0.3, 1, 0.3] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut', delay }}
+                style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent)' }}
               />
             ))}
             <span style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))' }}>Searching organizational memory…</span>

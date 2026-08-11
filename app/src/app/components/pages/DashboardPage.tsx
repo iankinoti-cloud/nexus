@@ -8,6 +8,7 @@ import { MiniAreaChart } from '../charts/MiniAreaChart';
 import { useNexus, type CoreAction } from '../../data/store';
 import { useAuth } from '../../auth/AuthProvider';
 import { TeamAvatarStack } from '../shared/TeamAvatarStack';
+import { GettingStartedPanel } from '../../onboarding/GettingStartedPanel';
 
 const KPIs = [
   { label: 'Active Projects', value: '24', change: '+3 this week', changeType: 'up' as const, icon: FolderKanban },
@@ -31,13 +32,13 @@ const INSIGHTS: Insight[] = [
     action: { type: 'reassign', fromEmployeeId: 'e5', toEmployeeId: 'e3' },
   },
   {
-    color: '#FFB547',
+    color: 'var(--status-warning)',
     title: 'Nexora scope escalation risk',
     description: 'Detected 34% scope creep on Nexora Web Platform. Client sign-off recommended within 48 hours.',
     action: { type: 'contact_client', clientId: 'c4', draft: 'Hi Nexora team — before we move into the build phase, we\'d like to walk you through the current scope against the signed SOW and confirm sign-off on the additions. Does tomorrow 10:00 work for a 30-minute call?' },
   },
   {
-    color: '#22C55E',
+    color: 'var(--status-success)',
     title: 'Revenue forecast on track',
     description: 'Q3 pipeline at $847K (+18.5%). Two deals expected to close in August will exceed target.',
     action: { type: 'none' },
@@ -80,7 +81,7 @@ export function DashboardPage() {
         className="mb-8 flex items-start justify-between"
       >
         <div>
-          <h1 style={{ color: 'var(--text)', fontSize: 'calc(28px * var(--fs))', fontWeight: 600, lineHeight: 1.2 }}>
+          <h1 style={{ color: 'var(--text)', fontSize: 'calc(28px * var(--fs))', fontWeight: 600, lineHeight: 1.2, fontFamily: 'var(--font-display)' }}>
             {greeting}, {displayName}.
           </h1>
           <p style={{ color: 'var(--text-dim)', fontSize: 'calc(15px * var(--fs))', marginTop: 6 }}>
@@ -134,13 +135,13 @@ export function DashboardPage() {
                 <div className="flex items-start gap-3 py-4">
                   <div
                     className="rounded-full mt-1 shrink-0"
-                    style={{ width: 7, height: 7, background: appliedInsights.includes(i) ? '#22C55E' : ins.color, marginTop: 6 }}
+                    style={{ width: 7, height: 7, background: appliedInsights.includes(i) ? 'var(--status-success)' : ins.color, marginTop: 6 }}
                   />
                   <div className="flex-1">
                     <div className="flex items-center gap-2" style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 500, marginBottom: 3 }}>
                       {ins.title}
                       {appliedInsights.includes(i) && (
-                        <span className="flex items-center gap-1" style={{ color: '#22C55E', fontSize: 'calc(10px * var(--fs))', fontWeight: 600 }}>
+                        <span className="flex items-center gap-1" style={{ color: 'var(--status-success)', fontSize: 'calc(10px * var(--fs))', fontWeight: 600 }}>
                           <Check size={10} /> APPLIED
                         </span>
                       )}
@@ -151,7 +152,7 @@ export function DashboardPage() {
                   </div>
                 </div>
                 {i < INSIGHTS.length - 1 && (
-                  <div style={{ height: 1, background: 'rgba(255,255,255,0.05)' }} />
+                  <div style={{ height: 1, background: 'var(--hair)' }} />
                 )}
               </div>
             ))}
@@ -163,9 +164,9 @@ export function DashboardPage() {
             onClick={handleApply}
             className="mt-5 w-full flex items-center justify-center gap-2 rounded-lg py-2.5"
             style={{
-              background: nextActionable === -1 ? 'rgba(34,197,94,0.07)' : 'rgba(var(--accent-rgb),0.07)',
-              border: `1px solid ${nextActionable === -1 ? 'rgba(34,197,94,0.25)' : 'rgba(var(--accent-rgb),0.25)'}`,
-              color: nextActionable === -1 ? '#22C55E' : 'var(--accent)',
+              background: nextActionable === -1 ? 'rgba(107,168,136,0.07)' : 'rgba(var(--accent-rgb),0.07)',
+              border: `1px solid ${nextActionable === -1 ? 'rgba(107,168,136,0.25)' : 'rgba(var(--accent-rgb),0.25)'}`,
+              color: nextActionable === -1 ? 'var(--status-success)' : 'var(--accent)',
               fontSize: 'calc(13px * var(--fs))',
               fontWeight: 500,
               cursor: nextActionable === -1 ? 'default' : 'pointer',
@@ -193,16 +194,16 @@ export function DashboardPage() {
             <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>Last 30 days</span>
           </div>
           <div style={{ color: 'var(--accent)', fontSize: 'calc(26px * var(--fs))', fontWeight: 600, marginBottom: 4 }}>$284K</div>
-          <div style={{ color: '#22C55E', fontSize: 'calc(12px * var(--fs))', marginBottom: 16 }}>↑ +12% vs last month</div>
+          <div style={{ color: 'var(--status-success)', fontSize: 'calc(12px * var(--fs))', marginBottom: 16 }}>↑ +12% vs last month</div>
           <div className="flex-1">
             <MiniAreaChart />
           </div>
           <div
             className="mt-4 rounded-lg p-3 flex items-center gap-2"
-            style={{ background: 'rgba(34,197,94,0.07)', border: '1px solid rgba(34,197,94,0.15)' }}
+            style={{ background: 'rgba(107,168,136,0.07)', border: '1px solid rgba(107,168,136,0.15)' }}
           >
-            <TrendingUp size={13} style={{ color: '#22C55E' }} />
-            <span style={{ color: '#22C55E', fontSize: 'calc(12px * var(--fs))' }}>Q3 forecast: $847K (+18.5%)</span>
+            <TrendingUp size={13} style={{ color: 'var(--status-success)' }} />
+            <span style={{ color: 'var(--status-success)', fontSize: 'calc(12px * var(--fs))' }}>Q3 forecast: $847K (+18.5%)</span>
           </div>
         </motion.div>
       </div>
@@ -223,7 +224,7 @@ export function DashboardPage() {
         </div>
         <div className="flex flex-col gap-0">
           {nexus.projects.slice(0, 4).map((project, i) => {
-            const riskColor = project.risk === 'low' ? '#22C55E' : project.risk === 'medium' ? '#FFB547' : '#FF6B6B';
+            const riskColor = project.risk === 'low' ? 'var(--status-success)' : project.risk === 'medium' ? 'var(--status-warning)' : 'var(--status-danger)';
             return (
               <div key={project.id}>
                 <div className="py-3.5 flex flex-col gap-2.5">
@@ -255,12 +256,14 @@ export function DashboardPage() {
                     </div>
                   </div>
                 </div>
-                {i < 3 && <div style={{ height: 1, background: 'rgba(255,255,255,0.04)' }} />}
+                {i < 3 && <div style={{ height: 1, background: 'var(--hair)' }} />}
               </div>
             );
           })}
         </div>
       </motion.div>
+
+      <GettingStartedPanel />
     </PageShell>
   );
 }

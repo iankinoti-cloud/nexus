@@ -1,4 +1,4 @@
-const COLORS = ['var(--accent)', '#A78BFA', '#22C55E', '#FFB547', '#60A5FA', '#F472B6'];
+const COLORS = ['#C4602E', '#6BA888', '#A07C6E', '#C9A87C', '#6E8FA8', '#7A9B6E'];
 
 interface TeamAvatarStackProps {
   avatars: string[];
@@ -22,7 +22,7 @@ export function TeamAvatarStack({ avatars, max = 3, size = 26 }: TeamAvatarStack
             background: COLORS[i % COLORS.length],
             border: '2px solid var(--surface)',
             marginLeft: i === 0 ? 0 : -(size / 4),
-            color: '#0B0B0F',
+            color: '#F5F0E8',
             fontSize: size * 0.36,
             fontWeight: 700,
             zIndex: visible.length - i,

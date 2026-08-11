@@ -5,21 +5,21 @@ interface RiskBadgeProps {
 const CONFIG = {
   low: {
     label: 'Low Risk',
-    color: '#22C55E',
-    bg: 'rgba(34,197,94,0.1)',
-    border: 'rgba(34,197,94,0.2)',
+    color: 'var(--status-success)',
+    bg: 'rgba(107,168,136,0.1)',
+    border: 'rgba(107,168,136,0.2)',
   },
   medium: {
     label: 'Medium Risk',
-    color: '#FFB547',
-    bg: 'rgba(255,181,71,0.1)',
-    border: 'rgba(255,181,71,0.2)',
+    color: 'var(--status-warning)',
+    bg: 'rgba(201,135,78,0.1)',
+    border: 'rgba(201,135,78,0.2)',
   },
   high: {
     label: 'High Risk',
-    color: '#FF6B6B',
-    bg: 'rgba(255,107,107,0.1)',
-    border: 'rgba(255,107,107,0.2)',
+    color: 'var(--status-danger)',
+    bg: 'rgba(184,92,92,0.1)',
+    border: 'rgba(184,92,92,0.2)',
   },
 };
 

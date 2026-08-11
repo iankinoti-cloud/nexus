@@ -2,6 +2,8 @@ import { Outlet } from 'react-router';
 import { Sidebar } from './Sidebar';
 import { MobileNav } from './MobileNav';
 import { useIsMobile } from './nav';
+import { DemoModeBanner } from '../../onboarding/DemoModeBanner';
+import { SpotlightManager } from '../../onboarding/SpotlightManager';
 
 export function RootLayout() {
   const isMobile = useIsMobile();
@@ -12,7 +14,9 @@ export function RootLayout() {
   if (isMobile) {
     return (
       <div className="flex flex-col h-dvh w-full overflow-hidden" style={{ background: ambient, paddingTop: 'env(safe-area-inset-top)' }}>
+        <DemoModeBanner />
         <MobileNav />
+        <SpotlightManager />
         <main
           className="flex-1 flex flex-col overflow-hidden rounded-2xl"
           style={{
@@ -30,16 +34,20 @@ export function RootLayout() {
 
   return (
     <div
-      className="flex h-dvh w-full overflow-hidden p-3 gap-3"
+      className="flex flex-col h-dvh w-full overflow-hidden"
       style={{ background: ambient }}
     >
-      <Sidebar />
-      <main
-        className="flex-1 flex flex-col overflow-hidden rounded-2xl"
-        style={{ background: 'var(--bg-2)', border: '1px solid var(--hair)' }}
-      >
-        <Outlet />
-      </main>
+      <DemoModeBanner />
+      <SpotlightManager />
+      <div className="flex flex-1 overflow-hidden p-3 gap-3">
+        <Sidebar />
+        <main
+          className="flex-1 flex flex-col overflow-hidden rounded-2xl"
+          style={{ background: 'var(--bg-2)', border: '1px solid var(--hair)' }}
+        >
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }

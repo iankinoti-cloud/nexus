@@ -4,6 +4,7 @@ import { User, Building2, Puzzle, Shield, Cpu, Palette, Camera, ChevronRight, Da
 import { toast } from 'sonner';
 import { PageShell } from '../layout/PageShell';
 import { useNexus } from '../../data/store';
+import { OnboardingResetButton } from '../../onboarding/OnboardingResetButton';
 import {
   ACCENTS, applyAccent, currentAccent,
   applyColorMode, currentMode, applyFontScale, currentScale,
@@ -50,7 +51,7 @@ function FormField({ label, type = 'text', value, placeholder }: {
 function Toggle({ label, description, defaultOn = false }: { label: string; description?: string; defaultOn?: boolean }) {
   const [on, setOn] = useState(defaultOn);
   return (
-    <div className="flex items-start justify-between gap-4 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+    <div className="flex items-start justify-between gap-4 py-4" style={{ borderBottom: '1px solid var(--hair)' }}>
       <div>
         <div style={{ color: 'var(--text)', fontSize: 'calc(14px * var(--fs))' }}>{label}</div>
         {description && <div style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))', marginTop: 2 }}>{description}</div>}
@@ -61,12 +62,12 @@ function Toggle({ label, description, defaultOn = false }: { label: string; desc
         style={{
           width: 44,
           height: 24,
-          background: on ? '#22C55E' : 'rgba(255,255,255,0.14)',
-          border: `1px solid ${on ? 'rgba(34,197,94,0.6)' : 'var(--hair-2)'}`,
+          background: on ? 'var(--status-success)' : 'rgba(255,235,200,0.1)',
+          border: `1px solid ${on ? 'rgba(107,168,136,0.6)' : 'var(--hair-2)'}`,
           cursor: 'pointer',
           transition: 'background 0.2s ease, border-color 0.2s ease',
           marginTop: 2,
-          boxShadow: on ? '0 0 12px -2px rgba(34,197,94,0.6)' : 'none',
+          boxShadow: on ? '0 0 12px -2px rgba(107,168,136,0.4)' : 'none',
         }}
       >
         <motion.div
@@ -104,9 +105,9 @@ function IntegrationItem({ name, description, connected, color }: {
       <button
         onClick={() => setIsConnected(!isConnected)}
         style={{
-          background: isConnected ? 'rgba(34,197,94,0.1)' : 'rgba(var(--accent-rgb),0.1)',
-          border: `1px solid ${isConnected ? 'rgba(34,197,94,0.3)' : 'rgba(var(--accent-rgb),0.3)'}`,
-          color: isConnected ? '#22C55E' : 'var(--accent)',
+          background: isConnected ? 'rgba(107,168,136,0.1)' : 'rgba(var(--accent-rgb),0.1)',
+          border: `1px solid ${isConnected ? 'rgba(107,168,136,0.3)' : 'rgba(var(--accent-rgb),0.3)'}`,
+          color: isConnected ? 'var(--status-success)' : 'var(--accent)',
           fontSize: 'calc(12px * var(--fs))',
           fontWeight: 500,
           borderRadius: 8,
@@ -149,7 +150,7 @@ function ProfileTab() {
           ) : (
             <div
               className="flex items-center justify-center rounded-xl"
-              style={{ width: 72, height: 72, background: 'linear-gradient(135deg, var(--accent), #22C55E)', fontSize: 'calc(24px * var(--fs))', fontWeight: 700, color: '#0B0B0F' }}
+              style={{ width: 72, height: 72, background: 'linear-gradient(135deg, var(--accent), #6BA888)', fontSize: 'calc(24px * var(--fs))', fontWeight: 700, color: '#F5F0E8' }}
             >
               {initials}
             </div>
@@ -186,7 +187,7 @@ function ProfileTab() {
           whileTap={{ scale: 0.97 }}
           style={{
             background: 'var(--accent)',
-            color: '#0B0B0F',
+            color: '#F5F0E8',
             fontSize: 'calc(13px * var(--fs))',
             fontWeight: 600,
             borderRadius: 8,
@@ -239,7 +240,7 @@ function OrganizationTab() {
       <motion.button
         whileHover={{ background: 'var(--accent-hover)' }}
         whileTap={{ scale: 0.97 }}
-        style={{ background: 'var(--accent)', color: '#0B0B0F', fontSize: 'calc(13px * var(--fs))', fontWeight: 600, borderRadius: 8, padding: '10px 24px', border: 'none', cursor: 'pointer', alignSelf: 'flex-start' }}
+        style={{ background: 'var(--accent)', color: '#F5F0E8', fontSize: 'calc(13px * var(--fs))', fontWeight: 600, borderRadius: 8, padding: '10px 24px', border: 'none', cursor: 'pointer', alignSelf: 'flex-start' }}
       >
         Save Changes
       </motion.button>
@@ -289,7 +290,7 @@ function SecurityTab() {
       <motion.button
         whileHover={{ background: 'var(--accent-hover)' }}
         whileTap={{ scale: 0.97 }}
-        style={{ background: 'var(--accent)', color: '#0B0B0F', fontSize: 'calc(13px * var(--fs))', fontWeight: 600, borderRadius: 8, padding: '10px 24px', border: 'none', cursor: 'pointer', alignSelf: 'flex-start' }}
+        style={{ background: 'var(--accent)', color: '#F5F0E8', fontSize: 'calc(13px * var(--fs))', fontWeight: 600, borderRadius: 8, padding: '10px 24px', border: 'none', cursor: 'pointer', alignSelf: 'flex-start' }}
       >
         Update Password
       </motion.button>
@@ -395,9 +396,9 @@ function ThemeTab() {
   };
 
   const MODES: { id: ColorMode; label: string; bg: string; border: string }[] = [
-    { id: 'dark', label: 'Dark', bg: '#15151B', border: 'var(--hair-2)' },
-    { id: 'light', label: 'Light', bg: '#F0F0F5', border: 'var(--hair-2)' },
-    { id: 'system', label: 'System', bg: 'linear-gradient(135deg, #15151B 50%, #F0F0F5 50%)', border: 'var(--hair-2)' },
+    { id: 'dark', label: 'Dark', bg: '#1C1915', border: 'var(--hair-2)' },
+    { id: 'light', label: 'Light', bg: '#F7F4F0', border: 'var(--hair-2)' },
+    { id: 'system', label: 'System', bg: 'linear-gradient(135deg, #1C1915 50%, #F7F4F0 50%)', border: 'var(--hair-2)' },
   ];
 
   return (
@@ -457,7 +458,7 @@ function ThemeTab() {
                     transition: 'all 0.15s ease',
                   }}
                 >
-                  {selected && <span style={{ color: '#0B0B0F', fontSize: 'calc(14px * var(--fs))', fontWeight: 700 }}>{'✓'}</span>}
+                  {selected && <span style={{ color: '#F5F0E8', fontSize: 'calc(14px * var(--fs))', fontWeight: 700 }}>{'✓'}</span>}
                 </div>
                 <span style={{ color: selected ? 'var(--accent)' : 'var(--text-dim)', fontSize: 'calc(10px * var(--fs))' }}>{ac.name}</span>
               </motion.div>
@@ -533,7 +534,7 @@ function WorkspaceTab() {
         className="rounded-xl p-4 flex items-center gap-3"
         style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--hair)' }}
       >
-        {session ? <Cloud size={16} style={{ color: 'var(--accent)' }} /> : <HardDrive size={16} style={{ color: '#FFB547' }} />}
+        {session ? <Cloud size={16} style={{ color: 'var(--accent)' }} /> : <HardDrive size={16} style={{ color: 'var(--status-warning)' }} />}
         <div className="flex-1">
           <div style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 500 }}>
             {session ? 'Synced to cloud' : guest ? 'Guest — this device only' : 'Local mode'}
@@ -570,7 +571,7 @@ function WorkspaceTab() {
 
       <div
         className="rounded-xl p-4"
-        style={{ background: 'rgba(255,181,71,0.05)', border: '1px solid rgba(255,181,71,0.2)' }}
+        style={{ background: 'rgba(201,135,78,0.05)', border: '1px solid rgba(201,135,78,0.2)' }}
       >
         <div style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 500, marginBottom: 4 }}>Reset demo data</div>
         <p style={{ color: 'var(--text-dim)', fontSize: 'calc(12.5px * var(--fs))', lineHeight: 1.5, marginBottom: 14 }}>
@@ -583,9 +584,9 @@ function WorkspaceTab() {
           onClick={handleReset}
           className="flex items-center gap-2 rounded-lg px-4 py-2"
           style={{
-            background: confirming ? '#FF6B6B' : 'rgba(255,181,71,0.1)',
-            border: `1px solid ${confirming ? '#FF6B6B' : 'rgba(255,181,71,0.35)'}`,
-            color: confirming ? '#0B0B0F' : '#FFB547',
+            background: confirming ? 'var(--status-danger)' : 'rgba(201,135,78,0.1)',
+            border: `1px solid ${confirming ? 'var(--status-danger)' : 'rgba(201,135,78,0.35)'}`,
+            color: confirming ? '#F5F0E8' : 'var(--status-warning)',
             fontSize: 'calc(13px * var(--fs))',
             fontWeight: 600,
             cursor: 'pointer',
@@ -596,6 +597,8 @@ function WorkspaceTab() {
           {confirming ? 'Click again to confirm reset' : 'Reset demo data'}
         </motion.button>
       </div>
+
+      <OnboardingResetButton />
     </div>
   );
 }
@@ -624,7 +627,7 @@ export function SettingsPage() {
   return (
     <PageShell>
       <div className="mb-6">
-        <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600 }}>Settings</h1>
+        <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600, fontFamily: 'var(--font-display)' }}>Settings</h1>
         <p style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))', marginTop: 2 }}>Manage your account and workspace preferences.</p>
       </div>
 

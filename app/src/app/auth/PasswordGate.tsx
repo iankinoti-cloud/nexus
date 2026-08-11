@@ -4,7 +4,7 @@ import { Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
 import nexusEmblem from '../../imports/NEXUS-_-EMBLEM.jpeg';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
-const RELOCK_INTERVAL_MS = 30_000;
+const UNLOCK_KEY = 'nexus-unlocked';
 const ERROR_MESSAGE = 'MAYBE THE INTERNET MESSIAH KNOWS';
 const CHAR_DELAY_MS = 55;
 
@@ -237,13 +237,12 @@ function PasswordModal({ onUnlock }: { onUnlock: () => void }) {
 }
 
 export function PasswordGate({ children }: { children: ReactNode }) {
-  const [locked, setLocked] = useState(true);
+  const [locked, setLocked] = useState(() => sessionStorage.getItem(UNLOCK_KEY) !== '1');
 
-  useEffect(() => {
-    if (locked) return;
-    const id = setTimeout(() => setLocked(true), RELOCK_INTERVAL_MS);
-    return () => clearTimeout(id);
-  }, [locked]);
+  function unlock() {
+    sessionStorage.setItem(UNLOCK_KEY, '1');
+    setLocked(false);
+  }
 
   return (
     <>
@@ -257,7 +256,7 @@ export function PasswordGate({ children }: { children: ReactNode }) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
           >
-            <PasswordModal onUnlock={() => setLocked(false)} />
+            <PasswordModal onUnlock={unlock} />
           </motion.div>
         )}
       </AnimatePresence>

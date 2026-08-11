@@ -307,7 +307,13 @@ function CoreMessage({
         >
           <p style={{ color: 'var(--text-dim)', fontSize: 'calc(14px * var(--fs))', marginBottom: msg.recommendations?.length ? 14 : 0, whiteSpace: 'pre-wrap' }}>
             {msg.content}
-            {msg.streaming && <span className="animate-pulse" style={{ color: agent.color }}>▍</span>}
+            {msg.streaming && (
+              <motion.span
+                animate={{ opacity: [1, 0.15, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                style={{ color: agent.color }}
+              >▍</motion.span>
+            )}
           </p>
           {!!msg.recommendations?.length && (
             <div className="flex flex-col gap-2">
@@ -561,12 +567,12 @@ export function CorePage() {
                 style={{ background: ca(agent.color, '06'), border: `1px solid ${ca(agent.color, '20')}`, borderLeft: `3px solid ${agent.color}` }}
               >
                 <div className="flex items-center gap-1.5">
-                  {[0, 0.2, 0.4].map(delay => (
+                  {[0, 0.35, 0.7].map(delay => (
                     <motion.div
                       key={delay}
-                      animate={{ y: [0, -4, 0] }}
-                      transition={{ duration: 0.6, repeat: Infinity, delay }}
-                      style={{ width: 6, height: 6, borderRadius: '50%', background: agent.color, opacity: 0.7 }}
+                      animate={{ opacity: [0.3, 1, 0.3] }}
+                      transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut', delay }}
+                      style={{ width: 5, height: 5, borderRadius: '50%', background: agent.color }}
                     />
                   ))}
                 </div>

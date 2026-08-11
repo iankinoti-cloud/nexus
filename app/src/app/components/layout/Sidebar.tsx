@@ -133,6 +133,7 @@ export function Sidebar() {
                   to={item.path}
                   end={item.end}
                   title={item.label}
+                  data-nav={item.label.toLowerCase().replace(/\s+/g, '-')}
                   onMouseEnter={() => setNavHover(item.path)}
                   className="flex items-center gap-3 rounded-xl relative no-underline"
                   style={{
@@ -182,7 +183,7 @@ export function Sidebar() {
                   {open && item.label === 'Notifications' && unreadCount > 0 && (
                     <span
                       className="flex items-center justify-center rounded-full shrink-0 relative z-10"
-                      style={{ width: 18, height: 18, background: 'var(--accent)', color: '#0B0B0F', fontSize: 'calc(10px * var(--fs))', fontWeight: 700 }}
+                      style={{ width: 18, height: 18, background: 'var(--accent)', color: '#F5F0E8', fontSize: 'calc(10px * var(--fs))', fontWeight: 700 }}
                     >
                       {unreadCount}
                     </span>
@@ -222,8 +223,8 @@ export function UserBlock({ open = true }: { open?: boolean }) {
           title={displayName}
           style={{
             width: 34, height: 34,
-            background: 'linear-gradient(135deg, var(--accent) 0%, #22C55E 100%)',
-            fontSize: 'calc(12px * var(--fs))', fontWeight: 700, color: '#0B0B0F',
+            background: 'linear-gradient(135deg, var(--accent) 0%, #6BA888 100%)',
+            fontSize: 'calc(12px * var(--fs))', fontWeight: 700, color: '#F5F0E8',
           }}
         >
           {initials}

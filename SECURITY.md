@@ -1,35 +1,112 @@
 # NEXUS — Security Posture
 
-Red-team pass run against the live deployment on 2026-07-19. Summary of what's safe, what was fixed, and the known residual risk.
+## Red / Blue / Purple Team Methodology
 
-## ✅ Safe (verified by live probes)
+NEXUS uses a layered security program:
+- **Red team** — offensive: find the attack vectors, document them, write automated probes (`security/pentest.sh`)
+- **Blue team** — defensive: implement controls, monitor via structured logs, keep deps patched
+- **Purple team** — synthesis: red findings drive blue fixes; every new feature gets a mini red-team pass before shipping
 
-| Concern | Result | Why |
+Run `bash security/pentest.sh [BASE_URL]` against dev or prod to verify controls hold. All 10 probes must pass before any production deploy.
+
+---
+
+## Threat Model (STRIDE)
+
+| Category | Attack Vector | Status | Control |
+|---|---|---|---|
+| **Spoofing** | Forge Origin/Referer → reach AI endpoints without auth | ✅ Fixed | Supabase JWT required; origin is secondary fallback only |
+| **Spoofing** | Replay a valid JWT after logout | ✅ Mitigated | Supabase handles token expiry + revocation |
+| **Tampering** | Malformed workspace JSON in Supabase | ✅ Mitigated | RLS: every policy is `auth.uid() = user_id` |
+| **Tampering** | Inject malicious payload into AI prompts (transcript, query) | ✅ Fixed | Injection markers stripped (`sanitizeInput`) + canary directive in every system prompt |
+| **Repudiation** | No audit trail for AI calls | ✅ Fixed | Structured `secLog(endpoint, ref, detail)` on every error + guard rejection; correlation ID in logs |
+| **Info Disclosure** | `err.message` leaks API internals to callers | ✅ Fixed | All 5xx responses return `{ error: 'service_unavailable' }`; full error in server log with `ref` ID |
+| **Info Disclosure** | API key or secrets in browser bundle | ✅ Safe | `ANTHROPIC_API_KEY` is server-only (never `VITE_`-prefixed); confirmed `grep sk-ant dist/` returns nothing |
+| **Info Disclosure** | Supabase anon key exposure | ✅ Safe by design | Anon key is public by spec; RLS is the real guard |
+| **Denial of Service** | Rapid-fire requests from one IP | ✅ Fixed | Per-IP sliding-window rate limit (15 req/60 s); resets on cold start (JWT is primary gate) |
+| **Denial of Service** | Unbounded payload → large Anthropic bill | ✅ Fixed | Hard caps: 120 KB body, 24 messages, 24k chars, 40 notes, 2k query |
+| **Elevation of Privilege** | Prompt injection via external transcript/query | ✅ Fixed | `sanitizeInput()` strips markers; injection canary at top of every system prompt |
+| **Elevation of Privilege** | react-router CVEs (XSS/RCE/DoS) | ✅ Fixed | Upgraded to `^7.18.1` (patches GHSA-49rj, GHSA-8646, GHSA-8x6r, GHSA-rxv8) |
+| **Elevation of Privilege** | Vite dev server vuln | ✅ Fixed | Upgraded to latest (0 audit vulns) |
+
+---
+
+## Security Controls Index
+
+| Control | Location | What it does |
 |---|---|---|
-| **Anthropic API key leak** | Safe | Key is server-side only (Vercel env + serverless functions). Never `VITE_`-prefixed, so it is never in the browser bundle. Confirmed: `grep sk-ant dist/` finds nothing. |
-| **Secrets in git** | Safe | Only `.env.example` is committed; real `.env` and `.vercel/` are gitignored. |
-| **Cross-user data theft** | Safe | Supabase `workspaces` table has Row-Level Security: every policy is `auth.uid() = user_id`. Probed the REST API with the public key and got an empty array — a stranger cannot read anyone's workspace. |
-| **Supabase anon/publishable key exposure** | Safe by design | This key is *meant* to be public; it only permits what RLS allows. |
+| `verifyJWT(token)` | `server/core-logic.mjs` | Validates Supabase access token via `/auth/v1/user`; returns user or null |
+| `guard({ token, ip, origin, referer, body })` | `server/core-logic.mjs` | Ordered gate: JWT → rate limit → origin fallback → input caps |
+| `sanitizeInput(s)` | `server/core-logic.mjs` | Strips 14 known injection marker patterns from external strings |
+| `INJECTION_CANARY` | `server/core-logic.mjs` | First directive in every system prompt — instructs Claude to return `{"error":"injection_detected"}` on jailbreak attempt |
+| `rateLimit(ip)` | `server/core-logic.mjs` | In-memory sliding window: 15 req/60 s per IP |
+| `secLog(endpoint, ref, detail)` | `server/core-logic.mjs` | Structured server-side error log; `ref` is correlation ID for log lookup, never sent to client |
+| `authHeader()` | `src/app/lib/ai.ts` | Gets Supabase session token and adds `Authorization: Bearer <token>` to every API fetch |
+| Security headers | `app/vercel.json` | CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy |
+| CORS lockdown | `server/index.mjs` | Express: only allows `localhost:5173`, `localhost:5174`, `nexus-topaz-omega.vercel.app`, `nexus-slides.vercel.app` |
+| Input caps | `server/core-logic.mjs` | 120 KB payload, 24 messages, 24k chars, 40 notes, 2k query — unspoofable cost bound |
+| RLS | Supabase `workspaces` table | `auth.uid() = user_id` on SELECT/INSERT/UPDATE — cross-user read impossible |
+| `npm audit` | CI / pre-deploy | 0 HIGH or CRITICAL required; enforced via `pentest.sh` probe 10 |
 
-## 🔴 Found & fixed: denial-of-wallet on the AI endpoints
+---
 
-**The vulnerability:** `/api/chat` and `/api/knowledge` proxy to the paid Anthropic API. Before the fix they accepted anonymous requests — a stranger with `curl` (no login, no cookie) got real answers, and **every call spent Anthropic credits**. An attacker could loop the endpoint and run up an unbounded bill. Data was never at risk; the wallet was.
+## HTTP Security Headers (Vercel)
 
-**The fix (`server/core-logic.mjs` → `guard()`), applied to both the serverless functions and the local Express server:**
+Applied to all responses via `app/vercel.json`:
 
-1. **Hard input caps (unspoofable):** max 24 messages, 24k chars of message content, 40 knowledge notes, 2k-char query, 120 KB total body. Bounds the cost of *any single request* regardless of who sends it. Output is already capped at 2048/1024 `max_tokens`.
-2. **Origin/Referer allowlist:** the request must come from a NEXUS origin (`nexus-*.vercel.app` or `localhost:5173`). A browser always sends one of these headers; a bare `curl` sends neither, so the casual attack is blocked outright.
+```
+Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-ancestors 'none'
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: camera=(), microphone=(), geolocation=()
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+```
 
-Post-fix probes: anonymous `curl` → **403**, oversized payload → **400**, the real app → **200**.
+---
 
-## ⚠️ Known residual risk (honest disclosure)
+## Secure Coding Checklist (mandatory for every new PR)
 
-The Origin/Referer header **can be forged** by a determined attacker (it is not a cryptographic proof of origin). Such an attacker could still reach the endpoints — but the input caps mean each request is cost-bounded, so there is no cheap unbounded-spend path anymore.
+- [ ] All new AI endpoints call `await guard(...)` as the first step — no exceptions
+- [ ] External string inputs (user text, transcripts, uploaded content) pass through `sanitizeInput()` before reaching Claude
+- [ ] Error handlers use `secLog(endpoint, ref, err.message)` server-side and return `{ error: 'service_unavailable' }` to clients
+- [ ] No `console.error(err.message)` directly in endpoints — use `secLog`
+- [ ] No new `VITE_`-prefixed env vars that carry secrets — only public/publishable values
+- [ ] `npm audit` in `app/` shows 0 HIGH or CRITICAL before merging
+- [ ] New frontend fetch calls use `...await authHeader()` in headers
+- [ ] `bash security/pentest.sh` all green before deploying
 
-**The durable fix, when you want it:** verify the Supabase JWT on the API routes. The client already holds a session token; send it as `Authorization: Bearer <token>` and have the function validate it against Supabase's `/auth/v1/user` endpoint before spending. That makes the endpoints *authenticated*, not just *origin-guarded* — guests would fall back to the built-in local analysis (already implemented). Deferred because it adds a round-trip per request and the hackathon demo signs in with Google anyway.
+---
 
-## Not applicable / out of scope
+## Incident Response
 
-- **Prompt injection:** the chat/knowledge prompts inject the caller's *own* workspace data and notes, so injection only affects the caller's own session — no privilege boundary is crossed.
-- **XSS:** all rendering is React text nodes; no `dangerouslySetInnerHTML` anywhere in the app.
-- **CORS:** the serverless functions are same-origin (no permissive CORS header). The Express `cors()` is dev-only.
+**Suspected API key compromise:**
+1. Rotate immediately at https://console.anthropic.com → API Keys
+2. Update in Vercel dashboard → Environment Variables
+3. Trigger redeploy
+4. Review Anthropic usage dashboard for anomalous spend
+
+**Suspected Supabase breach:**
+1. Rotate service role key (anon key is public — no rotation needed for anon)
+2. Review Supabase auth logs for suspicious sign-ins
+3. Check `workspaces` table for unexpected rows
+
+**Anomalous spend spike:**
+1. Check Anthropic dashboard for endpoint + token count breakdown
+2. Review server logs for guard rejections (look for `ref=` IDs in `[NEXUS:*]` lines)
+3. Temporarily disable `ANTHROPIC_API_KEY` in Vercel if needed — app falls back to local analysis automatically
+
+---
+
+## Known Residual Risks (honest disclosure)
+
+| Risk | Likelihood | Impact | Accepted? |
+|---|---|---|---|
+| Origin/Referer forgeable in guest mode (when Supabase not configured) | Low | Low (only affects dev without Supabase) | Yes — JWT gate is the real wall |
+| In-memory rate limiter resets on Vercel cold start | Low | Low (JWT gate fires first; each warm instance still rate-limits) | Yes — acceptable for current scale |
+| `unsafe-inline` in CSP (required for Tailwind/Radix animations) | Low | Low | Yes — no `dangerouslySetInnerHTML` with user-controlled data |
+| `dangerouslySetInnerHTML` in `ui/chart.tsx` | Very Low | Very Low (injects CSS vars from config objects, not user input) | Yes — values are controlled config objects |
+
+---
+
+*Last red-team pass: 2026-07-23. Run `bash security/pentest.sh` to verify current posture.*

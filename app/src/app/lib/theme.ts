@@ -6,12 +6,14 @@ export interface Accent {
 }
 
 export const ACCENTS: Accent[] = [
-  { name: 'Cyan', hex: '#4FD1C5', rgb: '79,209,197', hover: '#3dbdb2' },
-  { name: 'Purple', hex: '#A78BFA', rgb: '167,139,250', hover: '#8b6ef5' },
-  { name: 'Emerald', hex: '#22C55E', rgb: '34,197,94', hover: '#1ca34e' },
-  { name: 'Gold', hex: '#FFB547', rgb: '255,181,71', hover: '#f0a336' },
-  { name: 'Blue', hex: '#60A5FA', rgb: '96,165,250', hover: '#4a8ff0' },
-  { name: 'Pink', hex: '#F472B6', rgb: '244,114,182', hover: '#e85aa4' },
+  { name: 'Terracotta', hex: '#E07A52', rgb: '224, 122, 82', hover: '#cc6a42' },
+  { name: 'Clay', hex: '#C4602E', rgb: '196, 96, 46', hover: '#b05228' },
+  { name: 'Sage', hex: '#6BA888', rgb: '107, 168, 136', hover: '#5a9275' },
+  { name: 'Sand', hex: '#C9A87C', rgb: '201, 168, 124', hover: '#b8946a' },
+  { name: 'Slate', hex: '#6E8FA8', rgb: '110, 143, 168', hover: '#5c7d96' },
+  { name: 'Mauve', hex: '#A07C6E', rgb: '160, 124, 110', hover: '#8e6a5c' },
+  { name: 'Ember', hex: '#B85C5C', rgb: '184, 92, 92', hover: '#a44a4a' },
+  { name: 'Moss', hex: '#7A9B6E', rgb: '122, 155, 110', hover: '#688960' },
 ];
 
 export type ColorMode = 'dark' | 'light' | 'system';

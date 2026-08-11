@@ -7,9 +7,9 @@ import type { Employee } from '../../data/types';
 
 function AvailabilityBadge({ status }: { status: Employee['availability'] }) {
   const config = {
-    available: { label: 'Available', color: '#22C55E', bg: 'rgba(34,197,94,0.1)', border: 'rgba(34,197,94,0.2)' },
-    busy: { label: 'Busy', color: '#FFB547', bg: 'rgba(255,181,71,0.1)', border: 'rgba(255,181,71,0.2)' },
-    'at-capacity': { label: 'At Capacity', color: '#FF6B6B', bg: 'rgba(255,107,107,0.1)', border: 'rgba(255,107,107,0.2)' },
+    available: { label: 'Available', color: 'var(--status-success)', bg: 'rgba(107,168,136,0.1)', border: 'rgba(107,168,136,0.2)' },
+    busy: { label: 'Busy', color: 'var(--status-warning)', bg: 'rgba(201,135,78,0.1)', border: 'rgba(201,135,78,0.2)' },
+    'at-capacity': { label: 'At Capacity', color: 'var(--status-danger)', bg: 'rgba(184,92,92,0.1)', border: 'rgba(184,92,92,0.2)' },
   }[status];
 
   return (
@@ -28,7 +28,7 @@ function AvailabilityBadge({ status }: { status: Employee['availability'] }) {
 }
 
 function EmployeeCard({ emp, delay }: { emp: Employee; delay: number }) {
-  const burnoutColor = emp.burnoutRisk >= 70 ? '#FF6B6B' : emp.burnoutRisk >= 40 ? '#FFB547' : '#22C55E';
+  const burnoutColor = emp.burnoutRisk >= 70 ? 'var(--status-danger)' : emp.burnoutRisk >= 40 ? 'var(--status-warning)' : 'var(--status-success)';
 
   return (
     <motion.div
@@ -70,7 +70,7 @@ function EmployeeCard({ emp, delay }: { emp: Employee; delay: number }) {
             <div style={{ color: 'var(--text)', fontSize: 'calc(18px * var(--fs))', fontWeight: 600 }}>{emp.currentProjects}</div>
           </div>
           <div className="flex items-center gap-1">
-            <Star size={12} style={{ color: '#FFB547', fill: '#FFB547' }} />
+            <Star size={12} style={{ color: 'var(--status-warning)', fill: 'var(--status-warning)' }} />
             <span style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 500 }}>{emp.performanceScore}</span>
           </div>
         </div>
@@ -82,7 +82,7 @@ function EmployeeCard({ emp, delay }: { emp: Employee; delay: number }) {
           <span
             key={skill}
             style={{
-              background: 'rgba(255,255,255,0.05)',
+              background: 'var(--surface-2)',
               border: '1px solid var(--hair-2)',
               color: 'var(--text-dim)',
               fontSize: 'calc(11px * var(--fs))',
@@ -130,7 +130,7 @@ export function TalentPage() {
     <PageShell>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600 }}>Talent</h1>
+          <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600, fontFamily: 'var(--font-display)' }}>Talent</h1>
           <p style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))', marginTop: 2 }}>
             {EMPLOYEES.length} team members · {EMPLOYEES.filter(e => e.availability === 'available').length} available
           </p>
@@ -139,7 +139,7 @@ export function TalentPage() {
           whileHover={{ background: 'var(--accent-hover)' }}
           whileTap={{ scale: 0.97 }}
           className="flex items-center gap-2 rounded-lg px-4 py-2.5"
-          style={{ background: 'var(--accent)', color: '#0B0B0F', fontSize: 'calc(13px * var(--fs))', fontWeight: 600, border: 'none', cursor: 'pointer' }}
+          style={{ background: 'var(--accent)', color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 600, border: 'none', cursor: 'pointer' }}
         >
           <Plus size={15} />
           Add Member
@@ -154,8 +154,8 @@ export function TalentPage() {
         <div className="grid grid-cols-2 gap-y-3 gap-x-4 sm:flex sm:items-center sm:gap-6">
           {[
             { label: 'Avg Workload', value: `${Math.round(EMPLOYEES.reduce((a, e) => a + e.workload, 0) / EMPLOYEES.length)}%` },
-            { label: 'High Burnout Risk', value: EMPLOYEES.filter(e => e.burnoutRisk >= 70).length, color: '#FF6B6B' },
-            { label: 'At Capacity', value: EMPLOYEES.filter(e => e.availability === 'at-capacity').length, color: '#FFB547' },
+            { label: 'High Burnout Risk', value: EMPLOYEES.filter(e => e.burnoutRisk >= 70).length, color: 'var(--status-danger)' },
+            { label: 'At Capacity', value: EMPLOYEES.filter(e => e.availability === 'at-capacity').length, color: 'var(--status-warning)' },
             { label: 'Avg Performance', value: (EMPLOYEES.reduce((a, e) => a + e.performanceScore, 0) / EMPLOYEES.length).toFixed(1) },
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-3">

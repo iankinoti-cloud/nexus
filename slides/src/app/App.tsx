@@ -1181,6 +1181,541 @@ function SlideDemo() {
   );
 }
 
+// ─── Humanwash Editorial Sequence ─────────────────────────────────────────────
+
+const HW_AMBER = "#E8A020";
+const HW_STEEL = "#4A6FA5";
+const HW_RED   = "#C94040";
+
+type HWActProps = { t: Theme };
+
+const hwActVariants = {
+  initial: { opacity: 0, filter: "contrast(1.8) brightness(1.5) blur(2px)", x: 5, scaleX: 1.015 },
+  animate: { opacity: 1, filter: "contrast(1) brightness(1) blur(0px)", x: 0, scaleX: 1 },
+  exit:    { opacity: 0, filter: "contrast(1.5) brightness(1.4) blur(3px)", x: -8, scaleX: 0.985 },
+};
+const hwActTransition = { duration: 0.2, ease: [0.4, 0, 1, 1] as number[] };
+
+// VFX — particle burst canvas (Act I background energy field)
+function ParticleBurst() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const par = canvas.parentElement!;
+    const W = canvas.width  = par.offsetWidth;
+    const H = canvas.height = par.offsetHeight;
+    const ctx = canvas.getContext("2d")!;
+    const pts = Array.from({ length: 150 }, () => {
+      const a = Math.random() * Math.PI * 2;
+      const s = 4 + Math.random() * 10;
+      return {
+        x: W / 2 + (Math.random() - 0.5) * 120,
+        y: H / 2 + (Math.random() - 0.5) * 80,
+        vx: Math.cos(a) * s, vy: Math.sin(a) * s,
+        life: 1,
+        decay: 0.007 + Math.random() * 0.013,
+        r: 0.8 + Math.random() * 2.2,
+        amber: Math.random() > 0.62,
+      };
+    });
+    let raf: number;
+    const tick = () => {
+      ctx.clearRect(0, 0, W, H);
+      let alive = false;
+      pts.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        p.vx *= 0.97; p.vy *= 0.97;
+        p.life -= p.decay;
+        if (p.life <= 0) return;
+        alive = true;
+        ctx.globalAlpha = p.life * 0.65;
+        ctx.fillStyle = p.amber ? HW_AMBER : "#ffffff";
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      if (alive) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+  return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" style={{ width: "100%", height: "100%", opacity: 0.55 }} />;
+}
+
+// VFX — glitch flash overlay on phase cuts
+function GlitchFlash({ id }: { id: number }) {
+  return (
+    <motion.div
+      key={id}
+      className="absolute inset-0 pointer-events-none z-30"
+      initial={{ opacity: 0.75 }}
+      animate={{ opacity: 0 }}
+      transition={{ duration: 0.13, ease: "easeOut" }}
+      style={{
+        background: "linear-gradient(135deg, rgba(79,209,197,0.14) 0%, rgba(255,255,255,0.09) 50%, rgba(232,160,32,0.14) 100%)",
+        mixBlendMode: "screen",
+      }}
+    />
+  );
+}
+
+// Letter shard configs for HUMAN / WASHING (Act I)
+const HUMAN_SHARDS   = [
+  { ix: -170, iy: -100, rot: -24 }, { ix: -55, iy: -150, rot: -9 },
+  { ix:   15, iy: -120, rot:   0 }, { ix:  75, iy: -140, rot: 13 },
+  { ix:  155, iy:  -75, rot:  22 },
+];
+const WASHING_SHARDS = [
+  { ix: -185, iy:  85, rot:  27 }, { ix:  -95, iy: 115, rot: -16 },
+  { ix:  -25, iy:  95, rot:   9 }, { ix:   45, iy: 125, rot: -22 },
+  { ix:  105, iy:  75, rot:  19 }, { ix:  162, iy:  98, rot: -11 },
+  { ix:  210, iy: 115, rot:  30 },
+];
+
+function EvidenceStat({ t }: HWActProps) {
+  const pct = useCountUp(40, { duration: 1.3, delay: 0.3 });
+  return (
+    <motion.div
+      variants={hwActVariants} initial="initial" animate="animate" exit="exit"
+      transition={hwActTransition}
+      className="flex flex-col items-center text-center w-full"
+    >
+      <span style={{ fontSize: 112, fontWeight: 800, color: HW_AMBER, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
+        {Math.round(pct)}%
+      </span>
+      <p style={{ color: t.text, fontSize: 22, marginTop: 8, maxWidth: 480, lineHeight: 1.4 }}>
+        more likely to trust AI responses that use first-person language
+      </p>
+      <div className="flex items-center gap-2 mt-8" style={{ width: 360 }}>
+        <motion.div
+          style={{ height: 8, background: HW_AMBER, borderRadius: 4, transformOrigin: "left" }}
+          initial={{ width: 0 }}
+          animate={{ width: "40%" }}
+          transition={{ ...SPRING_BAR, delay: 0.5 }}
+        />
+        <div style={{ height: 8, flex: 1, background: t.hair, borderRadius: 4 }} />
+      </div>
+      <motion.p
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.0 }}
+        style={{ color: t.muted, fontSize: 11, marginTop: 10, fontFamily: "monospace", letterSpacing: "0.14em", textTransform: "uppercase" }}
+      >
+        Stanford HCI · 2024
+      </motion.p>
+    </motion.div>
+  );
+}
+
+function EvidencePhrase({ t }: HWActProps) {
+  const [struck, setStruck] = useState(false);
+  const [replaced, setReplaced] = useState(false);
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setStruck(true), 800);
+    const t2 = setTimeout(() => setReplaced(true), 1700);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, []);
+
+  return (
+    <motion.div
+      variants={hwActVariants} initial="initial" animate="animate" exit="exit"
+      transition={hwActTransition}
+      className="w-full"
+    >
+      <p style={{ color: HW_STEEL, fontSize: 11, fontWeight: 700, letterSpacing: "0.28em", textTransform: "uppercase", marginBottom: 24 }}>
+        Phrase Transformation
+      </p>
+      <div style={{ position: "relative", marginBottom: 36 }}>
+        <p style={{ fontSize: 20, color: t.dim, lineHeight: 1.55 }}>
+          "Our AI analyzes your data and returns predictions based on learned patterns."
+        </p>
+        <motion.div
+          style={{
+            position: "absolute", left: 0, right: 0, top: "50%",
+            height: 2, background: HW_RED, transformOrigin: "left",
+          }}
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: struck ? 1 : 0 }}
+          transition={{ duration: 0.52, ease: "easeOut" }}
+        />
+      </div>
+      <AnimatePresence>
+        {replaced && (
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.42, ease: [0.4, 0, 0.2, 1] as number[] }}
+            style={{ fontSize: 28, color: HW_AMBER, lineHeight: 1.4, fontWeight: 300 }}
+          >
+            "I understand what you're going through. Let me help."
+          </motion.p>
+        )}
+      </AnimatePresence>
+      {replaced && (
+        <motion.p
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.65 }}
+          style={{ color: t.muted, fontSize: 12, marginTop: 18, letterSpacing: "0.15em", textTransform: "uppercase" }}
+        >
+          Same model. Same output. Different trust signal.
+        </motion.p>
+      )}
+    </motion.div>
+  );
+}
+
+function EvidenceFunnel({ t }: HWActProps) {
+  const stages = [
+    { label: "CAPABILITY",     width: 320, bg: t.a08,                   border: t.hair,          textColor: t.dim     },
+    { label: "WARMTH THEATER", width: 210, bg: "rgba(232,160,32,0.14)", border: `${HW_AMBER}60`, textColor: HW_AMBER  },
+    { label: "USER TRUST ✓",   width: 130, bg: "rgba(232,160,32,0.28)", border: HW_AMBER,        textColor: HW_AMBER  },
+  ];
+  return (
+    <motion.div
+      variants={hwActVariants} initial="initial" animate="animate" exit="exit"
+      transition={hwActTransition}
+      className="flex flex-col items-center"
+    >
+      <p style={{ color: HW_STEEL, fontSize: 11, fontWeight: 700, letterSpacing: "0.28em", textTransform: "uppercase", marginBottom: 28 }}>
+        The Humanwashing Funnel
+      </p>
+      {stages.map((s, i) => (
+        <div key={i} className="flex flex-col items-center">
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ ...SPRING_BAR, delay: 0.2 + i * 0.42 }}
+            style={{
+              width: s.width, height: 54,
+              border: `1.5px solid ${s.border}`,
+              background: s.bg,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              borderRadius: 4,
+            }}
+          >
+            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase", color: s.textColor }}>
+              {s.label}
+            </span>
+          </motion.div>
+          {i < stages.length - 1 && (
+            <motion.div
+              initial={{ scaleY: 0, opacity: 0 }}
+              animate={{ scaleY: 1, opacity: 1 }}
+              transition={{ delay: 0.38 + i * 0.42, duration: 0.22, transformOrigin: "top" }}
+              style={{ width: 1, height: 26, background: `linear-gradient(to bottom, ${t.hair}, ${HW_AMBER}80)` }}
+            />
+          )}
+        </div>
+      ))}
+      <motion.p
+        initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.5 }}
+        style={{ color: t.muted, fontSize: 12, marginTop: 22, textAlign: "center", maxWidth: 340, lineHeight: 1.55 }}
+      >
+        Raw capability enters. Warmth theater is applied.<br />Trust is manufactured, not earned.
+      </motion.p>
+    </motion.div>
+  );
+}
+
+function ActI({ t }: HWActProps) {
+  return (
+    <motion.div
+      className="absolute inset-0 flex flex-col items-center justify-center px-24"
+      variants={hwActVariants} initial="initial" animate="animate" exit="exit"
+      transition={hwActTransition}
+    >
+      <ParticleBurst />
+
+      {/* HUMAN — letters shatter in from scattered trajectories */}
+      <div style={{ display: "flex", alignItems: "baseline", lineHeight: 1, marginBottom: -8 }}>
+        {"HUMAN".split("").map((ch, i) => {
+          const s = HUMAN_SHARDS[i];
+          return (
+            <motion.span key={i}
+              initial={{ opacity: 0, x: s.ix, y: s.iy, rotate: s.rot, scale: 0.3 }}
+              animate={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
+              transition={{ ...SPRING_BOUNCY, delay: 0.04 + i * 0.06, opacity: { duration: 0.18, delay: 0.04 + i * 0.06 } }}
+              style={{
+                fontSize: 140, fontWeight: 800, color: t.text,
+                letterSpacing: "-0.03em", display: "inline-block",
+                textShadow: "0 0 40px rgba(255,255,255,0.12)",
+              }}
+            >
+              {ch}
+            </motion.span>
+          );
+        })}
+      </div>
+
+      {/* WASHING — letters rise from below, amber */}
+      <div style={{ display: "flex", alignItems: "baseline", lineHeight: 1 }}>
+        {"WASHING".split("").map((ch, i) => {
+          const s = WASHING_SHARDS[i];
+          return (
+            <motion.span key={i}
+              initial={{ opacity: 0, x: s.ix, y: s.iy, rotate: s.rot, scale: 0.3 }}
+              animate={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
+              transition={{ ...SPRING_BOUNCY, delay: 0.3 + i * 0.055, opacity: { duration: 0.18, delay: 0.3 + i * 0.055 } }}
+              style={{
+                fontSize: 140, fontWeight: 200, color: HW_AMBER,
+                letterSpacing: "-0.03em", display: "inline-block",
+                textShadow: `0 0 40px ${HW_AMBER}45`,
+              }}
+            >
+              {ch}
+            </motion.span>
+          );
+        })}
+      </div>
+
+      <motion.p
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.12, duration: 0.55 }}
+        style={{ color: t.dim, fontSize: 18, marginTop: 32, textAlign: "center" }}
+      >
+        When AI systems <em>perform</em> humanity rather than deliver it.
+      </motion.p>
+    </motion.div>
+  );
+}
+
+function ActII({ t }: HWActProps) {
+  const machineLines = ["> pattern_match: 0.847", "> corpus_tokens: 14.2B", "> confidence_score: 0.912"];
+  const perceptionItems = ["Understands me", "Cares about my problem", "Is genuinely helpful"];
+  return (
+    <motion.div
+      className="absolute inset-0 grid grid-cols-2 overflow-hidden"
+      variants={hwActVariants} initial="initial" animate="animate" exit="exit"
+      transition={hwActTransition}
+    >
+      <motion.div
+        style={{
+          position: "absolute", left: "50%", top: 0, bottom: 0, width: 1,
+          background: `linear-gradient(to bottom, transparent, ${t.accent}50, transparent)`,
+          transformOrigin: "top", zIndex: 10,
+        }}
+        initial={{ scaleY: 0 }}
+        animate={{ scaleY: 1 }}
+        transition={{ duration: 0.55, ease: "easeOut", delay: 0.1 }}
+      />
+      <motion.div
+        className="flex flex-col justify-center px-16 py-20"
+        style={{
+          background: "rgba(74,111,165,0.10)",
+          backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(74,111,165,0.05) 3px, rgba(74,111,165,0.05) 4px)",
+        }}
+        initial={{ x: -48, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ ...SPRING_HEAVY, delay: 0.15 }}
+      >
+        <p style={{ color: HW_STEEL, fontSize: 10, fontWeight: 700, letterSpacing: "0.32em", textTransform: "uppercase", marginBottom: 24 }}>
+          Machine Reality
+        </p>
+        {machineLines.map((line, i) => (
+          <motion.p key={i}
+            initial={{ opacity: 0, x: -18 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 + i * 0.18, duration: 0.28 }}
+            style={{ fontFamily: "monospace", fontSize: 13, color: HW_STEEL, marginBottom: 12 }}
+          >
+            {line}
+          </motion.p>
+        ))}
+        <motion.p
+          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.05, duration: 0.45 }}
+          style={{ fontSize: 20, color: t.dim, marginTop: 28, lineHeight: 1.45 }}
+        >
+          "Statistically predicted next-token sequences."
+        </motion.p>
+      </motion.div>
+      <motion.div
+        className="flex flex-col justify-center px-16 py-20"
+        style={{ background: "rgba(232,160,32,0.07)" }}
+        initial={{ x: 48, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ ...SPRING_HEAVY, delay: 0.22 }}
+      >
+        <p style={{ color: HW_AMBER, fontSize: 10, fontWeight: 700, letterSpacing: "0.32em", textTransform: "uppercase", marginBottom: 24 }}>
+          User Perception
+        </p>
+        {perceptionItems.map((item, i) => (
+          <motion.div key={i}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.35 + i * 0.2, duration: 0.32 }}
+            className="flex items-center gap-3 mb-5"
+          >
+            <div style={{ width: 7, height: 7, borderRadius: "50%", background: HW_AMBER, opacity: 0.75, flexShrink: 0 }} />
+            <p style={{ fontSize: 18, color: t.text }}>{item}</p>
+          </motion.div>
+        ))}
+        <motion.p
+          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.15, duration: 0.45 }}
+          style={{ fontSize: 20, color: HW_AMBER, marginTop: 28, lineHeight: 1.45 }}
+        >
+          "It really gets me."
+        </motion.p>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function ActIII({ t, evidIdx, setEvidIdx }: HWActProps & { evidIdx: number; setEvidIdx: (i: number) => void }) {
+  return (
+    <motion.div
+      className="absolute inset-0 flex flex-col items-center justify-center px-24"
+      variants={hwActVariants} initial="initial" animate="animate" exit="exit"
+      transition={hwActTransition}
+    >
+      <div className="w-full max-w-3xl">
+        <AnimatePresence mode="wait">
+          {evidIdx === 0 && <EvidenceStat key="stat" t={t} />}
+          {evidIdx === 1 && <EvidencePhrase key="phrase" t={t} />}
+          {evidIdx === 2 && <EvidenceFunnel key="funnel" t={t} />}
+        </AnimatePresence>
+      </div>
+      <div className="flex gap-1.5 mt-10">
+        {[0, 1, 2].map(i => (
+          <motion.button key={i} onClick={() => setEvidIdx(i)}
+            animate={{ width: i === evidIdx ? 20 : 6, background: i === evidIdx ? HW_AMBER : t.hair }}
+            transition={SPRING_SNAPPY}
+            style={{ height: 4, borderRadius: 2 }}
+          />
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+function ActIV({ t }: HWActProps) {
+  const words = [
+    { text: "Not",            big: false },
+    { text: "feelings.",      big: false },
+    { text: "Trust",          big: true  },
+    { text: "architecture.",  big: true  },
+  ];
+  return (
+    <motion.div
+      className="absolute inset-0 flex flex-col items-center justify-center px-24"
+      variants={hwActVariants} initial="initial" animate="animate" exit="exit"
+      transition={hwActTransition}
+    >
+      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "0.28em", alignItems: "baseline" }}>
+        {words.map((w, i) => (
+          <motion.span key={i}
+            initial={{ y: -44, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ ...SPRING_BOUNCY, delay: i * 0.22, opacity: { duration: 0.2, delay: i * 0.22 } }}
+            style={{
+              fontSize: w.big ? 76 : 52,
+              fontWeight: w.big ? 700 : 300,
+              color: w.big ? HW_AMBER : t.dim,
+              lineHeight: 1.1,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            {w.text}
+          </motion.span>
+        ))}
+      </div>
+      <motion.div
+        initial={{ scaleX: 0, opacity: 0 }}
+        animate={{ scaleX: 1, opacity: 1 }}
+        transition={{ delay: 0.98, duration: 0.58, ease: "easeOut", transformOrigin: "left" }}
+        style={{ height: 3, background: HW_AMBER, width: 460, marginTop: 22, borderRadius: 2 }}
+      />
+    </motion.div>
+  );
+}
+
+function ActV({ t }: HWActProps) {
+  return (
+    <motion.div
+      className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-24"
+      variants={hwActVariants} initial="initial" animate="animate" exit="exit"
+      transition={hwActTransition}
+    >
+      <Stagger delay={0} from="scale">
+        <ImageWithFallback
+          src={nexusEmblem} alt="NEXUS"
+          className="w-24 h-24 object-contain"
+          style={t.name === "White" ? { filter: "invert(1) brightness(0.3)" } : undefined}
+        />
+      </Stagger>
+      <Stagger delay={0.22}>
+        <p style={{ color: t.accent, fontSize: 11, fontWeight: 700, letterSpacing: "0.32em", textTransform: "uppercase" }}>
+          NEXUS
+        </p>
+      </Stagger>
+      <Stagger delay={0.38}>
+        <h2 style={{ fontSize: 68, fontWeight: 200, color: t.text, textAlign: "center", lineHeight: 1.1, letterSpacing: "-0.03em" }}>
+          Intelligence at scale.
+        </h2>
+      </Stagger>
+    </motion.div>
+  );
+}
+
+function SlideHumanwash() {
+  const t = useT();
+  const [phase, setPhase] = useState<0 | 1 | 2 | 3 | 4 | 5>(0);
+  const [evidIdx, setEvidIdx] = useState(0);
+  const [glitchId, setGlitchId] = useState(0);
+  const [glitching, setGlitching] = useState(false);
+
+  const cut = () => {
+    setGlitching(true);
+    setGlitchId(n => n + 1);
+    setTimeout(() => setGlitching(false), 130);
+  };
+
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) { setPhase(5); return; }
+    const T = (fn: () => void, ms: number) => setTimeout(fn, ms);
+    const timers = [
+      T(() => setPhase(1), 80),
+      T(() => { cut(); setPhase(2); }, 2400),
+      T(() => { cut(); setPhase(3); }, 5400),
+      T(() => setEvidIdx(1), 8400),
+      T(() => setEvidIdx(2), 11400),
+      T(() => { cut(); setPhase(4); }, 14400),
+      T(() => { cut(); setPhase(5); }, 18400),
+    ];
+    return () => timers.forEach(clearTimeout);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <div className="w-full h-full overflow-hidden relative" style={{ background: t.bg }}>
+      {/* Phase dots only — no label */}
+      <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-1.5 z-10">
+        {([1, 2, 3, 4, 5] as const).map(p => (
+          <motion.div key={p}
+            animate={{ width: p === phase ? 20 : 6, background: p === phase ? t.accent : t.hair }}
+            transition={SPRING_SNAPPY}
+            style={{ height: 4, borderRadius: 2 }}
+          />
+        ))}
+      </div>
+
+      {/* Glitch cut flash */}
+      <AnimatePresence>{glitching && <GlitchFlash key={glitchId} id={glitchId} />}</AnimatePresence>
+
+      <AnimatePresence mode="wait">
+        {phase === 1 && <ActI key="act1" t={t} />}
+        {phase === 2 && <ActII key="act2" t={t} />}
+        {phase === 3 && <ActIII key="act3" t={t} evidIdx={evidIdx} setEvidIdx={setEvidIdx} />}
+        {phase === 4 && <ActIV key="act4" t={t} />}
+        {phase === 5 && <ActV key="act5" t={t} />}
+      </AnimatePresence>
+      <EmblemCorner />
+    </div>
+  );
+}
+
 // ─── Registry ─────────────────────────────────────────────────────────────────
 
 const SLIDES = [
@@ -1204,11 +1739,18 @@ function NavDot({ active, onClick }: { active: boolean; onClick: () => void }) {
 
 // ─── App ──────────────────────────────────────────────────────────────────────
 
+// Timestamp (seconds) at which each slide should begin during narration playback.
+// Adjust after generating audio if pacing shifts.
+const SLIDE_CUE_TIMES = [0, 12, 28, 44, 56, 70, 83, 95, 106, 117, 128, 140, 150, 162, 172, 185, 197];
+
 export default function App() {
   const [splashDone, setSplashDone] = useState(false);
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
   const [themeIdx, setThemeIdx] = useState(0);
+  const [isPresenting, setIsPresenting] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const cueRef = useRef(0);
   const themeKey = THEME_CYCLE[themeIdx];
   const theme = THEMES[themeKey];
 
@@ -1218,15 +1760,48 @@ export default function App() {
     setCurrent(next);
   }, [current]);
 
+  const startPresent = useCallback(() => {
+    const audio = new Audio("/audio/nexus-narration.mp3");
+    audioRef.current = audio;
+    cueRef.current = 0;
+    go(0);
+    setIsPresenting(true);
+
+    audio.addEventListener("timeupdate", () => {
+      const t = audio.currentTime;
+      let next = cueRef.current;
+      while (next < SLIDE_CUE_TIMES.length - 1 && t >= SLIDE_CUE_TIMES[next + 1]) {
+        next++;
+      }
+      if (next !== cueRef.current) {
+        cueRef.current = next;
+        setDirection(1);
+        setCurrent(next);
+      }
+    });
+
+    audio.addEventListener("ended", () => setIsPresenting(false));
+    audio.play();
+  }, [go]);
+
+  const stopPresent = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    setIsPresenting(false);
+  }, []);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (!splashDone) return;
+      if (!splashDone || isPresenting) return;
       if (e.key === "ArrowRight" || e.key === "ArrowDown") go(current + 1);
       if (e.key === "ArrowLeft"  || e.key === "ArrowUp")   go(current - 1);
+      if (e.key === "Escape") stopPresent();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [current, go, splashDone]);
+  }, [current, go, splashDone, isPresenting, stopPresent]);
 
   const SlideComponent = SLIDES[current];
 
@@ -1304,8 +1879,22 @@ export default function App() {
               {String(current + 1).padStart(2, "0")} / {String(SLIDES.length).padStart(2, "0")}
             </p>
             <div className="flex items-center gap-1.5">
-              {SLIDES.map((_, i) => <NavDot key={i} active={i === current} onClick={() => go(i)} />)}
+              {SLIDES.map((_, i) => <NavDot key={i} active={i === current} onClick={() => !isPresenting && go(i)} />)}
             </div>
+            <motion.button
+              onClick={isPresenting ? stopPresent : startPresent}
+              whileHover={{ opacity: 1, scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={SPRING_SNAPPY}
+              className="mt-1 px-4 py-1.5 rounded-full text-xs font-mono tracking-widest uppercase"
+              style={{
+                background: isPresenting ? "rgba(201,64,64,0.18)" : "rgba(255,255,255,0.07)",
+                color: isPresenting ? "#C94040" : theme.dim,
+                border: `1px solid ${isPresenting ? "rgba(201,64,64,0.35)" : theme.hair}`,
+              }}
+            >
+              {isPresenting ? "⏹ Stop" : "▶ Present"}
+            </motion.button>
           </div>
         )}
       </motion.div>

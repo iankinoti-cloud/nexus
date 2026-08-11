@@ -27,13 +27,13 @@ export function CompletionBarChart() {
   return (
     <ResponsiveContainer width="100%" height={260}>
       <BarChart data={COMPLETION_DATA} margin={{ top: 10, right: 10, left: -10, bottom: 0 }} barGap={4}>
-        <CartesianGrid stroke="rgba(255,255,255,0.04)" vertical={false} />
+        <CartesianGrid stroke="rgba(255,235,200,0.06)" vertical={false} />
         <XAxis dataKey="week" tick={{ fill: 'var(--text-dim)', fontSize: 11 }} axisLine={false} tickLine={false} />
         <YAxis tick={{ fill: 'var(--text-dim)', fontSize: 11 }} axisLine={false} tickLine={false} />
         <Tooltip content={<CustomTooltip />} />
         <Legend wrapperStyle={{ fontSize: 12, color: 'var(--text-dim)', paddingTop: 10 }} />
-        <Bar key="target" dataKey="target" name="Target" fill="rgba(79,209,197,0.15)" radius={[4, 4, 0, 0]} />
-        <Bar key="completed" dataKey="completed" name="Completed" fill="#4FD1C5" radius={[4, 4, 0, 0]} />
+        <Bar key="target" dataKey="target" name="Target" fill="rgba(201,168,124,0.2)" radius={[4, 4, 0, 0]} />
+        <Bar key="completed" dataKey="completed" name="Completed" fill="#E07A52" radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
   );
