@@ -4,7 +4,7 @@
 
 One workspace that orchestrates people, projects, clients, and decisions for creative agencies — with **Core**, a real AI intelligence engine, at the center.
 
-Built for the Moringa 48-Hour AI Hackathon.
+
 
 ## What's in this repo
 
