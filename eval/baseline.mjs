@@ -2,7 +2,7 @@
 // in one prompt with no pipeline structure or specialist agents.
 // This represents the "reasonable basic approach" before building NEXUS.
 
-import Anthropic from '@anthropic-ai/sdk';
+import { makeClient } from '../app/server/core-logic.mjs';
 
 const MODEL = process.env.NEXUS_MODEL || 'claude-opus-4-8';
 
@@ -43,7 +43,7 @@ Return ONLY valid JSON with this structure — no markdown, no commentary:
 }`;
 
 export async function runBaseline(enquiry, transcript) {
-  const client = new Anthropic();
+  const client = makeClient();
   const start = Date.now();
 
   const userMessage = `Client: ${enquiry.companyName} (${enquiry.industry})
