@@ -95,7 +95,10 @@ export function KnowledgePage() {
     : visibleNotes;
 
   return (
-    <PageShell>
+    <PageShell aura={[
+      { color: '#A855F7', shape: 'circle', position: 'center', size: 1000 },
+      { color: '#A855F7', shape: 'oval', position: 'top-left', size: 450, opacity: 0.10 },
+    ]}>
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
@@ -111,7 +114,7 @@ export function KnowledgePage() {
             <BookOpen size={18} style={{ color: 'var(--accent)' }} />
           </div>
           <div>
-            <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600 }}>Knowledge</h1>
+            <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600, fontFamily: 'var(--font-display)' }}>Knowledge</h1>
             <p style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))' }}>Your organization never forgets.</p>
           </div>
         </div>

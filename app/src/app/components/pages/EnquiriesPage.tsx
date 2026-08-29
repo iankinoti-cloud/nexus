@@ -247,12 +247,15 @@ export function EnquiriesPage() {
     .reduce((s, e) => s + (e.quotation?.total ?? 0), 0);
 
   return (
-    <PageShell>
+    <PageShell aura={[
+      { color: '#6366F1', shape: 'oval', position: 'bottom-left' },
+      { color: '#6366F1', shape: 'circle', position: 'top-right', size: 350, opacity: 0.09 },
+    ]}>
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Workflow size={18} style={{ color: 'var(--accent)' }} />
-            <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600 }}>
+            <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600, fontFamily: 'var(--font-display)' }}>
               Enquiries
             </h1>
           </div>

@@ -20,6 +20,7 @@ export interface OnboardingState {
   seenSpotlights: string[];
   pendingSpotlight: string | null;
   allGuidanceDismissed: boolean;
+  guidedTourStep: number | null;
 }
 
 export const CHECKLIST_DEFAULTS: ChecklistItem[] = [

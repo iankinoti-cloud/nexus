@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { FolderKanban, Users, TrendingUp, Star, Cpu, ArrowRight, Calendar, Clock, Check } from 'lucide-react';
 import { toast } from 'sonner';
@@ -49,6 +49,16 @@ export function DashboardPage() {
   const nexus = useNexus();
   const { displayName } = useAuth();
   const [appliedInsights, setAppliedInsights] = useState<number[]>([]);
+  const [clockTime, setClockTime] = useState(() =>
+    new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }),
+  );
+  useEffect(() => {
+    const t = setInterval(() => {
+      setClockTime(new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }));
+    }, 1000);
+    return () => clearInterval(t);
+  }, []);
+
   const now = new Date();
   const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
   const hour = now.getHours();
@@ -72,7 +82,10 @@ export function DashboardPage() {
   };
 
   return (
-    <PageShell>
+    <PageShell aura={[
+      { color: '#6366F1', shape: 'circle', position: 'top-left' },
+      { color: '#6366F1', shape: 'pill', position: 'bottom-right', size: 500, opacity: 0.10 },
+    ]}>
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
@@ -88,12 +101,21 @@ export function DashboardPage() {
             Everything is running smoothly.
           </p>
         </div>
-        <div
-          className="hidden sm:flex items-center gap-2 rounded-lg px-4 py-2"
-          style={{ background: 'var(--surface)', border: '1px solid var(--hair)' }}
-        >
-          <Calendar size={14} style={{ color: 'var(--text-dim)' }} />
-          <span style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))' }}>{dateStr}</span>
+        <div className="hidden sm:flex items-center gap-2">
+          <div
+            className="flex items-center gap-2 rounded-lg px-4 py-2"
+            style={{ background: 'var(--surface)', border: '1px solid var(--hair)' }}
+          >
+            <Calendar size={14} style={{ color: 'var(--text-dim)' }} />
+            <span style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))' }}>{dateStr}</span>
+          </div>
+          <div
+            className="flex items-center gap-2 rounded-lg px-4 py-2"
+            style={{ background: 'var(--surface)', border: '1px solid var(--hair)' }}
+          >
+            <Clock size={14} style={{ color: 'var(--text-dim)' }} />
+            <span style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))', fontVariantNumeric: 'tabular-nums', fontFamily: 'var(--font-mono, monospace)' }}>{clockTime}</span>
+          </div>
         </div>
       </motion.div>
 

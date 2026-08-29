@@ -108,10 +108,13 @@ export function ClientsPage() {
   const totalRevenue = '$454K';
 
   return (
-    <PageShell>
+    <PageShell aura={[
+      { color: '#06B6D4', shape: 'circle', position: 'bottom-center' },
+      { color: '#06B6D4', shape: 'triangle', position: 'top-left', size: 380, opacity: 0.09 },
+    ]}>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600 }}>Clients</h1>
+          <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600, fontFamily: 'var(--font-display)' }}>Clients</h1>
           <p style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))', marginTop: 2 }}>
             {CLIENTS.length} clients · {totalRevenue} total revenue
           </p>

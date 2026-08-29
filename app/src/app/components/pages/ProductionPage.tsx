@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Layers, Calendar, Camera, Zap, Users, Plus, X } from 'lucide-react';
+import { PageAura } from '../shared/PageAura';
 import { toast } from 'sonner';
 import { PRODUCTION_RESOURCES } from '../../data/mockData';
 import { useNexus } from '../../data/store';
@@ -167,20 +168,22 @@ export function ProductionPage() {
   const equipment = PRODUCTION_RESOURCES.filter(r => r.type === 'equipment');
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden" style={{ background: 'var(--bg)' }}>
+    <div className="flex-1 flex flex-col overflow-hidden" style={{ background: 'var(--bg)', position: 'relative' }}>
+      <PageAura color="#F97316" shape="triangle" position="top-left" />
+      <PageAura color="#F97316" shape="oval" position="bottom-right" size={500} opacity={0.10} />
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.28 }}
         className="px-8 pt-7 pb-5"
-        style={{ borderBottom: '1px solid var(--hair)' }}
+        style={{ borderBottom: '1px solid var(--hair)', position: 'relative', zIndex: 1 }}
       >
         <div className="flex items-start justify-between flex-wrap gap-3">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <Layers size={18} style={{ color: '#F59E0B' }} />
-              <h1 style={{ color: 'var(--text)', fontSize: 'calc(22px * var(--fs))', fontWeight: 700 }}>Production</h1>
+              <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600, fontFamily: 'var(--font-display)' }}>Production</h1>
             </div>
             <p style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))' }}>
               Studio & equipment scheduling · {bookings.length} active bookings this week
@@ -200,7 +203,6 @@ export function ProductionPage() {
         {/* Studios */}
         <section>
           <div className="flex items-center gap-2 mb-4">
-            <Camera size={14} style={{ color: 'var(--text-dim)' }} />
             <span style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Studios</span>
           </div>
           <div className="rounded-xl overflow-hidden" style={{ border: '1px solid var(--hair)' }}>
@@ -291,7 +293,6 @@ export function ProductionPage() {
         {/* Equipment */}
         <section>
           <div className="flex items-center gap-2 mb-4">
-            <Zap size={14} style={{ color: 'var(--text-dim)' }} />
             <span style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Equipment</span>
           </div>
           <div className="rounded-xl overflow-hidden" style={{ border: '1px solid var(--hair)' }}>

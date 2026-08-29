@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'motion/react';
 import { TrendingUp, FileSearch } from 'lucide-react';
 import { PageShell } from '../layout/PageShell';
+import { PageAura } from '../shared/PageAura';
 import { EnquiriesPage } from './EnquiriesPage';
 import { RfpScannerPage } from './RfpScannerPage';
 
@@ -16,7 +17,9 @@ export function PipelinePage() {
   const [active, setActive] = useState<TabKey>('enquiries');
 
   return (
-    <div className="flex flex-col h-full overflow-hidden">
+    <div className="flex flex-col h-full overflow-hidden" style={{ position: 'relative' }}>
+      <PageAura color="#10B981" shape="diamond" position="bottom-right" />
+      <PageAura color="#10B981" shape="blob" position="top-left" size={400} opacity={0.09} />
       <div
         className="flex items-center gap-1 px-5 pt-4 pb-0 shrink-0"
         style={{ borderBottom: '1px solid var(--hair)' }}

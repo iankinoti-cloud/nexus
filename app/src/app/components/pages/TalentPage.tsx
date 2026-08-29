@@ -127,7 +127,10 @@ function EmployeeCard({ emp, delay }: { emp: Employee; delay: number }) {
 export function TalentPage() {
   const { employees: EMPLOYEES } = useNexus();
   return (
-    <PageShell>
+    <PageShell aura={[
+      { color: '#EC4899', shape: 'blob', position: 'top-right' },
+      { color: '#EC4899', shape: 'circle', position: 'bottom-left', size: 380, opacity: 0.10 },
+    ]}>
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600, fontFamily: 'var(--font-display)' }}>Talent</h1>

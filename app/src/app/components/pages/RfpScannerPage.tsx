@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { FileSearch, RefreshCw, X, ChevronRight, Clock, TrendingUp, DollarSign, AlertTriangle } from 'lucide-react';
+import { PageAura } from '../shared/PageAura';
 import { toast } from 'sonner';
 import { useNexus } from '../../data/store';
 import type { RfpTender, RfpStatus } from '../../data/types';
@@ -246,7 +247,9 @@ export function RfpScannerPage() {
   };
 
   return (
-    <div className="flex flex-col h-full" style={{ padding: '28px 28px 0' }}>
+    <div className="flex flex-col h-full" style={{ padding: '28px 28px 0', position: 'relative' }}>
+      <PageAura color="#84CC16" shape="oval" position="top-right" size={500} />
+      <PageAura color="#84CC16" shape="pill" position="bottom-left" size={400} opacity={0.09} />
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -254,7 +257,7 @@ export function RfpScannerPage() {
             <FileSearch size={18} style={{ color: 'var(--accent)' }} />
           </div>
           <div>
-            <h1 style={{ color: 'var(--text)', fontSize: 'calc(20px * var(--fs))', fontWeight: 700 }}>RFP Scanner</h1>
+            <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600, fontFamily: 'var(--font-display)' }}>RFP Scanner</h1>
             <p style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))' }}>AI-matched tender & RFQ opportunities</p>
           </div>
         </div>

@@ -7,8 +7,9 @@ import { Splash } from './components/Splash';
 
 initTheme();
 import { AuthProvider } from './auth/AuthProvider';
+import { useAuth } from './auth/AuthProvider';
+import { LoginScreen } from './auth/LoginScreen';
 import { OnboardingProvider } from './onboarding/OnboardingProvider';
-import { WelcomeModal } from './onboarding/WelcomeModal';
 import { AppErrorBoundary, RouteError } from './components/ErrorBoundary';
 import { RootLayout } from './components/layout/RootLayout';
 import { DashboardPage } from './components/pages/DashboardPage';
@@ -27,8 +28,6 @@ import { RfpScannerPage } from './components/pages/RfpScannerPage';
 import { PipelinePage } from './components/pages/PipelinePage';
 import { StoryPage } from './components/pages/story/StoryPage';
 
-// Each page gets its own error boundary so a crash degrades that one panel
-// while the shell (sidebar / mobile nav) keeps running.
 const pages = [
   { index: true, Component: DashboardPage },
   { path: 'projects', Component: ProjectsPage },
@@ -61,12 +60,17 @@ const router = createBrowserRouter([
 ]);
 
 function Gate() {
+  const { session, guest, loading } = useAuth();
+
   return (
     <OnboardingProvider>
-      <WelcomeModal />
-      <NexusProvider>
-        <RouterProvider router={router} />
-      </NexusProvider>
+      {loading ? null : !session && !guest ? (
+        <LoginScreen />
+      ) : (
+        <NexusProvider>
+          <RouterProvider router={router} />
+        </NexusProvider>
+      )}
     </OnboardingProvider>
   );
 }

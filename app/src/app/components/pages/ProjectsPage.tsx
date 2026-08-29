@@ -95,11 +95,14 @@ export function ProjectsPage() {
   });
 
   return (
-    <PageShell>
+    <PageShell aura={[
+      { color: '#06B6D4', shape: 'pill', position: 'bottom-left' },
+      { color: '#06B6D4', shape: 'diamond', position: 'top-right', size: 400, opacity: 0.09 },
+    ]}>
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div>
-          <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600 }}>Projects</h1>
+          <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600, fontFamily: 'var(--font-display)' }}>Projects</h1>
           <p style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))', marginTop: 2 }}>{PROJECTS.length} total · {PROJECTS.filter(p => p.status === 'active').length} active</p>
         </div>
         <motion.button

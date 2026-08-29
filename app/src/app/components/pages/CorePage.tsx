@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { PageAura } from '../shared/PageAura';
 import { Send, Target, Users, MessageSquare, Layers, Check, WifiOff, ArrowRight, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNexus } from '../../data/store';
@@ -508,14 +509,16 @@ export function CorePage() {
   };
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden" style={{ background: 'var(--bg)' }}>
+    <div className="flex-1 flex flex-col overflow-hidden" style={{ background: 'var(--bg)', position: 'relative' }}>
+      <PageAura color="#A855F7" shape="oval" position="top-right" size={700} />
+      <PageAura color="#A855F7" shape="blob" position="bottom-left" size={450} opacity={0.10} />
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.28 }}
         className="flex items-center justify-between px-6 py-4 flex-wrap gap-3"
-        style={{ borderBottom: '1px solid var(--hair)', background: 'var(--surface)' }}
+        style={{ borderBottom: '1px solid var(--hair)', background: 'var(--surface)', position: 'relative', zIndex: 1 }}
       >
         <div style={{ color: 'var(--text)', fontSize: 'calc(15px * var(--fs))', fontWeight: 700 }}>NEXUS AGENTS</div>
         <div className="flex items-center gap-3">

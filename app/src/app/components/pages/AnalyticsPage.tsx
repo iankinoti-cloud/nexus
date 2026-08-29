@@ -43,7 +43,10 @@ const KPI_METRICS = [
 
 export function AnalyticsPage() {
   return (
-    <PageShell>
+    <PageShell aura={[
+      { color: '#F97316', shape: 'oval', position: 'bottom-full' },
+      { color: '#F97316', shape: 'circle', position: 'top-right', size: 350, opacity: 0.09 },
+    ]}>
       <div className="mb-6">
         <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600, fontFamily: 'var(--font-display)' }}>Analytics</h1>
         <p style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))', marginTop: 2 }}>Executive overview · July 2026</p>

@@ -625,7 +625,10 @@ export function SettingsPage() {
   };
 
   return (
-    <PageShell>
+    <PageShell aura={[
+      { color: '#94A3B8', shape: 'oval', position: 'top-right' },
+      { color: '#94A3B8', shape: 'circle', position: 'bottom-left', size: 380, opacity: 0.08 },
+    ]}>
       <div className="mb-6">
         <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600, fontFamily: 'var(--font-display)' }}>Settings</h1>
         <p style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))', marginTop: 2 }}>Manage your account and workspace preferences.</p>
@@ -636,14 +639,14 @@ export function SettingsPage() {
         <div
           onMouseMove={onMove}
           onMouseLeave={() => setTabHover(null)}
-          className="glass rounded-xl p-2 flex md:flex-col gap-1 shrink-0 overflow-x-auto md:overflow-visible relative w-full md:w-[200px]"
-          style={{ alignSelf: 'flex-start' }}
+          className="rounded-xl p-2 flex md:flex-col gap-1 shrink-0 overflow-x-auto md:overflow-visible relative w-full md:w-[200px]"
+          style={{ alignSelf: 'flex-start', background: '#000000' }}
         >
-          {/* cursor-tracking specular */}
+          {/* cursor-tracking specular liquid glass */}
           <div
             className="pointer-events-none absolute inset-0 rounded-xl hidden md:block"
             style={{
-              background: 'radial-gradient(180px circle at var(--mx, -200px) var(--my, -200px), rgba(255,255,255,0.10), transparent 60%)',
+              background: 'radial-gradient(160px circle at var(--mx, -200px) var(--my, -200px), rgba(255,255,255,0.13), transparent 60%)',
               mixBlendMode: 'soft-light',
             }}
           />
@@ -660,7 +663,7 @@ export function SettingsPage() {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: isHi ? 'var(--accent)' : 'var(--text-dim)',
+                  color: isHi ? 'var(--accent)' : 'rgba(255,255,255,0.5)',
                   fontSize: 'calc(13px * var(--fs))',
                   fontWeight: isActive ? 500 : 400,
                   cursor: 'pointer',
@@ -673,17 +676,15 @@ export function SettingsPage() {
                     layoutId="settingsPill"
                     className="absolute inset-0 rounded-lg"
                     style={{
-                      background: 'rgba(var(--accent-rgb),0.14)',
-                      border: '1px solid rgba(var(--accent-rgb),0.35)',
-                      boxShadow: 'inset 0 1px 0 0 var(--glass-rim), 0 6px 18px -6px rgba(var(--accent-rgb),0.5)',
-                      backdropFilter: 'blur(6px) saturate(160%)',
+                      background: 'rgba(var(--accent-rgb),0.18)',
+                      border: '1px solid rgba(var(--accent-rgb),0.4)',
                     }}
                     transition={{ type: 'spring', stiffness: 230, damping: 19, mass: 0.9 }}
                   />
                 )}
-                <Icon size={14} className="relative z-10" style={{ opacity: isHi ? 1 : 0.8 }} />
-                <span className="relative z-10">{tab.label}</span>
-                {isActive && <ChevronRight size={12} className="relative z-10 hidden md:block" style={{ marginLeft: 'auto' }} />}
+                <Icon size={14} className="relative z-10" style={{ color: isHi ? 'var(--accent)' : 'rgba(255,255,255,0.5)', opacity: isHi ? 1 : 0.8 }} />
+                <span className="relative z-10" style={{ color: isHi ? 'var(--accent)' : '#FFFFFF' }}>{tab.label}</span>
+                {isActive && <ChevronRight size={12} className="relative z-10 hidden md:block" style={{ marginLeft: 'auto', color: 'rgba(255,255,255,0.3)' }} />}
               </button>
             );
           })}

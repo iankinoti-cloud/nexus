@@ -15,6 +15,9 @@ interface OnboardingActions {
   skipAllGuidance: () => void;
   checklistDone: (id: string) => void;
   resetOnboarding: () => void;
+  startGuidedTour: () => void;
+  advanceGuidedTour: (totalSteps: number) => void;
+  endGuidedTour: () => void;
 }
 
 export type OnboardingStore = OnboardingState & OnboardingActions;
@@ -36,6 +39,7 @@ function initialState(): OnboardingState {
     seenSpotlights: [],
     pendingSpotlight: null,
     allGuidanceDismissed: false,
+    guidedTourStep: null,
   };
 }
 
@@ -48,6 +52,7 @@ function load(): OnboardingState {
       return {
         ...base,
         ...parsed,
+        guidedTourStep: null, // never restore an in-progress tour from storage
         checklist: parsed.checklist
           ? base.checklist.map(def => {
               const saved = (parsed.checklist as ChecklistItem[]).find(c => c.id === def.id);
@@ -135,6 +140,23 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
         const fresh = initialState();
         save(fresh);
         setState(fresh);
+      },
+
+      startGuidedTour() {
+        update({ guidedTourStep: 0, dismissed: true });
+      },
+
+      advanceGuidedTour(totalSteps) {
+        const next = (state.guidedTourStep ?? 0) + 1;
+        if (next >= totalSteps) {
+          update({ guidedTourStep: null });
+        } else {
+          update({ guidedTourStep: next });
+        }
+      },
+
+      endGuidedTour() {
+        update({ guidedTourStep: null });
       },
     };
   }, [state]);

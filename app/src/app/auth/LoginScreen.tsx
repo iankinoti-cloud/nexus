@@ -5,6 +5,8 @@ import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import nexusEmblem from '../../imports/NEXUS-_-EMBLEM.jpeg';
 import { authErrorFromUrl } from '../lib/supabase';
 import { useAuth } from './AuthProvider';
+import { useOnboarding } from '../onboarding/OnboardingProvider';
+import { KaizenModal } from '../onboarding/KaizenModal';
 
 function GoogleIcon() {
   return (
@@ -23,14 +25,27 @@ function GoogleIcon() {
 }
 
 export function LoginScreen() {
-  const { cloudMode, signInWithGoogle, continueAsGuest } = useAuth();
+  const { continueAsGuest } = useAuth();
+  const { dismissed, startGuidedTour } = useOnboarding();
   const [authError] = useState<string | null>(authErrorFromUrl);
+  const [showKaizen, setShowKaizen] = useState(false);
+
+  const handleGuest = () => {
+    continueAsGuest();
+    startGuidedTour();
+  };
 
   return (
     <div
       className="h-screen w-screen flex items-center justify-center px-6"
       style={{ background: 'var(--bg)' }}
     >
+      <KaizenModal
+        open={showKaizen}
+        onGuest={handleGuest}
+        onClose={() => setShowKaizen(false)}
+      />
+
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
@@ -67,49 +82,46 @@ export function LoginScreen() {
           </div>
         )}
 
-        {cloudMode && (
-          <motion.button
-            whileHover={{ scale: 1.01, background: '#F5F5F5' }}
-            whileTap={{ scale: 0.98 }}
-            onClick={signInWithGoogle}
-            className="w-full flex items-center justify-center gap-3 rounded-xl py-3 mb-3"
-            style={{
-              background: '#FFFFFF',
-              color: '#1F1F1F',
-              fontSize: 'calc(14px * var(--fs))',
-              fontWeight: 600,
-              border: '1px solid rgba(255,255,255,0.18)',
-              cursor: 'pointer',
-              colorScheme: 'light',
-            } as React.CSSProperties}
-          >
-            <GoogleIcon />
-            Continue with Google
-          </motion.button>
-        )}
+        {/* Continue with Google — shows KAIZEN modal since Supabase is not yet active */}
+        <motion.button
+          whileHover={{ scale: 1.01, background: '#F5F5F5' }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => setShowKaizen(true)}
+          className="w-full flex items-center justify-center gap-3 rounded-xl py-3 mb-3"
+          style={{
+            background: '#FFFFFF',
+            color: '#1F1F1F',
+            fontSize: 'calc(14px * var(--fs))',
+            fontWeight: 600,
+            border: '1px solid rgba(255,255,255,0.18)',
+            cursor: 'pointer',
+            colorScheme: 'light',
+          } as React.CSSProperties}
+        >
+          <GoogleIcon />
+          Continue with Google
+        </motion.button>
 
         <motion.button
           whileHover={{ borderColor: 'rgba(var(--accent-rgb),0.4)', color: 'var(--accent)' }}
           whileTap={{ scale: 0.98 }}
-          onClick={continueAsGuest}
+          onClick={handleGuest}
           className="w-full rounded-xl py-3"
           style={{
-            background: cloudMode ? 'transparent' : 'rgba(var(--accent-rgb),0.12)',
-            border: cloudMode ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(var(--accent-rgb),0.35)',
-            color: cloudMode ? 'var(--text-dim)' : 'var(--accent)',
+            background: 'rgba(var(--accent-rgb),0.12)',
+            border: '1px solid rgba(var(--accent-rgb),0.35)',
+            color: 'var(--accent)',
             fontSize: 'calc(13px * var(--fs))',
-            fontWeight: cloudMode ? 400 : 600,
+            fontWeight: 600,
             cursor: 'pointer',
             transition: 'all 0.15s ease',
           }}
         >
-          {cloudMode ? 'Explore as guest' : 'Enter demo workspace'}
+          Explore as Guest
         </motion.button>
 
         <p style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))', marginTop: 28, opacity: 0.6 }}>
-          {cloudMode
-            ? 'Guest sessions run locally. Sign in to sync your workspace across devices.'
-            : 'A fully interactive local demo — no account needed.'}
+          Guest sessions run locally. Sign in to sync your workspace across devices.
         </p>
       </motion.div>
     </div>

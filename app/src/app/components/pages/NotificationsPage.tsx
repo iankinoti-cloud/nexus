@@ -124,11 +124,14 @@ export function NotificationsPage() {
   const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
-    <PageShell>
+    <PageShell aura={[
+      { color: '#EF4444', shape: 'circle', position: 'top-center', size: 300 },
+      { color: '#EF4444', shape: 'blob', position: 'bottom-right', size: 400, opacity: 0.09 },
+    ]}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600 }}>Notifications</h1>
+          <h1 style={{ color: 'var(--text)', fontSize: 'calc(24px * var(--fs))', fontWeight: 600, fontFamily: 'var(--font-display)' }}>Notifications</h1>
           {unreadCount > 0 && (
             <span
               className="flex items-center justify-center rounded-full"

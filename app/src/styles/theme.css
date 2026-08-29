@@ -9,26 +9,26 @@
   --accent-rgb: 99, 102, 241;
   --accent-hover: #4F52D9;
 
-  /* NEXUS Core Palette — white pages, black sidebar */
-  --background: #FFFFFF;
-  --foreground: #0A0A0A;
-  --card: #FFFFFF;
-  --card-foreground: #0A0A0A;
-  --popover: #FFFFFF;
-  --popover-foreground: #0A0A0A;
+  /* NEXUS Core Palette — dark mode: deep pages, black sidebar, vibrant accents */
+  --background: #09090B;
+  --foreground: #FAFAFA;
+  --card: #18181B;
+  --card-foreground: #FAFAFA;
+  --popover: #18181B;
+  --popover-foreground: #FAFAFA;
   --primary: #6366F1;
   --primary-foreground: #FFFFFF;
-  --secondary: #F4F4F5;
-  --secondary-foreground: #0A0A0A;
-  --muted: #F4F4F5;
-  --muted-foreground: #71717A;
-  --accent-foreground: #0A0A0A;
+  --secondary: #27272A;
+  --secondary-foreground: #FAFAFA;
+  --muted: #27272A;
+  --muted-foreground: #A1A1AA;
+  --accent-foreground: #FAFAFA;
   --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
-  --border: rgba(0, 0, 0, 0.08);
-  --input: #F4F4F5;
-  --input-background: #F4F4F5;
-  --switch-background: #E4E4E7;
+  --border: rgba(255, 255, 255, 0.07);
+  --input: #27272A;
+  --input-background: #27272A;
+  --switch-background: #3F3F46;
   --ring: #6366F1;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
@@ -55,30 +55,30 @@
   --sidebar-ring: #6366F1;
 
   /* NEXUS Design Tokens */
-  --nexus-bg: #FFFFFF;
-  --nexus-surface: #F4F4F5;
-  --nexus-surface-hover: #EBEBEB;
-  --nexus-border: rgba(0, 0, 0, 0.08);
-  --nexus-text-primary: #0A0A0A;
-  --nexus-text-secondary: #71717A;
+  --nexus-bg: #09090B;
+  --nexus-surface: #18181B;
+  --nexus-surface-hover: #27272A;
+  --nexus-border: rgba(255, 255, 255, 0.07);
+  --nexus-text-primary: #FAFAFA;
+  --nexus-text-secondary: #A1A1AA;
   --nexus-cyan: #6366F1;
   --nexus-gold: #F97316;
   --nexus-emerald: #10B981;
   --nexus-danger: #EF4444;
-  --nexus-cyan-dim: rgba(99, 102, 241, 0.08);
-  --nexus-cyan-border: rgba(99, 102, 241, 0.25);
+  --nexus-cyan-dim: rgba(99, 102, 241, 0.10);
+  --nexus-cyan-border: rgba(99, 102, 241, 0.30);
   --nexus-purple: #A855F7;
   --nexus-blue: #06B6D4;
 
-  /* --- NEXUS surface tokens — drive color mode --- */
-  --bg: #F0F0F2;
-  --bg-2: #FFFFFF;
-  --surface: #FFFFFF;
-  --surface-2: #F4F4F5;
-  --text: #0A0A0A;
-  --text-dim: #71717A;
-  --hair: rgba(0, 0, 0, 0.07);
-  --hair-2: rgba(0, 0, 0, 0.11);
+  /* --- NEXUS surface tokens (dark mode) — drive color mode --- */
+  --bg: #09090B;
+  --bg-2: #111113;
+  --surface: #18181B;
+  --surface-2: #27272A;
+  --text: #FAFAFA;
+  --text-dim: #A1A1AA;
+  --hair: rgba(255, 255, 255, 0.07);
+  --hair-2: rgba(255, 255, 255, 0.11);
   --status-success: #10B981;
   --status-warning: #F97316;
   --status-danger: #EF4444;
@@ -88,24 +88,24 @@
   --signal-critical: #EF4444;
   --signal-attention: #F97316;
   --signal-opportunity: #10B981;
-  --signal-critical-bg: rgba(239, 68, 68, 0.08);
-  --signal-attention-bg: rgba(249, 115, 22, 0.08);
-  --signal-opportunity-bg: rgba(16, 185, 129, 0.08);
+  --signal-critical-bg: rgba(239, 68, 68, 0.12);
+  --signal-attention-bg: rgba(249, 115, 22, 0.12);
+  --signal-opportunity-bg: rgba(16, 185, 129, 0.12);
 
   /* Typography scale additions */
   --fs-hero: clamp(2rem, 5vw, 4rem);
   --fs-metric: clamp(1.5rem, 3vw, 2.5rem);
   --fs-nav-label: 0.6875rem;
 
-  /* --- Liquid Glass (for page elements, not sidebar) --- */
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-brd: rgba(0, 0, 0, 0.08);
-  --glass-sheen: rgba(255, 255, 255, 0.8);
-  --glass-rim: rgba(255, 255, 255, 0.9);
+  /* --- Liquid Glass --- */
+  --glass-bg: rgba(24, 24, 27, 0.6);
+  --glass-brd: rgba(255, 255, 255, 0.08);
+  --glass-sheen: rgba(255, 255, 255, 0.04);
+  --glass-rim: rgba(255, 255, 255, 0.12);
   --glass-blur: 24px;
 }
 
-/* Light mode — same as default (white pages), kept for Settings toggle compat */
+/* Light mode — white pages, black sidebar, same vibrant accents */
 :root[data-theme='light'] {
   --bg: #F0F0F2;
   --bg-2: #FFFFFF;
@@ -115,15 +115,28 @@
   --text-dim: #71717A;
   --hair: rgba(0, 0, 0, 0.07);
   --hair-2: rgba(0, 0, 0, 0.11);
-  --status-success: #10B981;
-  --status-warning: #F97316;
-  --status-danger: #EF4444;
+  --status-success: #059669;
+  --status-warning: #EA6900;
+  --status-danger: #DC2626;
   --font-display: 'DM Serif Display', Georgia, serif;
 
-  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg: rgba(255, 255, 255, 0.72);
   --glass-brd: rgba(0, 0, 0, 0.08);
   --glass-sheen: rgba(255, 255, 255, 0.8);
   --glass-rim: rgba(255, 255, 255, 0.9);
+
+  --nexus-bg: #FFFFFF;
+  --nexus-surface: #F4F4F5;
+  --nexus-surface-hover: #EBEBEB;
+  --nexus-border: rgba(0, 0, 0, 0.08);
+  --nexus-text-primary: #0A0A0A;
+  --nexus-text-secondary: #71717A;
+  --nexus-cyan-dim: rgba(99, 102, 241, 0.08);
+  --nexus-cyan-border: rgba(99, 102, 241, 0.20);
+
+  --signal-critical-bg: rgba(239, 68, 68, 0.08);
+  --signal-attention-bg: rgba(249, 115, 22, 0.08);
+  --signal-opportunity-bg: rgba(16, 185, 129, 0.08);
 
   --background:             #FFFFFF;
   --foreground:             #0A0A0A;
@@ -144,24 +157,23 @@
   --switch-background:      #E4E4E7;
 }
 
-/* shadcn .dark compat — keeps shadcn components from going rogue if .dark class appears */
+/* shadcn .dark compat — mirrors :root dark mode tokens */
 .dark {
-  --background: #FFFFFF;
-  --foreground: #0A0A0A;
-  --card: #FFFFFF;
-  --card-foreground: #0A0A0A;
-  --popover: #FFFFFF;
-  --popover-foreground: #0A0A0A;
+  --background: #09090B;
+  --foreground: #FAFAFA;
+  --card: #18181B;
+  --card-foreground: #FAFAFA;
+  --popover: #18181B;
+  --popover-foreground: #FAFAFA;
   --primary-foreground: #FFFFFF;
-  --secondary: #F4F4F5;
-  --secondary-foreground: #0A0A0A;
-  --muted: #F4F4F5;
-  --muted-foreground: #71717A;
-  --accent: #252119;
-  --accent-foreground: #0A0A0A;
+  --secondary: #27272A;
+  --secondary-foreground: #FAFAFA;
+  --muted: #27272A;
+  --muted-foreground: #A1A1AA;
+  --accent-foreground: #FAFAFA;
   --destructive-foreground: #FFFFFF;
-  --border: rgba(0, 0, 0, 0.08);
-  --input: #F4F4F5;
+  --border: rgba(255, 255, 255, 0.07);
+  --input: #27272A;
   --ring: var(--accent);
   --sidebar: #000000;
   --sidebar-foreground: #FFFFFF;
