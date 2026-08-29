@@ -4,6 +4,8 @@
 
 **Live app:** https://nexus-topaz-omega.vercel.app · Reproduction guide: [REPRODUCTION.md](REPRODUCTION.md)
 
+**Demo video:** https://nexus-topaz-omega.vercel.app/demo/
+
 ---
 
 ## The Problem
