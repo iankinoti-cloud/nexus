@@ -6,7 +6,11 @@ export const MODEL = process.env.NEXUS_MODEL || 'claude-opus-4-8';
 
 export const hasKey = () => Boolean(process.env.ANTHROPIC_API_KEY);
 
-export const makeClient = () => new Anthropic();
+export const makeClient = () => new Anthropic({
+  ...(process.env.ANTHROPIC_WORKSPACE_ID && {
+    defaultHeaders: { 'anthropic-workspace-id': process.env.ANTHROPIC_WORKSPACE_ID },
+  }),
+});
 
 // --- Security utilities ----------------------------------------------------
 
