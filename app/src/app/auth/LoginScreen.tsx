@@ -66,10 +66,7 @@ export function LoginScreen() {
         <div className="tracking-widest mb-1" style={{ color: 'var(--text)', fontSize: 'calc(22px * var(--fs))', fontWeight: 700, letterSpacing: '0.22em' }}>
           NEXUS
         </div>
-        <p style={{ color: 'var(--text-dim)', fontSize: 'calc(13px * var(--fs))', lineHeight: 1.7, marginBottom: authError ? 20 : 36, maxWidth: 300 }}>
-          Some agencies are always one brief away from unraveling.
-          <br />Yours doesn't have to be.
-        </p>
+        <div style={{ marginBottom: authError ? 20 : 36 }} />
 
         {authError && (
           <div
