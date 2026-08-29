@@ -1,6 +1,6 @@
 # NEXUS — AI Operating System for Creative Businesses
 
-> **micro1 Agentic Workflows Hackathon submission**
+> **Agentic Workflows**
 
 **Live app:** https://nexus-topaz-omega.vercel.app · Reproduction guide: [REPRODUCTION.md](REPRODUCTION.md)
 
@@ -84,14 +84,15 @@ Run it yourself: `node eval/run.mjs` (see [REPRODUCTION.md](REPRODUCTION.md))
 | Budget accuracy (±30%) | 50% | 90% | +40pp |
 | Cases with ≥4 deliverables in brief | 40% | 100% | +60pp |
 
-**Scoring rubric (10 criteria, 1 pt each):**
+**Working rubric:**
 executive summary present · ≥3 objectives in brief · ≥4 deliverables in brief · timeline specific · quote ≥5 line items · quote subtotal within ±30% of budget · team notes present · ≥3 proposal sections · proposal deliverables ≥4 items · no AI filler phrases
 
 **Challenging case:** Roots Initiative (NGO documentary, case 8). The baseline scored 3/10 — it generated a commercial-sounding proposal with hourly rates that wildly exceeded a non-profit's $42k budget. The pipeline scored 8/10 — the brief extractor correctly identified "documentary style, no narrator" and "authentic, journalistic" as key signals, and the quote aligned to the stated budget range.
 
 ---
+$5.80
 
-## Hot Take
+## My Take
 
 **The main failure mode:** When the discovery call transcript contains ambiguous budget signals ("around 50k" instead of a range), the quote generator drifts toward premium pricing regardless. The fix — a budget verification layer that compares the generated subtotal to the stated range and retries if it deviates by more than 30% — only marginally improved scores (Iteration 3 above). The real lesson is that the brief extractor's `budgetSignal` field is load-bearing: if it extracts vaguely, the quote inherits the vagueness. Structured extraction with a strict schema at step 1 does more work than any verification pass at step 3.
 
@@ -152,7 +153,7 @@ Supabase — optional auth (Google OAuth) + workspace cloud sync
 
 ## What existed before this hackathon
 
-The NEXUS codebase was built during the Moringa 48-Hour AI Hackathon (July 2026). The pipeline endpoints (`/api/pipeline/brief`, `/api/pipeline/proposal`, `/api/pipeline/quote`) and their system prompts existed before this submission. What was added for micro1:
+The NEXUS codebase was built in (July 2026), trying to figure out the fragmentation behind most small scale creative agencies. The pipeline endpoints (`/api/pipeline/brief`, `/api/pipeline/proposal`, `/api/pipeline/quote`) and their system prompts existed before this submission. What was added for micro1:
 
 - `eval/` directory — all evaluation infrastructure (cases, scoring rubric, baseline, runner)
 - This README rewrite (hackathon framing, changelog, evaluation table)
