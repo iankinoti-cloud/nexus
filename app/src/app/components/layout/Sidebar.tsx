@@ -44,34 +44,23 @@ export function Sidebar() {
       <motion.div
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => { setHovered(false); setNavHover(null); }}
-        onMouseMove={onMove}
         animate={{ width: open ? EXPANDED : COLLAPSED }}
         transition={{ type: 'spring', stiffness: 380, damping: 34 }}
-        className="glass glass-strong flex flex-col rounded-2xl overflow-hidden"
+        className="flex flex-col rounded-2xl overflow-hidden"
         style={{
           position: 'absolute',
           top: 0,
           left: 0,
           height: '100%',
           zIndex: 30,
-          boxShadow:
-            pinned && hovered
-              ? 'inset 0 1px 0 0 var(--glass-rim), 0 16px 60px -8px rgba(0,0,0,0.6)'
-              : 'inset 0 1px 0 0 var(--glass-rim), 0 10px 40px -8px rgba(0,0,0,0.45)',
+          background: '#000000',
+          boxShadow: '4px 0 24px rgba(0,0,0,0.18)',
         }}
       >
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(220px circle at var(--mx, -200px) var(--my, -200px), rgba(255,255,255,0.13), transparent 62%)',
-            mixBlendMode: 'soft-light',
-          }}
-        />
 
         <div
           className="flex items-center gap-3 px-4 py-5 relative"
-          style={{ borderBottom: '1px solid var(--hair)', minHeight: 74 }}
+          style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', minHeight: 74 }}
         >
           <div className="rounded-lg overflow-hidden shrink-0" style={{ width: 34, height: 34 }}>
             <ImageWithFallback src={nexusEmblem} alt="NEXUS" className="w-full h-full object-cover" />
@@ -84,7 +73,7 @@ export function Sidebar() {
                 exit={{ opacity: 0, x: -6 }}
                 transition={{ duration: 0.15 }}
                 className="flex-1 min-w-0 tracking-widest"
-                style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 700, letterSpacing: '0.18em', whiteSpace: 'nowrap' }}
+                style={{ color: '#FFFFFF', fontSize: 'calc(13px * var(--fs))', fontWeight: 700, letterSpacing: '0.18em', whiteSpace: 'nowrap' }}
               >
                 NEXUS
               </motion.div>
@@ -95,7 +84,7 @@ export function Sidebar() {
               onClick={togglePin}
               title={pinned ? 'Keep sidebar open' : 'Collapse sidebar'}
               className="flex items-center justify-center rounded-md shrink-0"
-              style={{ width: 26, height: 26, background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-dim)' }}
+              style={{ width: 26, height: 26, background: 'transparent', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.4)' }}
             >
               {pinned ? <PanelLeftOpen size={15} /> : <PanelLeftClose size={15} />}
             </button>
@@ -112,8 +101,8 @@ export function Sidebar() {
             return (
               <div key={item.path}>
                 {groupChanged && (
-                  <div style={{ padding: open ? '6px 0 2px' : '6px 0 2px' }}>
-                    <div style={{ height: 1, background: 'var(--hair)', marginLeft: open ? 12 : 8, marginRight: open ? 12 : 8 }} />
+                  <div style={{ padding: '6px 0 2px' }}>
+                    <div style={{ height: 1, background: 'rgba(255,255,255,0.08)', marginLeft: open ? 12 : 8, marginRight: open ? 12 : 8 }} />
                     <AnimatePresence>
                       {open && (
                         <motion.p
@@ -121,7 +110,7 @@ export function Sidebar() {
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                           transition={{ duration: 0.12 }}
-                          style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.1em', padding: '4px 12px 2px', opacity: 0.6 }}
+                          style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', letterSpacing: '0.1em', padding: '4px 12px 2px' }}
                         >
                           {item.group}
                         </motion.p>
@@ -138,7 +127,7 @@ export function Sidebar() {
                   className="flex items-center gap-3 rounded-xl relative no-underline"
                   style={{
                     padding: '10px 12px',
-                    color: isHi ? 'var(--accent)' : 'var(--text-dim)',
+                    color: isHi ? 'var(--accent)' : 'rgba(255,255,255,0.5)',
                     fontSize: 'calc(13.5px * var(--fs))',
                     fontWeight: isActive ? 500 : 400,
                     transition: 'color 0.18s ease',
@@ -206,7 +195,7 @@ export function UserBlock({ open = true }: { open?: boolean }) {
   const initials = displayName.split(' ').map(w => w[0] ?? '').filter(Boolean).slice(0, 2).join('').toUpperCase() || '?';
 
   return (
-    <div className="px-4 py-4 flex items-center gap-3 relative" style={{ borderTop: '1px solid var(--hair)' }}>
+    <div className="px-4 py-4 flex items-center gap-3 relative" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
       {avatarUrl && !imgFailed ? (
         <img
           src={avatarUrl}
@@ -240,8 +229,8 @@ export function UserBlock({ open = true }: { open?: boolean }) {
             className="flex-1 min-w-0 flex items-center gap-2"
           >
             <div className="flex-1 min-w-0">
-              <div className="truncate" style={{ color: 'var(--text)', fontSize: 'calc(13px * var(--fs))', fontWeight: 500 }}>{displayName}</div>
-              <div style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))', whiteSpace: 'nowrap' }}>
+              <div className="truncate" style={{ color: '#FFFFFF', fontSize: 'calc(13px * var(--fs))', fontWeight: 500 }}>{displayName}</div>
+              <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: 'calc(11px * var(--fs))', whiteSpace: 'nowrap' }}>
                 {session ? 'Workspace synced' : guest ? 'Guest · local workspace' : 'Creative Director'}
               </div>
             </div>
@@ -250,7 +239,7 @@ export function UserBlock({ open = true }: { open?: boolean }) {
                 onClick={signOut}
                 title="Sign out"
                 className="flex items-center justify-center rounded-md shrink-0"
-                style={{ width: 26, height: 26, background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-dim)' }}
+                style={{ width: 26, height: 26, background: 'transparent', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.4)' }}
               >
                 <LogOut size={14} />
               </button>

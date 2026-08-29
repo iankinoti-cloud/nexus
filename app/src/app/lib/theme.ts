@@ -6,14 +6,14 @@ export interface Accent {
 }
 
 export const ACCENTS: Accent[] = [
-  { name: 'Terracotta', hex: '#E07A52', rgb: '224, 122, 82', hover: '#cc6a42' },
-  { name: 'Clay', hex: '#C4602E', rgb: '196, 96, 46', hover: '#b05228' },
-  { name: 'Sage', hex: '#6BA888', rgb: '107, 168, 136', hover: '#5a9275' },
-  { name: 'Sand', hex: '#C9A87C', rgb: '201, 168, 124', hover: '#b8946a' },
-  { name: 'Slate', hex: '#6E8FA8', rgb: '110, 143, 168', hover: '#5c7d96' },
-  { name: 'Mauve', hex: '#A07C6E', rgb: '160, 124, 110', hover: '#8e6a5c' },
-  { name: 'Ember', hex: '#B85C5C', rgb: '184, 92, 92', hover: '#a44a4a' },
-  { name: 'Moss', hex: '#7A9B6E', rgb: '122, 155, 110', hover: '#688960' },
+  { name: 'Electric', hex: '#6366F1', rgb: '99, 102, 241',  hover: '#4F52D9' },
+  { name: 'Hot Pink', hex: '#EC4899', rgb: '236, 72, 153',  hover: '#DB2777' },
+  { name: 'Cyber',    hex: '#06B6D4', rgb: '6, 182, 212',   hover: '#0891B2' },
+  { name: 'Volt',     hex: '#84CC16', rgb: '132, 204, 22',  hover: '#65A30D' },
+  { name: 'Blaze',    hex: '#F97316', rgb: '249, 115, 22',  hover: '#EA6900' },
+  { name: 'Plasma',   hex: '#A855F7', rgb: '168, 85, 247',  hover: '#9333EA' },
+  { name: 'Scarlet',  hex: '#EF4444', rgb: '239, 68, 68',   hover: '#DC2626' },
+  { name: 'Emerald',  hex: '#10B981', rgb: '16, 185, 129',  hover: '#059669' },
 ];
 
 export type ColorMode = 'dark' | 'light' | 'system';
