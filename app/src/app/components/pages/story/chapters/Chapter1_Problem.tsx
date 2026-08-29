@@ -154,8 +154,13 @@ export function Chapter1_Problem() {
             maxWidth: 280, marginTop: 24,
           }}
         >
-          Proposals in Notion. Talent in spreadsheets.<br />
-          Finance in Excel. Nothing talks to anything.
+          Your ideas move fast. Your team thinks in images,
+          campaigns, and stories — not in status updates and spreadsheet tabs.
+          NEXUS is the intelligence underneath it all: watching your pipeline,
+          reading your team, catching what falls through, and handing you back
+          the one thing a great creative business runs on.
+          <br /><br />
+          Time to think.
         </motion.p>
       </div>
 
