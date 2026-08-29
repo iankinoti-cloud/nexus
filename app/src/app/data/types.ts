@@ -225,6 +225,53 @@ export interface AgentEvent {
   timestamp: string;
 }
 
+// ── Agency Digital Twin additions ────────────────────────────────────────────
+
+export type SignalTier = 'critical' | 'attention' | 'opportunity';
+
+export type SignalModule = 'projects' | 'talent' | 'clients' | 'pipeline' | 'production' | 'analytics';
+
+export interface AgencySignal {
+  id: string;
+  tier: SignalTier;
+  title: string;
+  body: string;
+  module: SignalModule;
+  linkedId?: string;
+  action?: string;
+  generatedAt: string;
+  acknowledgedAt?: string;
+}
+
+export interface ChangeOrder {
+  id: string;
+  projectId: string;
+  description: string;
+  requestedBy?: string;
+  addedAt: string;
+  status: 'pending' | 'approved' | 'rejected';
+}
+
+export interface TaskItem {
+  id: string;
+  title: string;
+  assignee?: string;
+  status: 'todo' | 'in-progress' | 'review' | 'done';
+  dependsOn: string[];
+  dueDate?: string;
+}
+
+export type WorkflowStage = 'brief' | 'discovery' | 'ideation' | 'proposal' | 'production' | 'review' | 'delivery';
+
+export interface ClientHealthDimensions {
+  relationship: number;
+  delivery: number;
+  commercial: number;
+  sentiment: number;
+}
+
+export type RoleView = 'founder' | 'operations' | 'account_director' | 'creative_director' | 'producer';
+
 export interface Enquiry {
   id: string;
   companyName: string;

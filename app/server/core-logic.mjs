@@ -410,3 +410,81 @@ export function quoteParams(brief, proposal, enquiry) {
     ],
   };
 }
+
+// --- Agency Digital Twin: Signals -------------------------------------------
+
+const SIGNAL_SYSTEM = `${INJECTION_CANARY}
+
+You are Core, the Agency Intelligence Engine. Analyze the agency's live operational data and classify the top signals into three tiers.
+
+Return ONLY valid JSON — no markdown, no commentary:
+{
+  "signals": [
+    {
+      "tier": "critical" | "attention" | "opportunity",
+      "title": string,
+      "body": string,
+      "module": "projects" | "talent" | "clients" | "pipeline" | "production" | "analytics",
+      "linkedId": string | null
+    }
+  ]
+}
+
+Rules:
+- critical: requires immediate action — deadline breach, client at-risk, workload > 90%, high burnout
+- attention: needs review today — scope drift warning, below-target metric, approaching deadline
+- opportunity: positive signal — high-fit RFP, available specialist, client expansion signal
+- Return 4-8 signals. Sort: critical first, then attention, then opportunity.
+- Ground every signal in the injected data. Use actual names. No fabricated entities.
+- linkedId: the id of the relevant project/client/employee/rfpTender. null if not applicable.
+- body: 1 concise sentence explaining the signal and what to do.`;
+
+export function signalParams(context) {
+  return {
+    model: 'claude-haiku-4-5-20251001',
+    max_tokens: 1024,
+    system: [
+      { type: 'text', text: SIGNAL_SYSTEM, cache_control: { type: 'ephemeral' } },
+      { type: 'text', text: `Agency data as of ${new Date().toISOString()}:\n${JSON.stringify(context)}` },
+    ],
+    messages: [{ role: 'user', content: 'Analyze the agency data and return the top signals.' }],
+  };
+}
+
+// --- Agency Digital Twin: Analytics -----------------------------------------
+
+const ANALYTICS_SYSTEM = `${INJECTION_CANARY}
+
+You are Core, the Agency Intelligence Engine. Generate a perspective-specific analytical insight summary.
+
+Return ONLY valid JSON — no markdown, no commentary:
+{
+  "headline": string,
+  "summary": string,
+  "alerts": string[]
+}
+
+Rules:
+- headline: one sentence, present tense, names a specific finding (not generic).
+- summary: 2-3 sentences expanding on headline. Ground in the injected data.
+- alerts: 2-3 specific items that need the user's attention. Empty array if nothing notable.
+- Ground every claim in the injected data. Reference actual names and numbers.`;
+
+const ANALYTICS_PERSPECTIVES = {
+  founder: 'You are writing for the Founder/CEO perspective. Focus on: revenue trend, margin health, client concentration risk, pipeline value, key wins and losses, and strategic risks.',
+  operations: 'You are writing for the Operations Director perspective. Focus on: team utilization rates, delivery health across projects, deadline adherence, capacity bottlenecks, and scope creep frequency.',
+  account_director: 'You are writing for the Account Director perspective. Focus on: client relationship health, renewal risk, follow-up gaps, client satisfaction signals, and relationship expansion opportunities.',
+};
+
+export function analyticsParams(perspective, context) {
+  const perspectiveGuide = ANALYTICS_PERSPECTIVES[perspective] ?? ANALYTICS_PERSPECTIVES.founder;
+  return {
+    model: 'claude-haiku-4-5-20251001',
+    max_tokens: 512,
+    system: [
+      { type: 'text', text: `${ANALYTICS_SYSTEM}\n\n${perspectiveGuide}`, cache_control: { type: 'ephemeral' } },
+      { type: 'text', text: `Agency data:\n${JSON.stringify(context)}` },
+    ],
+    messages: [{ role: 'user', content: `Generate the ${perspective} analytical insight.` }],
+  };
+}

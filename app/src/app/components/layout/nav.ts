@@ -1,23 +1,28 @@
 import { useEffect, useState } from 'react';
 import {
   LayoutDashboard, FolderKanban, Users, Building2,
-  BarChart3, Cpu, BookOpen, Bell, Settings, Workflow, Database, Layers, FileSearch,
+  BarChart3, BookOpen, Settings, Layers, TrendingUp,
 } from 'lucide-react';
 
 export const NAV_ITEMS = [
-  { label: 'Dashboard',   icon: LayoutDashboard, path: '/',             end: true,  group: 'Workspace' },
-  { label: 'Projects',    icon: FolderKanban,    path: '/projects',     end: false, group: 'Workspace' },
-  { label: 'Talent',      icon: Users,           path: '/talent',       end: false, group: 'Talent & Ops' },
-  { label: 'DMF Pool',    icon: Database,        path: '/talent-pool',  end: false, group: 'Talent & Ops' },
-  { label: 'Production',  icon: Layers,          path: '/production',   end: false, group: 'Talent & Ops' },
-  { label: 'RFP Scanner', icon: FileSearch,      path: '/rfp-scanner',  end: false, group: 'Growth' },
-  { label: 'Enquiries',   icon: Workflow,        path: '/enquiries',    end: false, group: 'Growth' },
-  { label: 'Clients',     icon: Building2,       path: '/clients',      end: false, group: 'Growth' },
-  { label: 'Core',        icon: Cpu,             path: '/core',         end: false, group: 'Intelligence' },
-  { label: 'Analytics',   icon: BarChart3,       path: '/analytics',    end: false, group: 'Intelligence' },
-  { label: 'Knowledge',   icon: BookOpen,        path: '/knowledge',    end: false, group: 'System' },
-  { label: 'Notifications', icon: Bell,          path: '/notifications',end: false, group: 'System' },
-  { label: 'Settings',    icon: Settings,        path: '/settings',     end: false, group: 'System' },
+  // ── COMMAND ──────────────────────────────────────────────────────────────────
+  { label: 'Overview',    icon: LayoutDashboard, path: '/',           end: true,  group: 'COMMAND' },
+
+  // ── WORK ─────────────────────────────────────────────────────────────────────
+  { label: 'Projects',    icon: FolderKanban,    path: '/projects',   end: false, group: 'WORK' },
+  { label: 'Talent',      icon: Users,           path: '/talent',     end: false, group: 'WORK' },
+  { label: 'Production',  icon: Layers,          path: '/production', end: false, group: 'WORK' },
+
+  // ── GROWTH ────────────────────────────────────────────────────────────────────
+  { label: 'Pipeline',    icon: TrendingUp,      path: '/pipeline',   end: false, group: 'GROWTH' },
+  { label: 'Clients',     icon: Building2,       path: '/clients',    end: false, group: 'GROWTH' },
+
+  // ── BUSINESS ─────────────────────────────────────────────────────────────────
+  { label: 'Analytics',   icon: BarChart3,       path: '/analytics',  end: false, group: 'BUSINESS' },
+  { label: 'Knowledge',   icon: BookOpen,        path: '/knowledge',  end: false, group: 'BUSINESS' },
+
+  // ── SYSTEM ───────────────────────────────────────────────────────────────────
+  { label: 'Settings',    icon: Settings,        path: '/settings',   end: false, group: 'SYSTEM' },
 ];
 
 export function isPathActive(pathname: string, item: { path: string; end: boolean }) {

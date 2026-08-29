@@ -4,9 +4,12 @@ import { MobileNav } from './MobileNav';
 import { useIsMobile } from './nav';
 import { DemoModeBanner } from '../../onboarding/DemoModeBanner';
 import { SpotlightManager } from '../../onboarding/SpotlightManager';
+import { IntelligenceHeader } from '../intelligence/IntelligenceHeader';
+import { CmdK, useCmdK } from '../intelligence/CmdK';
 
 export function RootLayout() {
   const isMobile = useIsMobile();
+  const { open: cmdKOpen, setOpen: setCmdKOpen } = useCmdK();
 
   const ambient =
     'radial-gradient(1200px 800px at -10% -20%, rgba(var(--accent-rgb),0.08), transparent 55%), radial-gradient(900px 700px at 110% 120%, rgba(var(--accent-rgb),0.05), transparent 55%), var(--bg)';
@@ -15,6 +18,9 @@ export function RootLayout() {
     return (
       <div className="flex flex-col h-dvh w-full overflow-hidden" style={{ background: ambient, paddingTop: 'env(safe-area-inset-top)' }}>
         <DemoModeBanner />
+        <div className="flex items-center justify-end px-3 py-2 shrink-0">
+          <IntelligenceHeader />
+        </div>
         <MobileNav />
         <SpotlightManager />
         <main
@@ -28,6 +34,7 @@ export function RootLayout() {
         >
           <Outlet />
         </main>
+        <CmdK open={cmdKOpen} onClose={() => setCmdKOpen(false)} />
       </div>
     );
   }
@@ -39,6 +46,9 @@ export function RootLayout() {
     >
       <DemoModeBanner />
       <SpotlightManager />
+      <div className="flex items-center justify-end px-4 py-2 shrink-0" style={{ borderBottom: '1px solid var(--hair)' }}>
+        <IntelligenceHeader />
+      </div>
       <div className="flex flex-1 overflow-hidden p-3 gap-3">
         <Sidebar />
         <main
@@ -48,6 +58,7 @@ export function RootLayout() {
           <Outlet />
         </main>
       </div>
+      <CmdK open={cmdKOpen} onClose={() => setCmdKOpen(false)} />
     </div>
   );
 }

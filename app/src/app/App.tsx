@@ -24,6 +24,7 @@ import { EnquiriesPage } from './components/pages/EnquiriesPage';
 import { TalentPoolPage } from './components/pages/TalentPoolPage';
 import { ProductionPage } from './components/pages/ProductionPage';
 import { RfpScannerPage } from './components/pages/RfpScannerPage';
+import { PipelinePage } from './components/pages/PipelinePage';
 import { StoryPage } from './components/pages/story/StoryPage';
 
 // Each page gets its own error boundary so a crash degrades that one panel
@@ -36,6 +37,7 @@ const pages = [
   { path: 'production', Component: ProductionPage },
   { path: 'rfp-scanner', Component: RfpScannerPage },
   { path: 'enquiries', Component: EnquiriesPage },
+  { path: 'pipeline', Component: PipelinePage },
   { path: 'clients', Component: ClientsPage },
   { path: 'analytics', Component: AnalyticsPage },
   { path: 'core', Component: CorePage },

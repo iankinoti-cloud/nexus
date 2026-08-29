@@ -219,6 +219,48 @@ function localQuoteFallback(brief: ProjectBrief, proposal: Proposal, _enquiry: P
   };
 }
 
+// --- Agency Digital Twin: Signals + Analytics --------------------------------
+
+import type { AgencySignal } from '../data/types';
+
+export async function fetchSignals(context: object): Promise<AgencySignal[]> {
+  try {
+    const res = await fetch('/api/signals', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...await authHeader() },
+      body: JSON.stringify({ context }),
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data.signals) ? data.signals : [];
+  } catch {
+    return [];
+  }
+}
+
+export interface AnalyticsInsight {
+  headline: string;
+  summary: string;
+  alerts: string[];
+}
+
+export async function fetchAnalyticsInsight(
+  perspective: 'founder' | 'operations' | 'account_director',
+  context: object,
+): Promise<AnalyticsInsight | null> {
+  try {
+    const res = await fetch('/api/analytics', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...await authHeader() },
+      body: JSON.stringify({ perspective, context }),
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
 export interface KnowledgeResult {
   answer: string;
   sourceIds: string[];

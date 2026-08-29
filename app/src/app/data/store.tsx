@@ -3,7 +3,7 @@ import { PROJECTS, EMPLOYEES, CLIENTS, NOTIFICATIONS, ENQUIRIES, USERS, DMF_CAND
 import { KNOWLEDGE_NOTES, type KnowledgeNote } from './knowledge';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../auth/AuthProvider';
-import type { Project, Employee, Client, Notification, Enquiry, NexusUser, AgentId, ResourceBooking, ContactEntry, RfpTender, RfpStatus, AgentEvent } from './types';
+import type { Project, Employee, Client, Notification, Enquiry, NexusUser, AgentId, ResourceBooking, ContactEntry, RfpTender, RfpStatus, AgentEvent, AgencySignal } from './types';
 
 export type CoreAction =
   | { type: 'reassign'; fromEmployeeId: string; toEmployeeId: string; note?: string }
@@ -35,6 +35,7 @@ interface NexusState {
   bookings: ResourceBooking[];
   rfpTenders: RfpTender[];
   agentEvents: AgentEvent[];
+  signals: AgencySignal[];
 }
 
 interface NexusStore extends NexusState {
@@ -53,6 +54,9 @@ interface NexusStore extends NexusState {
   updateRfpStatus: (id: string, status: RfpStatus) => void;
   logAgentEvent: (event: Omit<AgentEvent, 'id'>) => void;
   clearAgentEvents: () => void;
+  addSignal: (signal: Omit<AgencySignal, 'id' | 'generatedAt'>) => void;
+  acknowledgeSignal: (id: string) => void;
+  setSignals: (signals: AgencySignal[]) => void;
 }
 
 const STORAGE_KEY = 'nexus-store-v1';
@@ -71,6 +75,7 @@ const initialState = (): NexusState => ({
   bookings: BOOKINGS,
   rfpTenders: RFP_TENDERS,
   agentEvents: [],
+  signals: [],
 });
 
 function load(): NexusState {
@@ -345,6 +350,23 @@ export function NexusProvider({ children }: { children: ReactNode }) {
         })),
       clearAgentEvents: () =>
         setState(s => ({ ...s, agentEvents: [] })),
+      addSignal: (signal) =>
+        setState(s => ({
+          ...s,
+          signals: [
+            { ...signal, id: `sig${Date.now()}`, generatedAt: new Date().toISOString() },
+            ...s.signals,
+          ].slice(0, 20),
+        })),
+      acknowledgeSignal: (id) =>
+        setState(s => ({
+          ...s,
+          signals: s.signals.map(sig =>
+            sig.id === id ? { ...sig, acknowledgedAt: new Date().toISOString() } : sig,
+          ),
+        })),
+      setSignals: (signals) =>
+        setState(s => ({ ...s, signals })),
     };
   }, [state]);
 

@@ -82,6 +82,19 @@
   --status-danger: #B85C5C;
   --font-display: 'DM Serif Display', Georgia, serif;
 
+  /* Signal tier tokens */
+  --signal-critical: #B85C5C;
+  --signal-attention: #C9874E;
+  --signal-opportunity: #6BA888;
+  --signal-critical-bg: rgba(184, 92, 92, 0.12);
+  --signal-attention-bg: rgba(201, 135, 78, 0.12);
+  --signal-opportunity-bg: rgba(107, 168, 136, 0.12);
+
+  /* Typography scale additions */
+  --fs-hero: clamp(2rem, 5vw, 4rem);
+  --fs-metric: clamp(1.5rem, 3vw, 2.5rem);
+  --fs-nav-label: 0.6875rem;
+
   /* --- Liquid Glass --- */
   --glass-bg: rgba(28, 25, 21, 0.55);
   --glass-brd: rgba(255, 220, 180, 0.12);
