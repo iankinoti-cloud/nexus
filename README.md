@@ -2,7 +2,7 @@
 
 > **Agentic Workflows**
 
-**Live app:** https://nexus-topaz-omega.vercel.app · Reproduction guide: [REPRODUCTION.md](REPRODUCTION.md)
+**Live app:** https://nexus-topaz-omega.vercel.app · **Slides:** https://nexus-slides.vercel.app · Reproduction guide: [REPRODUCTION.md](REPRODUCTION.md)
 
 ---
 
