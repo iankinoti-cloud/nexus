@@ -130,7 +130,7 @@ export function ExplorationStep2({ onClose }: { onClose: () => void }) {
               Resource reallocation opportunity
             </div>
             <div style={{ color: 'var(--text-dim)', fontSize: 'calc(12px * var(--fs))', lineHeight: 1.5 }}>
-              Nina Chen is past healthy utilization (95%). Shifting one workstream to Sam Rivera reduces burnout risk without timeline impact.
+              Faith Nyambura is past healthy utilization (95%). Shifting one workstream to Tevin Kiprono reduces burnout risk without timeline impact.
             </div>
           </div>
         </div>
@@ -141,7 +141,7 @@ export function ExplorationStep2({ onClose }: { onClose: () => void }) {
         >
           <div className="rounded-full" style={{ width: 24, height: 24, background: 'linear-gradient(135deg, #4FD1C5, #22C55E)', flexShrink: 0 }} />
           <div>
-            <div style={{ color: 'var(--text)', fontSize: 11, fontWeight: 500 }}>Nina Chen → Sam Rivera</div>
+            <div style={{ color: 'var(--text)', fontSize: 11, fontWeight: 500 }}>Faith Nyambura → Tevin Kiprono</div>
             <div style={{ color: 'var(--text-dim)', fontSize: 10 }}>Workload: 95% → 80% · Burnout risk: High → Medium</div>
           </div>
         </div>

@@ -640,7 +640,7 @@ export function SettingsPage() {
           onMouseMove={onMove}
           onMouseLeave={() => setTabHover(null)}
           className="rounded-xl p-2 flex md:flex-col gap-1 shrink-0 overflow-x-auto md:overflow-visible relative w-full md:w-[200px]"
-          style={{ alignSelf: 'flex-start', background: '#000000' }}
+          style={{ alignSelf: 'flex-start', background: 'var(--sidebar)', border: '1px solid var(--sidebar-hair)' }}
         >
           {/* cursor-tracking specular liquid glass */}
           <div
@@ -663,7 +663,7 @@ export function SettingsPage() {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: isHi ? 'var(--accent)' : 'rgba(255,255,255,0.5)',
+                  color: isHi ? 'var(--accent)' : 'var(--sidebar-text-dim)',
                   fontSize: 'calc(13px * var(--fs))',
                   fontWeight: isActive ? 500 : 400,
                   cursor: 'pointer',
@@ -682,9 +682,9 @@ export function SettingsPage() {
                     transition={{ type: 'spring', stiffness: 230, damping: 19, mass: 0.9 }}
                   />
                 )}
-                <Icon size={14} className="relative z-10" style={{ color: isHi ? 'var(--accent)' : 'rgba(255,255,255,0.5)', opacity: isHi ? 1 : 0.8 }} />
-                <span className="relative z-10" style={{ color: isHi ? 'var(--accent)' : '#FFFFFF' }}>{tab.label}</span>
-                {isActive && <ChevronRight size={12} className="relative z-10 hidden md:block" style={{ marginLeft: 'auto', color: 'rgba(255,255,255,0.3)' }} />}
+                <Icon size={14} className="relative z-10" style={{ color: isHi ? 'var(--accent)' : 'var(--sidebar-text-dim)', opacity: isHi ? 1 : 0.8 }} />
+                <span className="relative z-10" style={{ color: isHi ? 'var(--accent)' : 'var(--sidebar-foreground)' }}>{tab.label}</span>
+                {isActive && <ChevronRight size={12} className="relative z-10 hidden md:block" style={{ marginLeft: 'auto', color: 'var(--sidebar-text-faint)' }} />}
               </button>
             );
           })}

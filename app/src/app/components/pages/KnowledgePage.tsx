@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Search, BookOpen, Sparkles, WifiOff, FileText, Lightbulb, Users2, RefreshCw } from 'lucide-react';
 import { PageShell } from '../layout/PageShell';
 import { useNexus } from '../../data/store';
-import { askKnowledge, type KnowledgeResult } from '../../lib/ai';
+import { askKnowledge, DEMO_MODE, type KnowledgeResult } from '../../lib/ai';
 import type { KnowledgeNote } from '../../data/knowledge';
 
 const CATEGORY_META: Record<KnowledgeNote['category'], { label: string; color: string; icon: typeof FileText }> = {
@@ -14,9 +14,9 @@ const CATEGORY_META: Record<KnowledgeNote['category'], { label: string; color: s
 };
 
 const EXAMPLE_QUERIES = [
-  'What did we learn from the Titan rebranding?',
+  'What did we learn from the Savanna rebranding?',
   'How do we prevent scope creep with Nexora?',
-  'What are the print specs for Crest packaging?',
+  'What are the print specs for Kilele packaging?',
   'When do designers start burning out?',
 ];
 
@@ -136,7 +136,7 @@ export function KnowledgePage() {
             value={query}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleSearch()}
-            placeholder='Ask organizational memory anything — e.g. "What did we learn from the Titan rebranding?"'
+            placeholder='Ask organizational memory anything — e.g. "What did we learn from the Savanna rebranding?"'
             style={{
               flex: 1, background: 'transparent', border: 'none', outline: 'none',
               color: 'var(--text)', fontSize: 'calc(14px * var(--fs))',
@@ -210,7 +210,7 @@ export function KnowledgePage() {
             <div className="flex items-center gap-2 mb-2">
               {result.offline ? <WifiOff size={13} style={{ color: '#FFB547' }} /> : <Sparkles size={13} style={{ color: 'var(--accent)' }} />}
               <span style={{ color: result.offline ? '#FFB547' : 'var(--accent)', fontSize: 'calc(12px * var(--fs))', fontWeight: 600 }}>
-                {result.offline ? 'Offline keyword search' : 'Core · semantic answer'}
+                {result.offline ? 'Offline keyword search' : DEMO_MODE ? 'Core · demo answer' : 'Core · semantic answer'}
               </span>
               {result.sourceIds.length > 0 && (
                 <span style={{ color: 'var(--text-dim)', fontSize: 'calc(11px * var(--fs))' }}>

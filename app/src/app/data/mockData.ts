@@ -7,11 +7,11 @@ import type {
 export const PROJECTS: Project[] = [
   {
     id: 'p1',
-    name: 'Titan Brand Identity',
-    client: 'Titan Ventures',
+    name: 'Savanna Brand Identity',
+    client: 'Savanna Ventures',
     progress: 78,
     deadline: 'Jul 28, 2026',
-    team: ['AJ', 'MK', 'SR'],
+    team: ['KO', 'WM', 'TK'],
     risk: 'low',
     aiRecommendation: 'Final review phase — schedule client walkthrough this week',
     status: 'active',
@@ -20,10 +20,10 @@ export const PROJECTS: Project[] = [
   {
     id: 'p2',
     name: 'Pulse App Redesign',
-    client: 'Pulse Health',
+    client: 'Afya Pulse',
     progress: 43,
     deadline: 'Aug 12, 2026',
-    team: ['LT', 'NC', 'AJ'],
+    team: ['LA', 'FN', 'KO'],
     risk: 'medium',
     aiRecommendation: 'UX research phase delayed — consider parallel workstreams',
     status: 'active',
@@ -31,11 +31,11 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'p3',
-    name: 'Verdant Campaign',
-    client: 'Verdant Foods',
+    name: 'Shamba Campaign',
+    client: 'Shamba Foods',
     progress: 91,
     deadline: 'Jul 20, 2026',
-    team: ['SR', 'MK'],
+    team: ['TK', 'WM', 'MC'],
     risk: 'low',
     aiRecommendation: 'On track — prepare handoff documentation early',
     status: 'review',
@@ -47,7 +47,7 @@ export const PROJECTS: Project[] = [
     client: 'Nexora AI',
     progress: 22,
     deadline: 'Sep 5, 2026',
-    team: ['NC', 'LT', 'AJ', 'SR'],
+    team: ['FN', 'LA', 'KO', 'TK', 'LW'],
     risk: 'high',
     aiRecommendation: 'Scope creep detected — request scope sign-off immediately',
     status: 'at-risk',
@@ -55,11 +55,11 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'p5',
-    name: 'Solara Motion Series',
-    client: 'Solara Media',
+    name: 'Jua Motion Series',
+    client: 'Jua Media',
     progress: 60,
     deadline: 'Aug 3, 2026',
-    team: ['MK', 'AJ'],
+    team: ['WM', 'KO', 'DM'],
     risk: 'low',
     aiRecommendation: 'Milestone 3 complete — begin client review cycle',
     status: 'active',
@@ -67,11 +67,11 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'p6',
-    name: 'Crest Packaging Design',
-    client: 'Crest Goods Co.',
+    name: 'Kilele Packaging Design',
+    client: 'Kilele Goods Co.',
     progress: 35,
     deadline: 'Aug 25, 2026',
-    team: ['SR', 'NC'],
+    team: ['TK', 'FN'],
     risk: 'medium',
     aiRecommendation: 'Align on print specs before proceeding to final artwork',
     status: 'active',
@@ -82,9 +82,9 @@ export const PROJECTS: Project[] = [
 export const EMPLOYEES: Employee[] = [
   {
     id: 'e1',
-    name: 'Alex Johnson',
+    name: 'Kevin Ochieng',
     role: 'Senior Designer',
-    initials: 'AJ',
+    initials: 'KO',
     avatarColor: '#C4602E',
     availability: 'busy',
     workload: 84,
@@ -96,9 +96,9 @@ export const EMPLOYEES: Employee[] = [
   },
   {
     id: 'e2',
-    name: 'Maya Kim',
+    name: 'Wanjiku Mwangi',
     role: 'Creative Director',
-    initials: 'MK',
+    initials: 'WM',
     avatarColor: '#6BA888',
     availability: 'available',
     workload: 55,
@@ -110,9 +110,9 @@ export const EMPLOYEES: Employee[] = [
   },
   {
     id: 'e3',
-    name: 'Sam Rivera',
+    name: 'Tevin Kiprono',
     role: 'Motion Designer',
-    initials: 'SR',
+    initials: 'TK',
     avatarColor: '#A07C6E',
     availability: 'busy',
     workload: 76,
@@ -124,9 +124,9 @@ export const EMPLOYEES: Employee[] = [
   },
   {
     id: 'e4',
-    name: 'Leo Tan',
+    name: 'Lena Akinyi',
     role: 'UX Researcher',
-    initials: 'LT',
+    initials: 'LA',
     avatarColor: '#C9A87C',
     availability: 'available',
     workload: 40,
@@ -138,9 +138,9 @@ export const EMPLOYEES: Employee[] = [
   },
   {
     id: 'e5',
-    name: 'Nina Chen',
+    name: 'Faith Nyambura',
     role: 'Product Designer',
-    initials: 'NC',
+    initials: 'FN',
     avatarColor: '#6E8FA8',
     availability: 'at-capacity',
     workload: 95,
@@ -152,9 +152,9 @@ export const EMPLOYEES: Employee[] = [
   },
   {
     id: 'e6',
-    name: 'Omar Fathi',
+    name: 'Hassan Abdi',
     role: 'Brand Strategist',
-    initials: 'OF',
+    initials: 'HA',
     avatarColor: '#7A9B6E',
     availability: 'available',
     workload: 30,
@@ -164,13 +164,55 @@ export const EMPLOYEES: Employee[] = [
     compatibilityScore: 96,
     currentProjects: 1,
   },
+  {
+    id: 'e7',
+    name: 'Mercy Chebet',
+    role: 'Copywriter',
+    initials: 'MC',
+    avatarColor: '#B07AA1',
+    availability: 'available',
+    workload: 60,
+    skills: ['Copywriting', 'Swahili & English Copy', 'Social Content'],
+    performanceScore: 4.6,
+    burnoutRisk: 24,
+    compatibilityScore: 90,
+    currentProjects: 2,
+  },
+  {
+    id: 'e8',
+    name: 'Dennis Mutua',
+    role: 'Video Editor',
+    initials: 'DM',
+    avatarColor: '#5E8C9A',
+    availability: 'busy',
+    workload: 78,
+    skills: ['Premiere Pro', 'Colour Grading', 'Videography'],
+    performanceScore: 4.5,
+    burnoutRisk: 48,
+    compatibilityScore: 87,
+    currentProjects: 2,
+  },
+  {
+    id: 'e9',
+    name: 'Lilian Wairimu',
+    role: 'Account Manager',
+    initials: 'LW',
+    avatarColor: '#C98B5E',
+    availability: 'available',
+    workload: 65,
+    skills: ['Client Relations', 'Project Coordination', 'Budgeting'],
+    performanceScore: 4.7,
+    burnoutRisk: 30,
+    compatibilityScore: 92,
+    currentProjects: 3,
+  },
 ];
 
 export const CLIENTS: Client[] = [
   {
     id: 'c1',
-    name: 'Titan Ventures',
-    initials: 'TV',
+    name: 'Savanna Ventures',
+    initials: 'SV',
     avatarColor: '#C4602E',
     industry: 'Venture Capital',
     activeProjects: 2,
@@ -179,17 +221,17 @@ export const CLIENTS: Client[] = [
     healthScore: 9.1,
     aiFollowUp: 'Send Q3 campaign proposal — interest signaled last call',
     status: 'active',
-    dossierNotes: 'Key decision-maker: James Osei (Partner). Prefers Tuesday morning calls. Sensitive to timeline delays — always give 24h advance notice. Strong referral potential; referred Orbit Digital in June.',
+    dossierNotes: 'Key decision-maker: James Mutiso (Partner). Prefers Tuesday morning calls. Sensitive to timeline delays — always give 24h advance notice. Strong referral potential; referred Orbit Digital in June.',
     contactHistory: [
-      { id: 'ch1a', date: 'Jul 26, 2026', type: 'call', summary: 'Quarterly check-in. James confirmed satisfaction with Brand Identity deliverables. Signaled interest in Q3 campaign. Asked for proposal by end of July.', by: 'Sarah Chen' },
-      { id: 'ch1b', date: 'Jul 18, 2026', type: 'meeting', summary: 'In-person review of Phase 3 mockups at their Nairobi office. Approved 2 of 3 concepts. Requested one revision on the logo mark weight.', by: 'Maya Kim' },
-      { id: 'ch1c', date: 'Jul 10, 2026', type: 'email', summary: 'Sent revised brand guidelines PDF following the July 8 feedback session. James acknowledged receipt same day.', by: 'Omar Fathi' },
+      { id: 'ch1a', date: 'Jul 26, 2026', type: 'call', summary: 'Quarterly check-in. James confirmed satisfaction with Brand Identity deliverables. Signaled interest in Q3 campaign. Asked for proposal by end of July.', by: 'Amani Wanjiru' },
+      { id: 'ch1b', date: 'Jul 18, 2026', type: 'meeting', summary: 'In-person review of Phase 3 mockups at their Nairobi office. Approved 2 of 3 concepts. Requested one revision on the logo mark weight.', by: 'Wanjiku Mwangi' },
+      { id: 'ch1c', date: 'Jul 10, 2026', type: 'email', summary: 'Sent revised brand guidelines PDF following the July 8 feedback session. James acknowledged receipt same day.', by: 'Hassan Abdi' },
     ],
   },
   {
     id: 'c2',
-    name: 'Pulse Health',
-    initials: 'PH',
+    name: 'Afya Pulse',
+    initials: 'AP',
     avatarColor: '#6BA888',
     industry: 'HealthTech',
     activeProjects: 1,
@@ -198,16 +240,16 @@ export const CLIENTS: Client[] = [
     healthScore: 7.4,
     aiFollowUp: 'UX research update overdue — schedule sync call',
     status: 'active',
-    dossierNotes: 'Product lead: Dr. Amara Nwosu. Engineering-heavy team — they appreciate technical depth in our presentations. App is for chronic illness management (diabetes focus). Privacy-sensitive; NDAs in place.',
+    dossierNotes: 'Product lead: Dr. Nafula Nwosu. Engineering-heavy team — they appreciate technical depth in our presentations. App is for chronic illness management (diabetes focus). Privacy-sensitive; NDAs in place.',
     contactHistory: [
-      { id: 'ch2a', date: 'Jul 23, 2026', type: 'email', summary: 'Sent UX research synthesis report. Amara requested a sync call to discuss navigation findings before we proceed to wireframes.', by: 'Leo Tan' },
-      { id: 'ch2b', date: 'Jul 15, 2026', type: 'call', summary: 'Sprint review call. Shared user interview clips and affinity map. Team flagged concern about onboarding flow — agreed to deprioritize home screen redesign until research wraps.', by: 'Leo Tan' },
+      { id: 'ch2a', date: 'Jul 23, 2026', type: 'email', summary: 'Sent UX research synthesis report. Nafula requested a sync call to discuss navigation findings before we proceed to wireframes.', by: 'Lena Akinyi' },
+      { id: 'ch2b', date: 'Jul 15, 2026', type: 'call', summary: 'Sprint review call. Shared user interview clips and affinity map. Team flagged concern about onboarding flow — agreed to deprioritize home screen redesign until research wraps.', by: 'Lena Akinyi' },
     ],
   },
   {
     id: 'c3',
-    name: 'Verdant Foods',
-    initials: 'VF',
+    name: 'Shamba Foods',
+    initials: 'SF',
     avatarColor: '#A07C6E',
     industry: 'FMCG',
     activeProjects: 1,
@@ -216,10 +258,10 @@ export const CLIENTS: Client[] = [
     healthScore: 9.6,
     aiFollowUp: 'Request referral introduction — NPS score 10',
     status: 'active',
-    dossierNotes: 'Brand manager: Chioma Adeyemi. Fast responder, very collaborative. Campaign delivers ahead of schedule. Gave NPS 10 in last survey — prime referral candidate. Interested in ongoing retainer post-campaign.',
+    dossierNotes: 'Brand manager: Wangari Adeyemi. Fast responder, very collaborative. Campaign delivers ahead of schedule. Gave NPS 10 in last survey — prime referral candidate. Interested in ongoing retainer post-campaign.',
     contactHistory: [
-      { id: 'ch3a', date: 'Jul 27, 2026', type: 'email', summary: 'Chioma confirmed final asset approval. All 12 campaign visuals signed off. Requested a handoff call for the social calendar.', by: 'Sam Rivera' },
-      { id: 'ch3b', date: 'Jul 20, 2026', type: 'meeting', summary: 'Creative review — presented full campaign suite. Chioma loved the motion direction. Minor copy tweaks requested on 2 of 12 assets.', by: 'Maya Kim' },
+      { id: 'ch3a', date: 'Jul 27, 2026', type: 'email', summary: 'Wangari confirmed final asset approval. All 12 campaign visuals signed off. Requested a handoff call for the social calendar.', by: 'Tevin Kiprono' },
+      { id: 'ch3b', date: 'Jul 20, 2026', type: 'meeting', summary: 'Creative review — presented full campaign suite. Wangari loved the motion direction. Minor copy tweaks requested on 2 of 12 assets.', by: 'Wanjiku Mwangi' },
     ],
   },
   {
@@ -234,17 +276,17 @@ export const CLIENTS: Client[] = [
     healthScore: 4.2,
     aiFollowUp: 'Escalation risk — contact founder directly about scope concerns',
     status: 'at-risk',
-    dossierNotes: 'CEO: Kwame Boateng. Scope has expanded 3x since kickoff without formal sign-off. Kwame tends to add features verbally in calls — always follow up with written scope confirmation. Relationship at risk; escalate to Sarah Chen immediately.',
+    dossierNotes: 'CEO: Peter Kariuki. Scope has expanded 3x since kickoff without formal sign-off. Peter tends to add features verbally in calls — always follow up with written scope confirmation. Relationship at risk; escalate to Amani Wanjiru immediately.',
     contactHistory: [
-      { id: 'ch4a', date: 'Jul 19, 2026', type: 'call', summary: 'Tense check-in. Kwame expressed frustration with pace at 22% completion. Mentioned 3 new feature requests verbally — NOT added to scope. Recommend founder-to-founder call urgently.', by: 'Omar Fathi' },
-      { id: 'ch4b', date: 'Jul 11, 2026', type: 'email', summary: 'Sent scope change request form after last call added API integrations verbally. Kwame has not responded. Follow-up required.', by: 'Sarah Chen' },
-      { id: 'ch4c', date: 'Jul 5, 2026', type: 'meeting', summary: 'Kickoff meeting for Phase 2. Agreed on web platform deliverables. Budget $120K confirmed. Kwame introduced 2 new stakeholders from the product team.', by: 'Sarah Chen' },
+      { id: 'ch4a', date: 'Jul 19, 2026', type: 'call', summary: 'Tense check-in. Peter expressed frustration with pace at 22% completion. Mentioned 3 new feature requests verbally — NOT added to scope. Recommend founder-to-founder call urgently.', by: 'Hassan Abdi' },
+      { id: 'ch4b', date: 'Jul 11, 2026', type: 'email', summary: 'Sent scope change request form after last call added API integrations verbally. Peter has not responded. Follow-up required.', by: 'Amani Wanjiru' },
+      { id: 'ch4c', date: 'Jul 5, 2026', type: 'meeting', summary: 'Kickoff meeting for Phase 2. Agreed on web platform deliverables. Budget $120K confirmed. Peter introduced 2 new stakeholders from the product team.', by: 'Amani Wanjiru' },
     ],
   },
   {
     id: 'c5',
-    name: 'Solara Media',
-    initials: 'SM',
+    name: 'Jua Media',
+    initials: 'JM',
     avatarColor: '#C9A87C',
     industry: 'Media & Entertainment',
     activeProjects: 1,
@@ -253,16 +295,16 @@ export const CLIENTS: Client[] = [
     healthScore: 8.3,
     aiFollowUp: 'Pitch social content retainer post current project',
     status: 'active',
-    dossierNotes: 'Head of Content: Yetunde Bakare. Motion-first client — they value animation quality above all. Project is a 5-part motion series. Typically runs 2 revision rounds. Open to a social content retainer ($8–12K/month) post-delivery.',
+    dossierNotes: 'Head of Content: Atieno Bakare. Motion-first client — they value animation quality above all. Project is a 5-part motion series. Typically runs 2 revision rounds. Open to a social content retainer ($8–12K/month) post-delivery.',
     contactHistory: [
-      { id: 'ch5a', date: 'Jul 25, 2026', type: 'email', summary: 'Sent Milestone 3 motion preview (episodes 1–3 rough cuts). Yetunde responded positively — "exactly the energy we wanted." Minor timing notes on episode 2 transition.', by: 'Sam Rivera' },
-      { id: 'ch5b', date: 'Jul 17, 2026', type: 'call', summary: 'Mid-project sync. Discussed retainer opportunity for post-launch social. Yetunde interested; asked for a rate card by end of month.', by: 'Omar Fathi' },
+      { id: 'ch5a', date: 'Jul 25, 2026', type: 'email', summary: 'Sent Milestone 3 motion preview (episodes 1–3 rough cuts). Atieno responded positively — "exactly the energy we wanted." Minor timing notes on episode 2 transition.', by: 'Tevin Kiprono' },
+      { id: 'ch5b', date: 'Jul 17, 2026', type: 'call', summary: 'Mid-project sync. Discussed retainer opportunity for post-launch social. Atieno interested; asked for a rate card by end of month.', by: 'Hassan Abdi' },
     ],
   },
   {
     id: 'c6',
-    name: 'Crest Goods Co.',
-    initials: 'CG',
+    name: 'Kilele Goods Co.',
+    initials: 'KG',
     avatarColor: '#6E8FA8',
     industry: 'Consumer Goods',
     activeProjects: 1,
@@ -271,10 +313,10 @@ export const CLIENTS: Client[] = [
     healthScore: 6.8,
     aiFollowUp: 'Confirm packaging specs — deadline risk in 9 days',
     status: 'active',
-    dossierNotes: 'Brand director: Fatou Diallo. Packaging project requires print production sign-off from their external print house (RootPrint Ltd). Always allow 5-day print spec review window. Dieline files must be in AI + PDF format.',
+    dossierNotes: 'Brand director: Nduta Diallo. Packaging project requires print production sign-off from their external print house (RootPrint Ltd). Always allow 5-day print spec review window. Dieline files must be in AI + PDF format.',
     contactHistory: [
-      { id: 'ch6a', date: 'Jul 22, 2026', type: 'email', summary: 'Sent packaging dieline drafts in AI + PDF. Awaiting Fatou confirmation to proceed to final artwork. Deadline Aug 25 — print spec review must start by Aug 10.', by: 'Sam Rivera' },
-      { id: 'ch6b', date: 'Jul 14, 2026', type: 'meeting', summary: 'Colour review session. Approved pantone palette (PMS 7538 + PMS 185). Requested one more variation on the closure label.', by: 'Nina Chen' },
+      { id: 'ch6a', date: 'Jul 22, 2026', type: 'email', summary: 'Sent packaging dieline drafts in AI + PDF. Awaiting Nduta confirmation to proceed to final artwork. Deadline Aug 25 — print spec review must start by Aug 10.', by: 'Tevin Kiprono' },
+      { id: 'ch6b', date: 'Jul 14, 2026', type: 'meeting', summary: 'Colour review session. Approved pantone palette (PMS 7538 + PMS 185). Requested one more variation on the closure label.', by: 'Faith Nyambura' },
     ],
   },
 ];
@@ -283,8 +325,8 @@ export const NOTIFICATIONS: Notification[] = [
   {
     id: 'n1',
     category: 'project',
-    title: 'Titan Brand Identity approved',
-    message: 'Marcus Reid approved Phase 3 deliverables. Ready to proceed to final production.',
+    title: 'Savanna Brand Identity approved',
+    message: 'Joseph Ndegwa approved Phase 3 deliverables. Ready to proceed to final production.',
     read: false,
     timestamp: '12 minutes ago',
     action: 'View Project',
@@ -292,8 +334,8 @@ export const NOTIFICATIONS: Notification[] = [
   {
     id: 'n2',
     category: 'deadline',
-    title: 'Verdant Campaign deadline in 4 days',
-    message: 'Final assets are due Jul 20. Sam Rivera has 3 tasks remaining.',
+    title: 'Shamba Campaign deadline in 4 days',
+    message: 'Final assets are due Jul 20. Tevin Kiprono has 3 tasks remaining.',
     read: false,
     timestamp: '1 hour ago',
     action: 'Review Tasks',
@@ -302,7 +344,7 @@ export const NOTIFICATIONS: Notification[] = [
     id: 'n3',
     category: 'client',
     title: 'Nexora AI replied to your message',
-    message: 'Priya Sharma: "We need to discuss the revised timeline before signing off."',
+    message: 'Sharon Wekesa: "We need to discuss the revised timeline before signing off."',
     read: false,
     timestamp: '2 hours ago',
     action: 'Reply',
@@ -311,7 +353,7 @@ export const NOTIFICATIONS: Notification[] = [
     id: 'n4',
     category: 'invoice',
     title: 'Invoice #2847 paid — $48,000',
-    message: 'Titan Ventures completed payment for Brand Identity Phase 2.',
+    message: 'Savanna Ventures completed payment for Brand Identity Phase 2.',
     read: true,
     timestamp: '4 hours ago',
     action: 'View Invoice',
@@ -329,7 +371,7 @@ export const NOTIFICATIONS: Notification[] = [
     id: 'n6',
     category: 'project',
     title: 'Pulse App Redesign — milestone reached',
-    message: 'Leo Tan completed user research synthesis. UX phase begins Monday.',
+    message: 'Lena Akinyi completed user research synthesis. UX phase begins Monday.',
     read: true,
     timestamp: 'Yesterday',
     action: 'View Project',
@@ -337,7 +379,7 @@ export const NOTIFICATIONS: Notification[] = [
   {
     id: 'n7',
     category: 'deadline',
-    title: 'Solara Motion Series check-in',
+    title: 'Jua Motion Series check-in',
     message: 'Client review session scheduled for Jul 18. Prepare motion preview files.',
     read: true,
     timestamp: 'Yesterday',
@@ -347,7 +389,7 @@ export const NOTIFICATIONS: Notification[] = [
     id: 'n8',
     category: 'invoice',
     title: 'Invoice #2851 sent — $72,000',
-    message: 'Pulse Health invoice for App Redesign Phase 1 sent successfully.',
+    message: 'Afya Pulse invoice for App Redesign Phase 1 sent successfully.',
     read: true,
     timestamp: '2 days ago',
     action: 'View Invoice',
@@ -368,16 +410,16 @@ export const CHAT_MESSAGES: ChatMessage[] = [
     timestamp: '10:14 AM',
     recommendations: [
       {
-        title: 'Nina Chen — High Burnout Risk (81%)',
-        description: 'Carrying 4 active projects at 95% workload. Recommend removing from Crest Goods project and replacing with Omar Fathi.',
+        title: 'Faith Nyambura — High Burnout Risk (81%)',
+        description: 'Carrying 4 active projects at 95% workload. Recommend removing from Kilele Goods project and replacing with Hassan Abdi.',
       },
       {
-        title: 'Alex Johnson — Moderate Risk (62%)',
-        description: 'Deadline cluster next 10 days across 3 projects. Recommend deferring Solara onboarding by 1 week.',
+        title: 'Kevin Ochieng — Moderate Risk (62%)',
+        description: 'Deadline cluster next 10 days across 3 projects. Recommend deferring Jua onboarding by 1 week.',
       },
       {
         title: 'Action Recommended',
-        description: 'Reallocating Nina from Crest Goods reduces team burnout risk by 28% without impacting project timelines.',
+        description: 'Reallocating Faith from Kilele Goods reduces team burnout risk by 28% without impacting project timelines.',
       },
     ],
   },
@@ -403,7 +445,7 @@ export const CHAT_MESSAGES: ChatMessage[] = [
       },
       {
         title: 'Opportunity Signal',
-        description: 'Verdant Foods NPS of 10 suggests high referral potential. Proactive outreach could unlock $60–80K.',
+        description: 'Shamba Foods NPS of 10 suggests high referral potential. Proactive outreach could unlock $60–80K.',
       },
     ],
   },
@@ -459,18 +501,18 @@ export const SATISFACTION_DATA: SatisfactionDataPoint[] = [
 // --- Creative Services Pipeline ---
 
 export const USERS: NexusUser[] = [
-  { id: 'u1', name: 'Sarah Chen', role: 'owner', initials: 'SC', avatarColor: '#C4602E' },
-  { id: 'u2', name: 'Maya Kim', role: 'creative_lead', initials: 'MK', avatarColor: '#6BA888' },
-  { id: 'u3', name: 'Omar Fathi', role: 'account_manager', initials: 'OF', avatarColor: '#A07C6E' },
-  { id: 'u4', name: 'Alex Johnson', role: 'team_member', initials: 'AJ', avatarColor: '#C9A87C' },
+  { id: 'u1', name: 'Amani Wanjiru', role: 'owner', initials: 'AW', avatarColor: '#C4602E' },
+  { id: 'u2', name: 'Wanjiku Mwangi', role: 'creative_lead', initials: 'WM', avatarColor: '#6BA888' },
+  { id: 'u3', name: 'Hassan Abdi', role: 'account_manager', initials: 'HA', avatarColor: '#A07C6E' },
+  { id: 'u4', name: 'Kevin Ochieng', role: 'team_member', initials: 'KO', avatarColor: '#C9A87C' },
 ];
 
 export const ENQUIRIES: Enquiry[] = [
   {
     id: 'eq1',
     companyName: 'Orbit Digital',
-    contactName: 'Kwame Asante',
-    contactEmail: 'kwame@orbitdigital.io',
+    contactName: 'Victor Omondi',
+    contactEmail: 'victor@orbitdigital.io',
     contactPhone: '+1 415 882 0041',
     industry: 'EdTech',
     serviceInterest: 'Brand identity + website design for Series A launch',
@@ -480,13 +522,13 @@ export const ENQUIRIES: Enquiry[] = [
     status: 'new',
     createdAt: new Date(Date.now() - 8 * 60 * 1000).toISOString(),
     assignedTo: 'u3',
-    notes: 'Referred by Titan Ventures. Kwame is the co-founder. They have a pitch deck but no visual identity yet.',
+    notes: 'Referred by Savanna Ventures. Victor is the co-founder. They have a pitch deck but no visual identity yet.',
   },
   {
     id: 'eq2',
     companyName: 'Bloom Botanics',
-    contactName: 'Priya Sharma',
-    contactEmail: 'priya@bloombotanics.co',
+    contactName: 'Sharon Wekesa',
+    contactEmail: 'sharon@bloombotanics.co',
     industry: 'Wellness & Beauty',
     serviceInterest: 'Product launch campaign — social content, art direction, email',
     budgetRange: '$20,000 – $25,000',
@@ -500,33 +542,33 @@ export const ENQUIRIES: Enquiry[] = [
 Date: 19 July 2026, 09:30 AM
 Duration: 18 minutes
 
-Omar Fathi (NEXUS): Tell us about what you're launching.
+Hassan Abdi (NEXUS): Tell us about what you're launching.
 
-Priya Sharma (Bloom Botanics): We've been developing our clean skincare range for two years. Three hero products — a face oil, a serum, and a moisturiser. We're finally ready to go to market. September launch, ideally around the 15th.
+Sharon Wekesa (Bloom Botanics): We've been developing our clean skincare range for two years. Three hero products — a face oil, a serum, and a moisturiser. We're finally ready to go to market. September launch, ideally around the 15th.
 
-Omar: What do you need from us creatively?
+Hassan: What do you need from us creatively?
 
-Priya: The campaign. We need imagery direction — mood board level, art direction for the shoot, and then the actual social content rollout. Maybe 30 pieces across Instagram and email. We're targeting women 28 to 45, conscious consumers — they shop at Aesop, Byredo, that kind of brand. Clean but luxurious, not clinical.
+Sharon: The campaign. We need imagery direction — mood board level, art direction for the shoot, and then the actual social content rollout. Maybe 30 pieces across Instagram and email. We're targeting women 28 to 45, conscious consumers — they shop at Aesop, Byredo, that kind of brand. Clean but luxurious, not clinical.
 
-Omar: Budget range?
+Hassan: Budget range?
 
-Priya: We have £20,000 set aside. Could go to £25K if the work is exceptional.
+Sharon: We have $20,000 set aside. Could go to $25K if the work is exceptional.
 
-Omar: Timeline for delivery?
+Hassan: Timeline for delivery?
 
-Priya: We need everything — final assets, all copy, social calendar — by August 30th. Six weeks from now.
+Sharon: We need everything — final assets, all copy, social calendar — by August 30th. Six weeks from now.
 
-Omar: Who makes the final call on creative approvals?
+Hassan: Who makes the final call on creative approvals?
 
-Priya: Me and my business partner, Diane. We both need to sign off, but I'm the primary contact.
+Sharon: Me and my business partner, Njambi. We both need to sign off, but I'm the primary contact.
 
-Omar: Perfect. We'll have a brief back to you within the hour.`,
+Hassan: Perfect. We'll have a brief back to you within the hour.`,
   },
   {
     id: 'eq3',
     companyName: 'Skyline Properties',
-    contactName: 'Marcus Reid',
-    contactEmail: 'marcus.reid@skylineprops.com',
+    contactName: 'Joseph Ndegwa',
+    contactEmail: 'joseph.ndegwa@skylineprops.com',
     contactPhone: '+44 207 946 0832',
     industry: 'Real Estate',
     serviceInterest: 'Brand refresh — logo, visual identity, marketing collateral',
@@ -541,29 +583,29 @@ Omar: Perfect. We'll have a brief back to you within the hour.`,
 Date: 18 July 2026, 2:00 PM
 Duration: 24 minutes
 
-Sarah Chen (NEXUS): Marcus, you mentioned at the conference that your current brand is holding you back. Tell me more.
+Amani Wanjiru (NEXUS): Joseph, you mentioned at the conference that your current brand is holding you back. Tell me more.
 
-Marcus Reid (Skyline): Exactly. We started 12 years ago as a mid-market residential agent. Now we're doing commercial, development, and luxury residential — but our brand still looks like the 2014 agency we were. We're losing deals to younger firms whose aesthetics signal premium before the meeting even starts.
+Joseph Ndegwa (Skyline): Exactly. We started 12 years ago as a mid-market residential agent. Now we're doing commercial, development, and luxury residential — but our brand still looks like the 2014 agency we were. We're losing deals to younger firms whose aesthetics signal premium before the meeting even starts.
 
-Sarah: So this is a repositioning.
+Amani: So this is a repositioning.
 
-Marcus: Full repositioning. New logo, updated color palette — we want to move from the navy and gold cliché. New photography direction, pitch deck templates, office signage, the works.
+Joseph: Full repositioning. New logo, updated color palette — we want to move from the navy and gold cliché. New photography direction, pitch deck templates, office signage, the works.
 
-Sarah: Who's the new target client?
+Amani: Who's the new target client?
 
-Marcus: High-net-worth individuals, family offices, and corporate occupiers in the £5M+ bracket. We want to feel like a boutique private bank, not a high-street agent.
+Joseph: High-net-worth individuals, family offices, and corporate occupiers in the $5M+ bracket. We want to feel like a boutique private bank, not a high-street agent.
 
-Sarah: Timeline?
+Amani: Timeline?
 
-Marcus: We need to be live for our Q4 awards submission in October. So everything locked by end of September — 14 weeks.
+Joseph: We need to be live for our Q4 awards submission in October. So everything locked by end of September — 14 weeks.
 
-Sarah: Budget?
+Amani: Budget?
 
-Marcus: Board has signed off £45,000. Could release more if the strategic case is there.`,
+Joseph: Board has signed off $45,000. Could release more if the strategic case is there.`,
     brief: {
       objectives: [
         'Reposition Skyline from mid-market agent to premium boutique property firm',
-        'Create a brand identity that signals authority and discretion at the £5M+ client level',
+        'Create a brand identity that signals authority and discretion at the $5M+ client level',
         'Deliver a cohesive visual system across digital, print, and environmental touchpoints',
         'Complete all deliverables before October awards submission deadline',
       ],
@@ -577,8 +619,8 @@ Marcus: Board has signed off £45,000. Could release more if the strategic case 
         'Digital asset pack (email signatures, social templates)',
       ],
       timeline: '14 weeks — delivery by 26 September 2026',
-      budgetSignal: '£45,000 (approx. $57,000) — board-approved, potential flex',
-      targetAudience: 'High-net-worth individuals, family offices, and corporate occupiers in the £5M+ property bracket',
+      budgetSignal: '$45,000 — board-approved, potential flex',
+      targetAudience: 'High-net-worth individuals, family offices, and corporate occupiers in the $5M+ property bracket',
       keyMessages: [
         'Boutique private bank aesthetic — not a high-street agent',
         'Authority and discretion as visual principles',
@@ -591,7 +633,7 @@ Marcus: Board has signed off £45,000. Could release more if the strategic case 
   {
     id: 'eq4',
     companyName: 'Fable Studio',
-    contactName: 'James Okafor',
+    contactName: 'James Odhiambo',
     contactEmail: 'james@fablestudio.co',
     contactPhone: '+1 646 203 7714',
     industry: 'Gaming & Interactive',
@@ -607,31 +649,31 @@ Marcus: Board has signed off £45,000. Could release more if the strategic case 
 Date: 21 July 2026, 10:00 AM
 Duration: 22 minutes
 
-Sarah Chen (NEXUS): Walk me through what you're working on, James.
+Amani Wanjiru (NEXUS): Walk me through what you're working on, James.
 
-James Okafor (Fable Studio): We're an indie game studio — our first title launched on Steam last year and performed really well. Now we're preparing the mobile launch of our new game, Drift. It's a rhythm-based puzzle game. Very aesthetic — influenced by lo-fi music and Japanese minimalism.
+James Odhiambo (Fable Studio): We're an indie game studio — our first title launched on Steam last year and performed really well. Now we're preparing the mobile launch of our new game, Drift. It's a rhythm-based puzzle game. Very aesthetic — influenced by lo-fi music and Japanese minimalism.
 
-Sarah: And what do you need from us?
+Amani: And what do you need from us?
 
 James: The full creative package. App UI redesign — our current screens feel flat, they don't match the vibe of the game itself. We want motion sequences for the launch trailer. And brand identity work — logo refinement, color palette, the whole kit.
 
-Sarah: Timeline?
+Amani: Timeline?
 
 James: We're targeting October. All assets by mid-September. About 12 weeks.
 
-Sarah: Budget range?
+Amani: Budget range?
 
 James: We've set aside $65,000 for this phase. Could flex to $75K if the work is right.
 
-Sarah: And the audience for Drift?
+Amani: And the audience for Drift?
 
 James: Primarily 18–34. Music lovers, people who play on commutes. We want to go after the same crowd that loves Spotify's visual identity — clean, emotive, modern. Every screen should feel like album art.
 
-Sarah: Who's signing off on creative?
+Amani: Who's signing off on creative?
 
-James: Me and our art director, Yuna Park. We both review, but I have final say.
+James: Me and our art director, Wanja Kimani. We both review, but I have final say.
 
-Sarah: Perfect. We'll have a full proposal to you within the hour.`,
+Amani: Perfect. We'll have a full proposal to you within the hour.`,
     brief: {
       objectives: [
         'Redesign Drift app UI to match the game\'s lo-fi, Japanese minimalism aesthetic',
@@ -698,7 +740,7 @@ Sarah: Perfect. We'll have a full proposal to you within the hour.`,
         'Figma handoff + 1-hour session',
       ],
       timeline: '12 weeks — final delivery 15 September 2026',
-      teamNotes: 'Led by Maya Kim (Creative Director) with Alex Johnson on UI design and Sam Rivera on motion. Leo Tan available for a UX research sprint in Week 2 to validate navigation patterns.',
+      teamNotes: 'Led by Wanjiku Mwangi (Creative Director) with Kevin Ochieng on UI design and Tevin Kiprono on motion. Lena Akinyi available for a UX research sprint in Week 2 to validate navigation patterns.',
       generatedAt: '2026-07-21T10:48:00Z',
     },
     quotation: {
@@ -723,9 +765,9 @@ Sarah: Perfect. We'll have a full proposal to you within the hour.`,
   },
   {
     id: 'eq5',
-    companyName: 'Mesa Coffee',
-    contactName: 'Leila Osman',
-    contactEmail: 'leila@mesacoffee.com',
+    companyName: 'Mlima Coffee',
+    contactName: 'Wambui Gitau',
+    contactEmail: 'wambui@mlimacoffee.com',
     industry: 'Food & Beverage',
     serviceInterest: 'Packaging design + brand identity for specialty coffee range',
     budgetRange: '$12,000 – $18,000',
@@ -856,8 +898,8 @@ export const DMF_CANDIDATES: DmfCandidate[] = [
   // --- Kenyan talent ---
   {
     id: 'dmf9',
-    name: 'Amina Wanjiru',
-    initials: 'AW',
+    name: 'Amina Otieno',
+    initials: 'AO',
     avatarColor: '#F43F5E',
     primaryRole: 'Senior Brand Designer',
     skills: ['Brand Identity', 'Typography', 'Art Direction', 'Figma'],
@@ -1203,12 +1245,12 @@ export const PRODUCTION_RESOURCES = [
 ];
 
 export const BOOKINGS: ResourceBooking[] = [
-  { id: 'bk1', resourceId: 'studio-a', projectId: 'p3', date: '2026-07-29', startTime: '08:00', endTime: '18:00', crew: ['Sam Rivera', 'Kweku Mensah'] },
-  { id: 'bk2', resourceId: 'studio-a', projectId: 'p5', date: '2026-07-30', startTime: '09:00', endTime: '17:00', crew: ['Sam Rivera', 'Maya Kim'] },
-  { id: 'bk3', resourceId: 'studio-b', projectId: 'p6', date: '2026-07-29', startTime: '10:00', endTime: '15:00', crew: ['Nina Chen'] },
+  { id: 'bk1', resourceId: 'studio-a', projectId: 'p3', date: '2026-07-29', startTime: '08:00', endTime: '18:00', crew: ['Tevin Kiprono', 'Kweku Mensah'] },
+  { id: 'bk2', resourceId: 'studio-a', projectId: 'p5', date: '2026-07-30', startTime: '09:00', endTime: '17:00', crew: ['Tevin Kiprono', 'Wanjiku Mwangi'] },
+  { id: 'bk3', resourceId: 'studio-b', projectId: 'p6', date: '2026-07-29', startTime: '10:00', endTime: '15:00', crew: ['Faith Nyambura'] },
   { id: 'bk4', resourceId: 'equip-red', projectId: 'p3', date: '2026-07-29', startTime: '08:00', endTime: '18:00', crew: [] },
   { id: 'bk5', resourceId: 'equip-lights', projectId: 'p5', date: '2026-07-30', startTime: '09:00', endTime: '17:00', crew: [] },
-  { id: 'bk6', resourceId: 'studio-c', projectId: 'p1', date: '2026-07-31', startTime: '14:00', endTime: '17:00', crew: ['Alex Johnson'] },
+  { id: 'bk6', resourceId: 'studio-c', projectId: 'p1', date: '2026-07-31', startTime: '14:00', endTime: '17:00', crew: ['Kevin Ochieng'] },
 ];
 
 export const RFP_TENDERS: RfpTender[] = [
@@ -1237,7 +1279,7 @@ export const RFP_TENDERS: RfpTender[] = [
     status: 'reviewing',
     fitScore: 84,
     source: 'corporate',
-    aiRecommendation: 'Strong fit. Highlight the Titan Ventures brand work in your submission.',
+    aiRecommendation: 'Strong fit. Highlight the Savanna Ventures brand work in your submission.',
     requirements: ['Visual identity system', 'Brand guidelines document', 'App UI design system', 'Motion identity'],
   },
   {

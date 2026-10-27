@@ -87,7 +87,7 @@ export function MobileNav() {
                   onClick={() => setOpen(false)}
                   aria-label="Close menu"
                   className="flex items-center justify-center rounded-md"
-                  style={{ width: 30, height: 30, background: 'rgba(255,255,255,0.05)', border: 'none', color: 'var(--text-dim)', cursor: 'pointer' }}
+                  style={{ width: 30, height: 30, background: 'var(--surface-2)', border: 'none', color: 'var(--text-dim)', cursor: 'pointer' }}
                 >
                   <X size={16} />
                 </button>

@@ -2,6 +2,14 @@ import type { CoreAction } from '../data/store';
 import type { KnowledgeNote } from '../data/knowledge';
 import type { AgentId } from '../data/types';
 import { supabase } from './supabase';
+import { demoBrief, demoProposal, demoQuote, demoChat, demoSignals, demoAnalytics, streamText, thinking } from './demoAI';
+
+/**
+ * Demo mode (default): every agent answers from local, data-grounded demo
+ * logic and no request ever reaches the Anthropic API. Set
+ * VITE_DEMO_MODE=false at build time to use the live /api endpoints.
+ */
+export const DEMO_MODE = import.meta.env.VITE_DEMO_MODE !== 'false';
 
 async function authHeader(): Promise<Record<string, string>> {
   if (!supabase) return {};
@@ -26,6 +34,7 @@ const REC_MARKER = '%%RECOMMENDATIONS%%';
 let aiLive: boolean | null = null;
 
 export async function checkAI(): Promise<boolean> {
+  if (DEMO_MODE) return (aiLive = false);
   try {
     const res = await fetch('/api/health');
     const data = await res.json();
@@ -52,6 +61,13 @@ export async function streamCoreChat(
   onDelta: (visibleText: string) => void,
   agent: AgentId = 'ops',
 ): Promise<CoreReply> {
+  if (DEMO_MODE) {
+    await thinking();
+    const lastUser = [...history].reverse().find(m => m.role === 'user')?.content ?? '';
+    const reply = demoChat(lastUser, context, agent);
+    await streamText(reply.text, onDelta);
+    return reply;
+  }
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
@@ -101,6 +117,7 @@ function parseReply(full: string): CoreReply {
 import type { Enquiry, ProjectBrief, CreativeIdeation, Proposal, Quotation } from '../data/types';
 
 export async function generateBrief(transcript: string, enquiry: Partial<Enquiry>): Promise<ProjectBrief> {
+  if (DEMO_MODE) { await thinking(); return demoBrief(transcript, enquiry); }
   try {
     const res = await fetch('/api/pipeline/brief', {
       method: 'POST',
@@ -117,6 +134,7 @@ export async function generateBrief(transcript: string, enquiry: Partial<Enquiry
 }
 
 export async function generateProposal(brief: ProjectBrief, ideation: CreativeIdeation, enquiry: Partial<Enquiry>): Promise<Proposal> {
+  if (DEMO_MODE) { await thinking(); return demoProposal(brief, ideation, enquiry); }
   try {
     const res = await fetch('/api/pipeline/proposal', {
       method: 'POST',
@@ -133,6 +151,7 @@ export async function generateProposal(brief: ProjectBrief, ideation: CreativeId
 }
 
 export async function generateQuotation(brief: ProjectBrief, proposal: Proposal, enquiry: Partial<Enquiry>): Promise<Quotation> {
+  if (DEMO_MODE) { await thinking(); return demoQuote(brief, proposal, enquiry); }
   try {
     const res = await fetch('/api/pipeline/quote', {
       method: 'POST',
@@ -224,6 +243,7 @@ function localQuoteFallback(brief: ProjectBrief, proposal: Proposal, _enquiry: P
 import type { AgencySignal } from '../data/types';
 
 export async function fetchSignals(context: object): Promise<AgencySignal[]> {
+  if (DEMO_MODE) { await thinking(); return demoSignals(context); }
   try {
     const res = await fetch('/api/signals', {
       method: 'POST',
@@ -248,6 +268,7 @@ export async function fetchAnalyticsInsight(
   perspective: 'founder' | 'operations' | 'account_director',
   context: object,
 ): Promise<AnalyticsInsight | null> {
+  if (DEMO_MODE) { await thinking(); return demoAnalytics(perspective, context); }
   try {
     const res = await fetch('/api/analytics', {
       method: 'POST',
@@ -268,6 +289,7 @@ export interface KnowledgeResult {
 }
 
 export async function askKnowledge(query: string, notes: KnowledgeNote[]): Promise<KnowledgeResult> {
+  if (DEMO_MODE) { await thinking(); return keywordSearch(query, notes, false); }
   try {
     const res = await fetch('/api/knowledge', {
       method: 'POST',
@@ -280,29 +302,41 @@ export async function askKnowledge(query: string, notes: KnowledgeNote[]): Promi
     return { answer: data.answer, sourceIds: data.sourceIds ?? [], offline: false };
   } catch {
     aiLive = false;
-    const q = query.toLowerCase().split(/\s+/).filter(w => w.length > 3);
-    const scored = notes
-      .map(n => ({
-        n,
-        score: q.reduce(
-          (acc, w) =>
-            acc +
-            (n.content.toLowerCase().includes(w) ? 2 : 0) +
-            (n.title.toLowerCase().includes(w) ? 3 : 0) +
-            (n.tags.some(t => t.includes(w)) ? 2 : 0),
-          0,
-        ),
-      }))
-      .filter(x => x.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 3);
-    if (scored.length === 0) {
-      return { answer: 'No matching notes found in the knowledge base (offline keyword search). Try different terms.', sourceIds: [], offline: true };
-    }
+    return keywordSearch(query, notes, true);
+  }
+}
+
+function keywordSearch(query: string, notes: KnowledgeNote[], offline: boolean): KnowledgeResult {
+  const q = query.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+  const scored = notes
+    .map(n => ({
+      n,
+      score: q.reduce(
+        (acc, w) =>
+          acc +
+          (n.content.toLowerCase().includes(w) ? 2 : 0) +
+          (n.title.toLowerCase().includes(w) ? 3 : 0) +
+          (n.tags.some(t => t.includes(w)) ? 2 : 0),
+        0,
+      ),
+    }))
+    .filter(x => x.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3);
+  if (scored.length === 0) {
+    return { answer: 'No matching notes found in the knowledge base. Try different terms.', sourceIds: [], offline };
+  }
+  if (!offline) {
+    const [top, ...rest] = scored.map(x => x.n);
     return {
-      answer: `Offline keyword match — top result: "${scored[0].n.title}". ${scored[0].n.content}`,
+      answer: `Based on "${top.title}": ${top.content}` + (rest.length ? `\n\nRelated: ${rest.map(n => `"${n.title}"`).join(', ')}.` : ''),
       sourceIds: scored.map(x => x.n.id),
-      offline: true,
+      offline,
     };
   }
+  return {
+    answer: `Offline keyword match — top result: "${scored[0].n.title}". ${scored[0].n.content}`,
+    sourceIds: scored.map(x => x.n.id),
+    offline,
+  };
 }

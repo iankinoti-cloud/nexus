@@ -50,7 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       loading,
       session,
       guest,
-      displayName: meta?.full_name || meta?.name || session?.user?.email?.split('@')[0] || 'Sarah Chen',
+      displayName: meta?.full_name || meta?.name || session?.user?.email?.split('@')[0] || 'Amani Wanjiru',
       avatarUrl: meta?.avatar_url ?? null,
       signInWithGoogle: async () => {
         await supabase?.auth.signInWithOAuth({

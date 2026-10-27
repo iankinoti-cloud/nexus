@@ -4,7 +4,7 @@ import { PageAura } from '../shared/PageAura';
 import { Send, Target, Users, MessageSquare, Layers, Check, WifiOff, ArrowRight, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNexus } from '../../data/store';
-import { streamCoreChat, checkAI, isAILive, type Recommendation } from '../../lib/ai';
+import { streamCoreChat, checkAI, isAILive, DEMO_MODE, type Recommendation } from '../../lib/ai';
 import type { ChatMessage, AgentId } from '../../data/types';
 import { AgentFeed } from '../shared/AgentFeed';
 
@@ -54,7 +54,7 @@ const AGENTS: AgentConfig[] = [
     focus: ['Team capacity', 'Burnout prevention', 'Skills matching', 'DMF recruitment'],
     prompts: [
       'Who has capacity for a new project?',
-      "Check Nina's burnout risk",
+      "Check Faith's burnout risk",
       'Match a designer for Nexora project',
       'Screen DMF candidates for motion work',
     ],
@@ -82,9 +82,9 @@ const AGENTS: AgentConfig[] = [
     focus: ['Studio scheduling', 'Equipment allocation', 'Crew assignment', 'Shoot planning'],
     prompts: [
       'Which studio is available next week?',
-      'Allocate crew for the Verdant shoot',
+      'Allocate crew for the Shamba shoot',
       'Check equipment availability',
-      'Plan the Solara production schedule',
+      'Plan the Jua production schedule',
     ],
   },
 ];
@@ -103,7 +103,7 @@ const SEED_MESSAGES: Record<AgentId, CoreChatMsg[]> = {
     {
       id: 'talent-seed-1',
       role: 'core',
-      content: "Nina Chen is at 95% load with an 81% burnout risk — that's past threshold. Omar and Leo have capacity. I have 8 vetted candidates on standby. What's the move?",
+      content: "Faith Nyambura is at 95% load with an 81% burnout risk — that's past threshold. Hassan and Lena have capacity. I have 8 vetted candidates on standby. What's the move?",
       timestamp: 'Now',
       recommendations: [],
     },
@@ -112,7 +112,7 @@ const SEED_MESSAGES: Record<AgentId, CoreChatMsg[]> = {
     {
       id: 'client-seed-1',
       role: 'core',
-      content: "Nexora AI is your most fragile relationship right now — scope friction, recent silence. Titan Ventures is your strongest at 9.1. I'm watching all six. Who needs attention today?",
+      content: "Nexora AI is your most fragile relationship right now — scope friction, recent silence. Savanna Ventures is your strongest at 9.1. I'm watching all six. Who needs attention today?",
       timestamp: 'Now',
       recommendations: [],
     },
@@ -121,7 +121,7 @@ const SEED_MESSAGES: Record<AgentId, CoreChatMsg[]> = {
     {
       id: 'production-seed-1',
       role: 'core',
-      content: "Verdant Foods is wrapping review and a shoot window is opening soon — Studio A is clear. Three spaces and three equipment packages tracked. What's the next production to plan?",
+      content: "Shamba Foods is wrapping review and a shoot window is opening soon — Studio A is clear. Three spaces and three equipment packages tracked. What's the next production to plan?",
       timestamp: 'Now',
       recommendations: [],
     },
@@ -523,7 +523,12 @@ export function CorePage() {
         <div style={{ color: 'var(--text)', fontSize: 'calc(15px * var(--fs))', fontWeight: 700 }}>NEXUS AGENTS</div>
         <div className="flex items-center gap-3">
           <AgentTabBar active={activeAgent} onChange={setActiveAgent} />
-          {aiStatus === false && (
+          {DEMO_MODE && (
+            <div className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5" style={{ background: 'rgba(var(--accent-rgb),0.08)', border: '1px solid rgba(var(--accent-rgb),0.2)' }}>
+              <span style={{ color: 'var(--accent)', fontSize: 'calc(11px * var(--fs))' }}>Demo mode</span>
+            </div>
+          )}
+          {!DEMO_MODE && aiStatus === false && (
             <div className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5" style={{ background: 'rgba(255,181,71,0.08)', border: '1px solid rgba(255,181,71,0.2)' }}>
               <WifiOff size={11} style={{ color: '#FFB547' }} />
               <span style={{ color: '#FFB547', fontSize: 'calc(11px * var(--fs))' }}>Offline</span>

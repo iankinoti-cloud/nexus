@@ -59,7 +59,7 @@ interface NexusStore extends NexusState {
   setSignals: (signals: AgencySignal[]) => void;
 }
 
-const STORAGE_KEY = 'nexus-store-v1';
+const STORAGE_KEY = 'nexus-store-v3'; // bumped when seed data changes so returning visitors get it
 
 const initialState = (): NexusState => ({
   projects: PROJECTS,

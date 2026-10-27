@@ -47,6 +47,8 @@ function resolveMode(mode: ColorMode): 'dark' | 'light' {
   return mode;
 }
 
+// Every visit starts in light mode; a choice made in Settings lasts for the
+// current browser session only (sessionStorage), so the next visit is light again.
 export function applyColorMode(mode: ColorMode) {
   const resolved = resolveMode(mode);
   if (resolved === 'light') {
@@ -54,11 +56,15 @@ export function applyColorMode(mode: ColorMode) {
   } else {
     document.documentElement.removeAttribute('data-theme');
   }
-  localStorage.setItem(MODE_KEY, mode);
+  try { sessionStorage.setItem(MODE_KEY, mode); } catch { /* storage blocked — mode still applied */ }
 }
 
 export function currentMode(): ColorMode {
-  return (localStorage.getItem(MODE_KEY) as ColorMode) ?? 'dark';
+  try {
+    return (sessionStorage.getItem(MODE_KEY) as ColorMode) ?? 'light';
+  } catch {
+    return 'light';
+  }
 }
 
 // --- Font scale -----------------------------------------------------------
@@ -74,6 +80,7 @@ export function currentScale(): FontScale {
 
 // --- Boot -----------------------------------------------------------------
 export function initTheme() {
+  try { localStorage.removeItem(MODE_KEY); } catch { /* ignore */ } // drop the old persistent choice
   applyAccent(currentAccent());     // always apply so brand accent wins the cascade
   applyColorMode(currentMode());
   applyFontScale(currentScale());

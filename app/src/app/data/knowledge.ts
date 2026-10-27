@@ -10,19 +10,19 @@ export interface KnowledgeNote {
 export const KNOWLEDGE_NOTES: KnowledgeNote[] = [
   {
     id: 'k1',
-    title: 'Titan rebranding — what worked',
+    title: 'Savanna rebranding — what worked',
     category: 'project-learnings',
     content:
-      'Titan Ventures responded best to bold geometric marks with high contrast. Their board rejected all gradient-heavy directions in round one. Decision-maker is CMO Elena Titov — she prefers seeing 3 directions max, presented in person. Final identity shipped 2 weeks early because we locked typography before iterating on the mark.',
+      'Savanna Ventures responded best to bold geometric marks with high contrast. Their board rejected all gradient-heavy directions in round one. Decision-maker is CMO Elena Titov — she prefers seeing 3 directions max, presented in person. Final identity shipped 2 weeks early because we locked typography before iterating on the mark.',
     date: 'May 2026',
     tags: ['branding', 'titan-ventures', 'presentation'],
   },
   {
     id: 'k2',
-    title: 'Pulse Health compliance requirements',
+    title: 'Afya Pulse compliance requirements',
     category: 'client-preferences',
     content:
-      'All Pulse Health deliverables must pass WCAG 2.2 AA before client review — their legal team audits everything. Colors must hit 4.5:1 contrast. They use Figma dev mode for handoff and expect tokens named with their internal convention (ph-color-*, ph-space-*). Invoicing must reference PO numbers or accounts payable bounces it.',
+      'All Afya Pulse deliverables must pass WCAG 2.2 AA before client review — their legal team audits everything. Colors must hit 4.5:1 contrast. They use Figma dev mode for handoff and expect tokens named with their internal convention (ph-color-*, ph-space-*). Invoicing must reference PO numbers or accounts payable bounces it.',
     date: 'June 2026',
     tags: ['accessibility', 'pulse-health', 'handoff', 'invoicing'],
   },
@@ -40,16 +40,16 @@ export const KNOWLEDGE_NOTES: KnowledgeNote[] = [
     title: 'Motion pipeline: render farm settings',
     category: 'process',
     content:
-      'For Solara-style motion series work: render at 2x target resolution, ProRes 4444 masters, H.264 previews for client review. Preview links via Frame.io only — Solara Media\'s IT blocks WeTransfer. Omar\'s AE project template (in /templates/motion-2026) cuts setup time roughly in half.',
+      'For Jua-style motion series work: render at 2x target resolution, ProRes 4444 masters, H.264 previews for client review. Preview links via Frame.io only — Jua Media\'s IT blocks WeTransfer. Hassan\'s AE project template (in /templates/motion-2026) cuts setup time roughly in half.',
     date: 'March 2026',
     tags: ['motion', 'solara-media', 'rendering', 'templates'],
   },
   {
     id: 'k5',
-    title: 'Verdant Foods brand voice guide',
+    title: 'Shamba Foods brand voice guide',
     category: 'client-preferences',
     content:
-      'Verdant\'s voice: warm, grounded, never preachy about sustainability. Words to avoid: "eco-warrior", "guilt-free", "planet-saving". They loved the harvest-table photography direction from the spring campaign. Campaign approvals go through founder Jess Verde directly — allow 4-5 business days.',
+      'Shamba\'s voice: warm, grounded, never preachy about sustainability. Words to avoid: "eco-warrior", "guilt-free", "planet-saving". They loved the harvest-table photography direction from the spring campaign. Campaign approvals go through founder Jess Verde directly — allow 4-5 business days.',
     date: 'June 2026',
     tags: ['copywriting', 'verdant-foods', 'brand-voice', 'approvals'],
   },
@@ -58,16 +58,16 @@ export const KNOWLEDGE_NOTES: KnowledgeNote[] = [
     title: 'Q2 retrospective — team utilization',
     category: 'retrospective',
     content:
-      'Q2 lesson: running designers above 85% utilization for more than 3 weeks correlated with rework spikes (Nina hit 92% in May and the Crest revisions doubled). Healthy band is 70-85%. Rebalancing early — before someone reports burnout — kept Pulse App Redesign on schedule. Reassignments work best when announced with context, not just calendar moves.',
+      'Q2 lesson: running designers above 85% utilization for more than 3 weeks correlated with rework spikes (Faith hit 92% in May and the Kilele revisions doubled). Healthy band is 70-85%. Rebalancing early — before someone reports burnout — kept Pulse App Redesign on schedule. Reassignments work best when announced with context, not just calendar moves.',
     date: 'July 2026',
     tags: ['utilization', 'burnout', 'staffing'],
   },
   {
     id: 'k7',
-    title: 'Crest Goods packaging print specs',
+    title: 'Kilele Goods packaging print specs',
     category: 'project-learnings',
     content:
-      'Crest\'s printer (Meridian Print Co.) requires PDF/X-4, 3mm bleed, spot colors as Pantone Coated. Their last run was delayed 9 days because files went out with RGB embeds — preflight in Acrobat before every handoff. Kraft stock spot-varnish tests looked great and the client wants that direction for the next SKU line.',
+      'Kilele\'s printer (Meridian Print Co.) requires PDF/X-4, 3mm bleed, spot colors as Pantone Coated. Their last run was delayed 9 days because files went out with RGB embeds — preflight in Acrobat before every handoff. Kraft stock spot-varnish tests looked great and the client wants that direction for the next SKU line.',
     date: 'May 2026',
     tags: ['print', 'crest-goods', 'packaging', 'preflight'],
   },
@@ -91,10 +91,10 @@ export const KNOWLEDGE_NOTES: KnowledgeNote[] = [
   },
   {
     id: 'k10',
-    title: 'Solara Media contract terms',
+    title: 'Jua Media contract terms',
     category: 'client-preferences',
     content:
-      'Solara contracts include 2 revision rounds per deliverable; further rounds bill at 1.5x day rate — flag this to the client before starting round 3, never after. Their fiscal year ends in September, so budget approvals stall from mid-August. Get Q4 SOWs signed before August 10.',
+      'Jua contracts include 2 revision rounds per deliverable; further rounds bill at 1.5x day rate — flag this to the client before starting round 3, never after. Their fiscal year ends in September, so budget approvals stall from mid-August. Get Q4 SOWs signed before August 10.',
     date: 'April 2026',
     tags: ['contracts', 'solara-media', 'revisions', 'billing'],
   },

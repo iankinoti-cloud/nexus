@@ -28,7 +28,7 @@ const INSIGHTS: Insight[] = [
   {
     color: 'var(--accent)',
     title: 'Resource reallocation opportunity',
-    description: 'Nina Chen is past the healthy utilization band. Shifting one workstream to Sam Rivera reduces burnout risk without timeline impact.',
+    description: 'Faith Nyambura is past the healthy utilization band. Shifting one workstream to Tevin Kiprono reduces burnout risk without timeline impact.',
     action: { type: 'reassign', fromEmployeeId: 'e5', toEmployeeId: 'e3' },
   },
   {
